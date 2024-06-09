@@ -3,16 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino Slot Oyunu</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>3D Casino Slot Oyunu</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #ui {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+        }
+        #spin-button {
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        #score-board {
+            margin-top: 20px;
+        }
+        #scores {
+            list-style-type: none;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
-    <div id="game-container">
-        <div id="slot-machine">
-            <div class="slot" id="slot1">🍒</div>
-            <div class="slot" id="slot2">🍋</div>
-            <div class="slot" id="slot3">🍊</div>
-        </div>
+    <div id="ui">
         <button id="spin-button">Çevir</button>
         <div id="message"></div>
         <div id="score-board">
@@ -20,6 +38,7 @@
             <ul id="scores"></ul>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
