@@ -4,11 +4,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Flappy Bird</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
 </head>
 <body>
-  <h1>Flappy Bird</h1>
-  <canvas id="gameCanvas" width="320" height="480"></canvas>
-  <script src="script.js"></script>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let birdY = 200;
+    let gravity = 0.5;
+    let velocity = 0;
+
+    function drawBird() {
+      ctx.beginPath();
+      ctx.arc(50, birdY, 10, 0, Math.PI * 2);
+      ctx.fillStyle = "blue";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBird();
+      velocity += gravity;
+      birdY += velocity;
+
+      requestAnimationFrame(update);
+    }
+
+    canvas.addEventListener("click", () => {
+      velocity = -10;
+    });
+
+    update();
+  </script>
 </body>
 </html>
