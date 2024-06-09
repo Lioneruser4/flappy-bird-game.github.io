@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube</title>
+    <title>Siteye Hoşgeldiniz</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,19 +26,30 @@
             cursor: pointer;
             margin-top: 20px;
         }
+        .copy-button {
+            padding: 5px 10px;
+            font-size: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <a href="https://www.youtube.com" target="_blank">
-    <img src="https://www.youtube.com/img/desktop/yt_1200.png" alt="YouTube" width="400">
+    <img src="https://www.youtube.com/img/desktop/yt_1200.png" alt="YouTube" width="200">
 </a>
 
-<button class="button" onclick="copyPageLink()">Bağlantıyı Kopyala</button>
+<div>
+    <button class="copy-button" onclick="copyPageLink()">Bağlantıyı Kopyala</button>
+</div>
 
 <script>
     function copyPageLink() {
-        var pageLink = "https://www.youtube.com";
+        var pageLink = window.location.href;
         navigator.clipboard.writeText(pageLink).then(function() {
             alert("Sayfa linki kopyalandı: " + pageLink);
         }, function() {
