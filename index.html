@@ -3,195 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+    <title>YouTube Video Player</title>
     <style>
         body {
-            background-color: black;
-            color: white;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
-        .container {
-            max-width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 */
+            margin-bottom: 20px;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
         .button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
+            display: block;
+            width: 100%;
+            padding: 10px;
             font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-        .center {
             text-align: center;
-        }
-        .form-container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #333;
-            border-radius: 8px;
-        }
-        input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        input[type="submit"] {
             background-color: #4CAF50;
             color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-        }
-        .forum {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 20px 0;
             border-radius: 8px;
-        }
-        .forum-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="center">
-        <h1>Welcome to My Website</h1>
-        <div>
-            <button class="button" onclick="showForum()">Forum</button>
-            <button class="button" onclick="showRegisterForm()">Register</button>
-            <button class="button" onclick="showLoginForm()">Login</button>
-        </div>
-    </div>
-
-    <!-- Register Form -->
-    <div id="registerForm" class="form-container" style="display: none;">
-        <h2>Register</h2>
-        <form id="registerFormElement" onsubmit="registerUser(event)">
-            <input type="text" placeholder="Username" required><br>
-            <input type="email" placeholder="Email" required><br>
-            <input type="password" placeholder="Password" required><br>
-            <input type="submit" value="Register">
-        </form>
-    </div>
-
-    <!-- Login Form -->
-    <div id="loginForm" class="form-container" style="display: none;">
-        <h2>Login</h2>
-        <form id="loginFormElement" onsubmit="loginUser(event)">
-            <input type="text" placeholder="Username or Email" required><br>
-            <input type="password" placeholder="Password" required><br>
-            <input type="submit" value="Login">
-        </form>
-    </div>
-
-    <!-- Forum Section -->
-    <div id="forum" style="display: none;">
-        <h2>Forum</h2>
-        <div id="globalForum" class="forum" style="display: none;">
-            <div class="forum-title">Global Forum</div>
-            <div id="globalForumPosts"></div>
-        </div>
-    </div>
+<div class="video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/" frameborder="0" allowfullscreen></iframe>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-firestore.js"></script>
+<button class="button" onclick="copyVideoLink()">Kopyala</button>
+
 <script>
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-
-    // Firebase authentication
-    const auth = firebase.auth();
-
-    // Firebase firestore
-    const firestore = firebase.firestore();
-
-    // Register User
-    function registerUser(event) {
-        event.preventDefault();
-        const registerForm = document.getElementById('registerFormElement');
-        const username = registerForm.querySelector('input[type="text"]').value;
-        const email = registerForm.querySelector('input[type="email"]').value;
-        const password = registerForm.querySelector('input[type="password"]').value;
-        auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Signed up
-                const user = userCredential.user;
-                // Save additional user data if necessary
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // Handle errors
-            });
+    function copyVideoLink() {
+        var videoLink = window.location.href;
+        var tempInput = document.createElement("input");
+        tempInput.value = videoLink;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+        alert("Video linki kopyalandı: " + videoLink);
     }
+</script>
 
-    // Login User
-    function loginUser(event) {
-        event.preventDefault();
-        const loginForm = document.getElementById('loginFormElement');
-        const emailOrUsername = loginForm.querySelector('input[type="text"]').value;
-        const password = loginForm.querySelector('input[type="password"]').value;
-        auth.signInWithEmailAndPassword(emailOrUsername, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                // Redirect or show user data
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // Handle errors
-            });
-    }
-
-    // Show Forum
-    function showForum() {
-        document.getElementById('forum').style.display = 'block';
-        loadGlobalForum();
-    }
-
-    // Show Register Form
-    function showRegisterForm() {
-        document.getElementById('registerForm').style.display = 'block';
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('forum').style.display = 'none';
-    }
-
-    // Show Login Form
-    function showLoginForm() {
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('forum').style.display = 'none';
-    }
+</body>
+</html>
