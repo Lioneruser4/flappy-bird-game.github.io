@@ -1,13 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hockey Game</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey Game</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .scoreboard {
+            display: flex;
+            flex-direction: column;
+        }
+        .player {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
-  <script src="game.js"></script>
+    <h1>Hockey Game</h1>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <div class="scoreboard" id="scoreboard">
+        <!-- Scores will be displayed here -->
+    </div>
+
+    <script>
+        // Your JavaScript code for the game logic will go here
+    </script>
 </body>
 </html>
