@@ -1,56 +1,29 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAZBd9ppfpc7WKZWcNiSUtnR1pvD9bSOVM",
-  authDomain: "betatest-4f394.firebaseapp.com",
-  projectId: "betatest-4f394",
-  storageBucket: "betatest-4f394.appspot.com",
-  messagingSenderId: "551760858025",
-  appId: "1:551760858025:web:3547727feb020d32bf52b8",
-  measurementId: "G-CRS4LD5Z6R"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-
-1<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Register and Login</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Register</h2>
-    <form id="registerForm">
-        <label>Username:</label>
-        <input type="text" id="registerUsername" required>
-        <br>
-        <label>Password:</label>
-        <input type="password" id="registerPassword" required>
-        <br>
-        <input type="submit" value="Register">
-    </form>
+    <header>
+        <h1>Welcome to Our Website</h1>
+        <nav>
+            <ul>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="register.html">Register</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <h2>Login</h2>
-    <form id="loginForm">
-        <label>Email:</label>
-        <input type="email" id="loginEmail" required>
-        <br>
-        <label>Password:</label>
-        <input type="password" id="loginPassword" required>
-        <br>
-        <input type="submit" value="Login">
-    </form>
+    <main>
+        <h2>About Us</h2>
+        <p>This is a platform where you can register, login, and interact with others in the forum.</p>
+    </main>
 
-    <script src="app.js"></script>
+    <footer>
+        <p>&copy; 2024 Our Website. All rights reserved.</p>
+    </footer>
 </body>
 </html>
