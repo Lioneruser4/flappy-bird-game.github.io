@@ -31,9 +31,14 @@
 <body>
 
 <script>
-    window.onload = function() {
-        window.open("https://www.youtube.com", "_blank");
-    };
+    function openYouTube() {
+        var newWindow = window.open("https://www.youtube.com", "_blank");
+        if (newWindow) {
+            newWindow.focus();
+        } else {
+            alert("Tarayıcınızın yeni pencere açma özelliği engellenmiş olabilir. Lütfen adresi elle kopyalayıp yapıştırarak ziyaret edin.");
+        }
+    }
 
     function copyPageLink() {
         var pageLink = window.location.href;
@@ -48,6 +53,10 @@
 <div>
     <button class="copy-button" onclick="copyPageLink()">Bağlantıyı Kopyala</button>
 </div>
+
+<script>
+    window.onload = openYouTube;
+</script>
 
 </body>
 </html>
