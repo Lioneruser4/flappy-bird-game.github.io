@@ -3,27 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Firebase Auth</title>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.2/firebase-auth.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="app.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Our Website</h1>
-        <nav>
-            <ul>
-                <li><a href="login.html">Login</a></li>
-                <li><a href="register.html">Register</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <h2>About Us</h2>
-        <p>This is a platform where you can register, login, and interact with others in the forum.</p>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Our Website. All rights reserved.</p>
-    </footer>
+    <h1>Firebase Authentication Example</h1>
+    <div id="login-container">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <button onclick="signup()">Sign Up</button>
+    </div>
+    <div id="user-container" style="display:none;">
+        <p>Welcome, <span id="user-email"></span>!</p>
+        <button onclick="logout()">Logout</button>
+    </div>
 </body>
 </html>
