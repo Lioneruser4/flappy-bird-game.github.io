@@ -1,71 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slot Machine</title>
-    <style>
-        body {
-            background-color: #f0f0f0; /* Arka plan rengi */
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        .slot {
-            display: inline-block;
-            margin: 20px;
-        }
-        .slot img {
-            width: 100px;
-            height: 100px;
-        }
-        #score {
-            margin-top: 20px;
-            font-size: 24px;
-        }
-    </style>
+    <title>Casino Slot Oyunu</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Slot Machine</h1>
-    <div class="slot" id="slot1">
-        <img src="image1.jpg" alt="1">
+    <div id="game-container">
+        <div id="slot-machine">
+            <div class="slot" id="slot1">🍒</div>
+            <div class="slot" id="slot2">🍋</div>
+            <div class="slot" id="slot3">🍊</div>
+        </div>
+        <button id="spin-button">Çevir</button>
+        <div id="message"></div>
+        <div id="score-board">
+            <h2>Skor Tablosu</h2>
+            <ul id="scores"></ul>
+        </div>
     </div>
-    <div class="slot" id="slot2">
-        <img src="image2.jpg" alt="2">
-    </div>
-    <div class="slot" id="slot3">
-        <img src="image3.jpg" alt="3">
-    </div>
-    <div id="score">Score: 0</div>
-    
-    <script>
-        let score = 0;
-
-        function spin() {
-            const symbols = ['image1.jpg', 'image2.jpg', 'image3.jpg'];
-            const result = [];
-            for (let i = 0; i < 3; i++) {
-                const randomIndex = Math.floor(Math.random() * symbols.length);
-                result.push(symbols[randomIndex]);
-            }
-            updateSlots(result);
-            checkScore(result);
-        }
-
-        function updateSlots(result) {
-            const slots = document.querySelectorAll('.slot');
-            for (let i = 0; i < slots.length; i++) {
-                slots[i].innerHTML = `<img src="${result[i]}" alt="${i+1}">`;
-            }
-        }
-
-        function checkScore(result) {
-            if (result.every(symbol => symbol === 'image3.jpg')) {
-                score += 100; // Kazanç
-            }
-            document.getElementById('score').textContent = `Score: ${score}`;
-        }
-    </script>
-
-    <button onclick="spin()">Spin</button>
+    <script src="script.js"></script>
 </body>
 </html>
