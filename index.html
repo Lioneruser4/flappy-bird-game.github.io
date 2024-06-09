@@ -3,25 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Video Player</title>
+    <title>YouTube</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-        }
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 */
-            margin-bottom: 20px;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
         }
         .button {
             position: fixed;
@@ -36,23 +23,35 @@
             cursor: pointer;
             z-index: 999;
         }
+        .youtube-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 60px);
+        }
+        .youtube-container img {
+            max-width: 80%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
 
-<div class="video-container">
-    <iframe id="youtubeVideo" width="560" height="315" src="https://www.youtube.com/" frameborder="0" allowfullscreen></iframe>
+<div class="youtube-container">
+    <a href="https://www.youtube.com" target="_blank">
+        <img src="https://www.youtube.com/img/desktop/yt_1200.png" alt="YouTube">
+    </a>
 </div>
 
-<button class="button" onclick="copyVideoLink()">Video Linkini Kopyala</button>
+<button class="button" onclick="copyPageLink()">Linki Kopyala</button>
 
 <script>
-    function copyVideoLink() {
-        var videoLink = document.getElementById("youtubeVideo").src;
-        navigator.clipboard.writeText(videoLink).then(function() {
-            alert("Video linki kopyalandı: " + videoLink);
+    function copyPageLink() {
+        var pageLink = window.location.href;
+        navigator.clipboard.writeText(pageLink).then(function() {
+            alert("Sayfa linki kopyalandı: " + pageLink);
         }, function() {
-            alert("Video linki kopyalanırken bir hata oluştu.");
+            alert("Sayfa linki kopyalanırken bir hata oluştu.");
         });
     }
 </script>
