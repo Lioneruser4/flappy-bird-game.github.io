@@ -1,59 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="az">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guessing Game</title>
+    <title>Bulmaca Oyunu</title>
 </head>
 <body>
-    <h1>Welcome to the Guessing Game!</h1>
+    <h1>Bulmaca Oyunu</h1>
     
     <div id="game-container">
-        <p>Guess a number between 1 and 50:</p>
-        <input type="number" id="user-guess">
-        <button onclick="checkGuess()">Submit Guess</button>
+        <p id="question">Sual burada göstəriləcək.</p>
+        <input type="text" id="user-answer" placeholder="Cavabınızı buraya yazın...">
+        <button onclick="checkAnswer()">Cavabı göndər</button>
     </div>
 
     <div id="scoreboard">
-        <h2>Scoreboard</h2>
+        <h2>Skor Cədvəli</h2>
         <ol id="scores">
-            <!-- Scores will be displayed here -->
+            <!-- Skorlar burada göstəriləcək -->
         </ol>
     </div>
 
     <script>
-        var scores = []; // Keep track of user scores
+        var scores = [];
 
-        function checkGuess() {
-            var userGuess = parseInt(document.getElementById("user-guess").value);
-            var randomNumber = Math.floor(Math.random() * 50) + 1; // Generate random number between 1 and 50
+        // Azerice sorular ve cevapları
+        var questions = [
+            { question: "Bir həftədə neçə gün var?", answer: "7" },
+            { question: "Mavi rəngin qarşısında gələn rəng nədir?", answer: "sarı" },
+            { question: "Gündə neçə saat var?", answer: "24" }
+            // Başqa suallar əlavə edə bilərsiniz
+        ];
 
-            if (userGuess === randomNumber) {
-                alert("Congratulations! You guessed the correct number.");
+        var currentQuestionIndex = 0;
+
+        // Başlangıcdakı sualı göstər
+        showQuestion();
+
+        function showQuestion() {
+            document.getElementById("question").textContent = questions[currentQuestionIndex].question;
+        }
+
+        function checkAnswer() {
+            var userAnswer = document.getElementById("user-answer").value.trim().toLowerCase();
+            var correctAnswer = questions[currentQuestionIndex].answer.toLowerCase();
+
+            if (userAnswer === correctAnswer) {
+                alert("Təbriklər! Düzgün cavab.");
                 updateScoreboard();
+                nextQuestion();
             } else {
-                alert("Sorry, that's not correct. Please try again.");
+                alert("Üzr istəyirik, yanlış cavab. Zəhmət olmasa yenidən cəhd edin.");
+            }
+        }
+
+        function nextQuestion() {
+            // Növbəti suala keçid
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= questions.length) {
+                // Təqdim olunan sualların hamısını cavabladıqdan sonra, oyun bitir
+                alert("Oyun bitdi! Təşəkkürlər.");
+            } else {
+                // Növbəti sualı göstər
+                showQuestion();
+                document.getElementById("user-answer").value = ""; // Cavab sahəsini təmizlə
             }
         }
 
         function updateScoreboard() {
-            var username = prompt("Please enter your username:");
+            var username = prompt("Zəhmət olmasa istifadəçi adınızı daxil edin:");
+            var userIP = "127.0.0.1"; // İstifadəçinin IP ünvanını əldə etmək üçün kompleks metotlar əlavə edə bilərsiniz
 
-            // Get user IP address (This is a simplified example and may not work in all cases)
-            var userIP = "127.0.0.1"; // For demonstration purposes only, replace with actual IP address retrieval code
-
-            // Update scores array with username, score, and IP address
+            // Skorlar massivinə istifadəçi adı, skor və IP ünvanını əlavə edin
             scores.push({ username: username, score: scores.length + 1, ip: userIP });
 
-            // Sort scores array by score in descending order
+            // Skorları silinməmiş skorlara görə sıralayın
             scores.sort((a, b) => b.score - a.score);
 
-            // Display top 10 scores in scoreboard
+            // Skorları cədvəldə göstərin
             var scoreboard = document.getElementById("scores");
-            scoreboard.innerHTML = ""; // Clear previous scores
+            scoreboard.innerHTML = ""; // Əvvəlki skorları təmizləyin
 
             for (var i = 0; i < Math.min(scores.length, 10); i++) {
                 var scoreItem = document.createElement("li");
                 scoreItem.textContent = scores[i].username + " - " + scores[i].score;
                 scoreboard.appendChild(scoreItem);
-  
+            }
+        }
+    </script>
+</body>
+</html>
