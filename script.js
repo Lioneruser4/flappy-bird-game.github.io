@@ -1,47 +1,99 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const slots = ["🍒", "🍋", "🍊", "🍉", "🍇", "🍓"];
-    const slot1 = document.getElementById("slot1");
-    const slot2 = document.getElementById("slot2");
-    const slot3 = document.getElementById("slot3");
-    const spinButton = document.getElementById("spin-button");
-    const message = document.getElementById("message");
-    const scoresList = document.getElementById("scores");
+let scene, camera, renderer;
+let slotMeshes = [];
+const fruits = ["🍒", "🍋", "🍊", "🍉", "🍇", "🍓"];
+let username = localStorage.getItem("username");
+let scores = JSON.parse(localStorage.getItem("scores")) || [];
 
-    let username = localStorage.getItem("username");
+if (!username) {
+    username = prompt("Lütfen kullanıcı adınızı girin:");
+    localStorage.setItem("username", username);
+}
 
-    if (!username) {
-        username = prompt("Lütfen kullanıcı adınızı girin:");
-        localStorage.setItem("username", username);
+function init() {
+    // Scene
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
+
+    // Camera
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    // Renderer
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Lights
+    const light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(10, 10, 10);
+    scene.add(light);
+
+    // Slot Machine
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+    for (let i = 0; i < 3; i++) {
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.x = i * 1.5 - 1.5;
+        scene.add(mesh);
+        slotMeshes.push(mesh);
     }
 
-    function updateScores() {
-        const scores = JSON.parse(localStorage.getItem("scores")) || [];
-        scoresList.innerHTML = scores.map(score => `<li>${score.username}: ${score.score}</li>`).join("");
-    }
+    // Event Listener
+    document.getElementById("spin-button").addEventListener("click", spinSlots);
 
-    function addScore(username, score) {
-        const scores = JSON.parse(localStorage.getItem("scores")) || [];
-        scores.push({ username, score });
-        localStorage.setItem("scores", JSON.stringify(scores));
-        updateScores();
-    }
+    // Update Scores
+    updateScores();
+}
 
-    spinButton.addEventListener("click", () => {
-        const result1 = slots[Math.floor(Math.random() * slots.length)];
-        const result2 = slots[Math.floor(Math.random() * slots.length)];
-        const result3 = slots[Math.floor(Math.random() * slots.length)];
+function spinSlots() {
+    const results = [];
+    slotMeshes.forEach((mesh, index) => {
+        const fruitIndex = Math.floor(Math.random() * fruits.length);
+        mesh.userData.fruit = fruits[fruitIndex];
+        results.push(fruits[fruitIndex]);
 
-        slot1.textContent = result1;
-        slot2.textContent = result2;
-        slot3.textContent = result3;
-
-        if (result1 === result2 && result2 === result3) {
-            message.textContent = "Kazandınız! Skorunuz 100!";
-            addScore(username, 100);
-        } else {
-            message.textContent = "Kaybettiniz. Tekrar deneyin!";
-        }
+        // Rotate the slot
+        const rotation = Math.random() * Math.PI * 2;
+        mesh.rotation.y += rotation;
     });
 
+    setTimeout(() => {
+        checkWin(results);
+    }, 1000);
+}
+
+function checkWin(results) {
+    const message = document.getElementById("message");
+    if (results[0] === results[1] && results[1] === results[2]) {
+        message.textContent = "Kazandınız! Skorunuz 100!";
+        addScore(username, 100);
+    } else {
+        message.textContent = "Kaybettiniz. Tekrar deneyin!";
+    }
+}
+
+function addScore(username, score) {
+    scores.push({ username, score });
+    localStorage.setItem("scores", JSON.stringify(scores));
     updateScores();
+}
+
+function updateScores() {
+    const scoresList = document.getElementById("scores");
+    scoresList.innerHTML = scores.map(score => `<li>${score.username}: ${score.score}</li>`).join("");
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+init();
+animate();
