@@ -24,31 +24,36 @@
             height: 100%;
         }
         .button {
-            display: block;
-            width: 100%;
-            padding: 10px;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 20px;
             font-size: 16px;
-            text-align: center;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            margin-bottom: 20px;
+            z-index: 999;
         }
     </style>
 </head>
 <body>
 
 <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
+    <iframe id="youtubeVideo" width="560" height="315" src="https://www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
 </div>
 
-<button class="button" onclick="openYouTube()">YouTube'a Git</button>
+<button class="button" onclick="copyVideoLink()">Video Linkini Kopyala</button>
 
 <script>
-    function openYouTube() {
-        window.location.href = "https://www.youtube.com";
+    function copyVideoLink() {
+        var videoLink = document.getElementById("youtubeVideo").src;
+        navigator.clipboard.writeText(videoLink).then(function() {
+            alert("Video linki kopyalandı: " + videoLink);
+        }, function() {
+            alert("Video linki kopyalanırken bir hata oluştu.");
+        });
     }
 </script>
 
