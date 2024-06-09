@@ -34,27 +34,21 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
 <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/" frameborder="0" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
 </div>
 
-<button class="button" onclick="copyVideoLink()">Kopyala</button>
+<button class="button" onclick="openYouTube()">YouTube'a Git</button>
 
 <script>
-    function copyVideoLink() {
-        var videoLink = window.location.href;
-        var tempInput = document.createElement("input");
-        tempInput.value = videoLink;
-        document.body.appendChild(tempInput);
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
-        alert("Video linki kopyalandı: " + videoLink);
+    function openYouTube() {
+        window.location.href = "https://www.youtube.com";
     }
 </script>
 
