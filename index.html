@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulmaca Oyunu</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-size: 20px;
+            padding: 20px;
+        }
+        #game-container {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Bulmaca Oyunu</h1>
@@ -23,8 +34,8 @@
 
     <script>
         var scores = [];
+        var username;
 
-        // Azerice sorular ve cevapları
         var questions = [
             { question: "Bir həftədə neçə gün var?", answer: "7" },
             { question: "Mavi rəngin qarşısında gələn rəng nədir?", answer: "sarı" },
@@ -34,7 +45,6 @@
 
         var currentQuestionIndex = 0;
 
-        // Başlangıcdakı sualı göstər
         showQuestion();
 
         function showQuestion() {
@@ -55,31 +65,27 @@
         }
 
         function nextQuestion() {
-            // Növbəti suala keçid
             currentQuestionIndex++;
             if (currentQuestionIndex >= questions.length) {
-                // Təqdim olunan sualların hamısını cavabladıqdan sonra, oyun bitir
                 alert("Oyun bitdi! Təşəkkürlər.");
             } else {
-                // Növbəti sualı göstər
                 showQuestion();
-                document.getElementById("user-answer").value = ""; // Cavab sahəsini təmizlə
+                document.getElementById("user-answer").value = "";
             }
         }
 
         function updateScoreboard() {
-            var username = prompt("Zəhmət olmasa istifadəçi adınızı daxil edin:");
+            if (!username) {
+                username = prompt("Zəhmət olmasa istifadəçi adınızı daxil edin:");
+            }
             var userIP = "127.0.0.1"; // İstifadəçinin IP ünvanını əldə etmək üçün kompleks metotlar əlavə edə bilərsiniz
 
-            // Skorlar massivinə istifadəçi adı, skor və IP ünvanını əlavə edin
             scores.push({ username: username, score: scores.length + 1, ip: userIP });
 
-            // Skorları silinməmiş skorlara görə sıralayın
             scores.sort((a, b) => b.score - a.score);
 
-            // Skorları cədvəldə göstərin
             var scoreboard = document.getElementById("scores");
-            scoreboard.innerHTML = ""; // Əvvəlki skorları təmizləyin
+            scoreboard.innerHTML = "";
 
             for (var i = 0; i < Math.min(scores.length, 10); i++) {
                 var scoreItem = document.createElement("li");
