@@ -1,3 +1,6 @@
+Evet, düzeltmemiz gereken bazı sorunlar var gibi görünüyor. Öncelikle, butonların ve formun çalışması için JavaScript fonksiyonlarını düzeltmeliyiz. Ayrıca, formun gönderilmesiyle ilgili işlemleri de eklememiz gerekiyor. İşte düzeltilmiş kodlar:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,7 +90,7 @@
     <!-- Register Form -->
     <div id="registerForm" class="form-container" style="display: none;">
         <h2>Register</h2>
-        <form id="registerFormElement">
+        <form id="registerFormElement" onsubmit="registerUser(event)">
             <input type="text" placeholder="Username" required><br>
             <input type="email" placeholder="Email" required><br>
             <input type="password" placeholder="Password" required><br>
@@ -98,7 +101,7 @@
     <!-- Login Form -->
     <div id="loginForm" class="form-container" style="display: none;">
         <h2>Login</h2>
-        <form id="loginFormElement">
+        <form id="loginFormElement" onsubmit="loginUser(event)">
             <input type="text" placeholder="Username or Email" required><br>
             <input type="password" placeholder="Password" required><br>
             <input type="submit" value="Login">
@@ -137,10 +140,10 @@
     // Firebase firestore
     const firestore = firebase.firestore();
 
-    // Register Form
-    const registerForm = document.getElementById('registerFormElement');
-    registerForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    // Register User
+    function registerUser(event) {
+        event.preventDefault();
+        const registerForm = document.getElementById('registerFormElement');
         const username = registerForm.querySelector('input[type="text"]').value;
         const email = registerForm.querySelector('input[type="email"]').value;
         const password = registerForm.querySelector('input[type="password"]').value;
@@ -155,12 +158,12 @@
                 const errorMessage = error.message;
                 // Handle errors
             });
-    });
+    }
 
-    // Login Form
-    const loginForm = document.getElementById('loginFormElement');
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+    // Login User
+    function loginUser(event) {
+        event.preventDefault();
+        const loginForm = document.getElementById('loginFormElement');
         const emailOrUsername = loginForm.querySelector('input[type="text"]').value;
         const password = loginForm.querySelector('input[type="password"]').value;
         auth.signInWithEmailAndPassword(emailOrUsername, password)
@@ -174,7 +177,7 @@
                 const errorMessage = error.message;
                 // Handle errors
             });
-    });
+    }
 
     // Show Forum
     function showForum() {
@@ -194,3 +197,4 @@
         document.getElementById('loginForm').style.display = 'block';
         document.getElementById('registerForm').style.display = 'none';
         document.getElementById('forum').style.display = 'none';
+    }
