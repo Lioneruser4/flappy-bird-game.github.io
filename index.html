@@ -1,47 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flappy Bird</title>
-  <style>
-    canvas {
-      border: 1px solid black;
-    }
-  </style>
-</head>
-<body>
-  <canvas id="gameCanvas" width="400" height="400"></canvas>
-  <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
+<html>
 
-    let birdY = 200;
-    let gravity = 0.5;
-    let velocity = 0;
+  <head>
+    <title>Kişisel Blog</title>
+    <meta charset="UTF-8">
 
-    function drawBird() {
-      ctx.beginPath();
-      ctx.arc(50, birdY, 10, 0, Math.PI * 2);
-      ctx.fillStyle = "blue";
-      ctx.fill();
-      ctx.closePath();
-    }
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Righteous" rel="stylesheet">
 
-    function update() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawBird();
-      velocity += gravity;
-      birdY += velocity;
+  </head>
 
-      requestAnimationFrame(update);
-    }
+  <body>
 
-    canvas.addEventListener("click", () => {
-      velocity = -10;
-    });
+    <div class="container">
+      <div class="wrapper">
 
-    update();
-  </script>
-</body>
+        <div class="menu">
+
+          <!-- Sol Menü -->
+          <div class="sol-menu left">
+
+            <a href="index.html">GÜRKAN ŞEN</a>
+
+          </div> <!-- Sol menü bitiş -->
+
+
+
+          <!-- Arama Kutusu -->
+          <form action="" class="arama-formu left">
+
+            <input type="text" name="ara" class="arama" placeholder="Arama yap..">
+
+          </form> <!-- Arama bitiş -->
+
+
+          <!-- Sağ Menü -->
+          <div class="sag-menu right">
+
+            <a href="index.html">Ana Sayfa</a>
+            <a href="iletisim.html">İletişim</a>
+            <a href="index.html">Hakkımda</a>
+
+          </div> <!-- Sağ menü bitiş -->
+
+        </div><!-- Menü bitiş-->
+
+        <div class="kapak">
+
+          <div class="profil-resmi">
+            <img src="https://pbs.twimg.com/profile_images/708037743599874048/FgiS8VxX_400x400.jpg" alt="">
+          </div>
+
+        </div>
+
+        <h1 class="baslik">Gürkan Şen</h1>
+
+        <div class="icerik">
+
+          <div class="sol-kolon left susleme">
+
+          </div>
+
+
+          <div class="sag-kolon right susleme">
+
+
+          </div>
+
+          <div style="clear:both"></div>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+      </div><!-- Wrapper bitiş-->
+    </div><!-- Container bitiş-->
+
+  </body>
+
 </html>
