@@ -9,11 +9,14 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f1f1f1;
         }
         .button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
             padding: 10px 20px;
             font-size: 16px;
             background-color: #4CAF50;
@@ -21,33 +24,21 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            z-index: 999;
-        }
-        .youtube-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: calc(100vh - 60px);
-        }
-        .youtube-container img {
-            max-width: 80%;
-            height: auto;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-<div class="youtube-container">
-    <a href="https://www.youtube.com" target="_blank">
-        <img src="https://www.youtube.com/img/desktop/yt_1200.png" alt="YouTube">
-    </a>
-</div>
+<a href="https://www.youtube.com" target="_blank">
+    <img src="https://www.youtube.com/img/desktop/yt_1200.png" alt="YouTube" width="400">
+</a>
 
-<button class="button" onclick="copyPageLink()">Linki Kopyala</button>
+<button class="button" onclick="copyPageLink()">Bağlantıyı Kopyala</button>
 
 <script>
     function copyPageLink() {
-        var pageLink = window.location.href;
+        var pageLink = "https://www.youtube.com";
         navigator.clipboard.writeText(pageLink).then(function() {
             alert("Sayfa linki kopyalandı: " + pageLink);
         }, function() {
