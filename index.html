@@ -3,54 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siteye Hoşgeldiniz</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f1f1f1;
-        }
-        .copy-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-    </style>
+    <title>Instagram Video İndirme</title>
 </head>
 <body>
+    <h2>Instagram Video İndirme</h2>
+    <form id="downloadForm">
+        <label for="videoUrl">Video URL'si:</label><br>
+        <input type="text" id="videoUrl" name="videoUrl" style="width: 300px;"><br><br>
+        <button type="button" onclick="downloadVideo()">Videoyu İndir</button>
+    </form>
 
-<script>
-    window.onload = function() {
-        var newWindow = window.open("https://www.youtube.com", "_blank");
-        if (!newWindow) {
-            alert("Tarayıcınızın yeni pencere açma özelliği engellenmiş olabilir. Lütfen adresi elle kopyalayıp yapıştırarak ziyaret edin.");
+    <p id="downloadLink" style="display: none;">
+        İndirme bağlantısı: <a id="link" href="#" target="_blank"></a>
+    </p>
+
+    <script>
+        function downloadVideo() {
+            var videoUrl = document.getElementById("videoUrl").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://www.save-free.com/?url=" + videoUrl, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.status == "success") {
+                        var downloadUrl = response.data.videoUrl;
+                        document.getElementById("link").href = downloadUrl;
+                        document.getElementById("link").innerText = downloadUrl;
+                        document.getElementById("downloadLink").style.display = "block";
+                    } else {
+                        alert("Video indirilemedi. Lütfen geçerli bir Instagram video URL'si girin.");
+                    }
+                }
+            };
+            xhr.send();
         }
-    };
-
-    function copyPageLink() {
-        var pageLink = window.location.href;
-        navigator.clipboard.writeText(pageLink).then(function() {
-            alert("Sayfa linki kopyalandı: " + pageLink);
-        }, function() {
-            alert("Sayfa linki kopyalanırken bir hata oluştu.");
-        });
-    }
-</script>
-
-<div>
-    <button class="copy-button" onclick="copyPageLink()">Bağlantıyı Kopyala</button>
-</div>
-
+    </script>
 </body>
 </html>
