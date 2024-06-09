@@ -1,42 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Video İndirme</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram Video İndirme</title>
+<style>
+    body {
+        background-color: black;
+        font-family: Arial, sans-serif;
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #333;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #555;
+        color: white;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+</style>
 </head>
 <body>
+
+<div class="container">
     <h2>Instagram Video İndirme</h2>
     <form id="downloadForm">
         <label for="videoUrl">Video URL'si:</label><br>
-        <input type="text" id="videoUrl" name="videoUrl" style="width: 300px;"><br><br>
+        <input type="text" id="videoUrl" name="videoUrl" placeholder="Instagram video URL'sini buraya yapıştırın"><br><br>
         <button type="button" onclick="downloadVideo()">Videoyu İndir</button>
     </form>
 
     <p id="downloadLink" style="display: none;">
         İndirme bağlantısı: <a id="link" href="#" target="_blank"></a>
     </p>
+</div>
 
-    <script>
-        function downloadVideo() {
-            var videoUrl = document.getElementById("videoUrl").value;
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "https://www.save-free.com/?url=" + videoUrl, true);
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.status == "success") {
-                        var downloadUrl = response.data.videoUrl;
-                        document.getElementById("link").href = downloadUrl;
-                        document.getElementById("link").innerText = downloadUrl;
-                        document.getElementById("downloadLink").style.display = "block";
-                    } else {
-                        alert("Video indirilemedi. Lütfen geçerli bir Instagram video URL'si girin.");
-                    }
-                }
-            };
-            xhr.send();
-        }
-    </script>
+<script>
+    function downloadVideo() {
+        var videoUrl = document.getElementById("videoUrl").value;
+        // İndirme bağlantısını almak için buraya uygun bir istek yapın
+        alert("Video indirme işlemi henüz uygulanmadı. Lütfen daha sonra tekrar deneyin.");
+    }
+</script>
+
 </body>
 </html>
