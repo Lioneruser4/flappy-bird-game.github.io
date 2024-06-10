@@ -126,23 +126,4 @@
 
         function davetEt(davetEdilen) {
             alert("Davet gönderildi: " + davetEdilen);
-            // Davet edilen oyuncuyla X O oyununu başlatma işlemi buraya eklenebilir
-        }
-
-        function cellClick(index) {
-            if (!gameBoard[index]) {
-                gameBoard[index] = currentPlayer;
-                document.getElementById("result").innerHTML = "";
-                renderGameBoard();
-                checkWin();
-                currentPlayer = currentPlayer === "X" ? "O" : "X";
-            }
-        }
-
-        function renderGameBoard() {
-            cells.forEach(function(cell, index) {
-                cell.textContent = gameBoard[index];
-            });
-        }
-
-        function checkWin
+            // Davet edilen oyuncuyla X O oyununu başlatma işlemi
