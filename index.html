@@ -11,12 +11,18 @@
         <!-- YouTube video embed kodu -->
         <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
     </div>
+    <button onclick="openYouTube()">YouTube Aç</button>
     <button onclick="copyLink()">Bağlantıyı Kopyala</button>
 
     <script>
+        // YouTube'u açma işlevi
+        function openYouTube() {
+            window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+        }
+
         // Bağlantıyı kopyalama işlevi
         function copyLink() {
-            var copyText = "https://www.youtube.com/embed/dQw4w9WgXcQ";
+            var copyText = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
             navigator.clipboard.writeText(copyText).then(function() {
                 alert("Bağlantı kopyalandı: " + copyText);
             }, function() {
