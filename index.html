@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oyun ve Skor Tablosu</title>
+    <title>X O Oyunu ve Skor Tablosu</title>
     <style>
         body {
             background-color: black;
@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-    <h1>Oyun ve Skor Tablosu</h1>
+    <h1>X O Oyunu ve Skor Tablosu</h1>
     <input type="text" id="kullaniciAdi" placeholder="Kullanıcı Adı">
     <button onclick="oyunuBaslat()">Oyunu Başlat</button>
     <button onclick="goruntuleSkorTablosu()">Skor Tablosu</button>
@@ -82,6 +82,7 @@
 
             skorlar.push({ kullaniciAdi: kullaniciAdi, skor: skor });
             guncelleSkorTablosu();
+            olusturLinkButon(kullaniciAdi);
         }
 
         function goruntuleSkorTablosu() {
@@ -97,6 +98,16 @@
                 skorTablosuHTML += "</tr>";
             }
             document.getElementById("skorlar").innerHTML = skorTablosuHTML;
+        }
+
+        function olusturLinkButon(kullaniciAdi) {
+            var linkButonHTML = '<button onclick="oynaOnline(\'' + kullaniciAdi + '\')">Online Oyna (' + kullaniciAdi + ')</button>';
+            document.body.innerHTML += linkButonHTML;
+        }
+
+        function oynaOnline(rakipKullaniciAdi) {
+            alert("Oyunu " + rakipKullaniciAdi + " ile birlikte oyna!");
+            // Oyunun online versiyonunu başlatma işlemi buraya eklenebilir
         }
     </script>
 </body>
