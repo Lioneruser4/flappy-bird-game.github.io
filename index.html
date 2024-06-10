@@ -30,6 +30,25 @@
             cursor: pointer;
         }
 
+        #oyun-alan {
+            display: none;
+        }
+
+        #oyun-alan .cell {
+            background-color: #ccc;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 24px;
+            display: inline-block;
+            margin: 2px;
+            cursor: pointer;
+        }
+
+        #oyun-alan .cell:hover {
+            background-color: #ddd;
+        }
+
         #result {
             font-size: 24px;
             margin-top: 20px;
@@ -59,11 +78,27 @@
         <input type="text" id="kullaniciAdi" placeholder="Kullanıcı Adı">
         <button onclick="kullaniciGiris()">Giriş Yap</button>
     </div>
+    <div id="oyun-alan">
+        <h2>Oyun Alanı</h2>
+        <div class="cell" onclick="cellClick(0)"></div>
+        <div class="cell" onclick="cellClick(1)"></div>
+        <div class="cell" onclick="cellClick(2)"></div><br>
+        <div class="cell" onclick="cellClick(3)"></div>
+        <div class="cell" onclick="cellClick(4)"></div>
+        <div class="cell" onclick="cellClick(5)"></div><br>
+        <div class="cell" onclick="cellClick(6)"></div>
+        <div class="cell" onclick="cellClick(7)"></div>
+        <div class="cell" onclick="cellClick(8)"></div>
+    </div>
     <div id="result"></div>
 
     <script>
         var kullaniciAdi = "";
         var oyuncular = [];
+        var oyunAlanı = document.getElementById("oyun-alan");
+        var cells = document.querySelectorAll(".cell");
+        var currentPlayer = "X";
+        var gameBoard = ["", "", "", "", "", "", "", "", ""];
 
         function kullaniciGiris() {
             kullaniciAdi = document.getElementById("kullaniciAdi").value;
@@ -93,6 +128,21 @@
             alert("Davet gönderildi: " + davetEdilen);
             // Davet edilen oyuncuyla X O oyununu başlatma işlemi buraya eklenebilir
         }
-    </script>
-</body>
-</html>
+
+        function cellClick(index) {
+            if (!gameBoard[index]) {
+                gameBoard[index] = currentPlayer;
+                document.getElementById("result").innerHTML = "";
+                renderGameBoard();
+                checkWin();
+                currentPlayer = currentPlayer === "X" ? "O" : "X";
+            }
+        }
+
+        function renderGameBoard() {
+            cells.forEach(function(cell, index) {
+                cell.textContent = gameBoard[index];
+            });
+        }
+
+        function checkWin
