@@ -8,17 +8,20 @@
 </head>
 <body>
     <div class="container">
-        <div id="register-form">
-            <h2>Kayıt Ol</h2>
-            <input type="text" id="register-email" placeholder="E-posta">
-            <input type="password" id="register-password" placeholder="Şifre">
-            <button class="register-btn" onclick="register()">Kayıt Ol</button>
+        <div class="logo">
+            <img src="facebook-logo.png" alt="Facebook Logo">
         </div>
         <div id="login-form">
-            <h2>Giriş Yap</h2>
             <input type="text" id="login-email" placeholder="E-posta">
             <input type="password" id="login-password" placeholder="Şifre">
             <button class="login-btn" onclick="login()">Giriş Yap</button>
+            <p class="register-link">Hesabın yok mu? <a href="#" onclick="showRegisterForm()">Hemen Kaydol!</a></p>
+        </div>
+        <div id="register-form">
+            <input type="text" id="register-email" placeholder="E-posta">
+            <input type="password" id="register-password" placeholder="Şifre">
+            <button class="register-btn" onclick="register()">Kayıt Ol</button>
+            <p class="login-link">Zaten bir hesabın var mı? <a href="#" onclick="showLoginForm()">Giriş Yap</a></p>
         </div>
         <div id="profile">
             <h2>Profil</h2>
