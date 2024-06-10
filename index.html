@@ -3,111 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X O Oyunu ve Skor Tablosu</title>
+    <title>X O Oyunu</title>
     <style>
         body {
-            background-color: black;
-            color: white;
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 20px;
         }
-        
-        #skor-tablosu {
-            border-collapse: collapse;
-            width: 100%;
+
+        #online-oyuncular {
             margin-top: 20px;
         }
-        
-        #skor-tablosu th, #skor-tablosu td {
-            border: 1px solid white;
-            padding: 8px;
+
+        #online-oyuncular ul {
+            list-style-type: none;
+            padding: 0;
         }
-        
-        #skor-tablosu th {
-            background-color: #333;
+
+        #online-oyuncular ul li {
+            display: inline-block;
+            margin-right: 10px;
         }
-        
-        #skor-tablosu tr:nth-child(even) {
-            background-color: #555;
-        }
-        
-        #skor-tablosu tr:nth-child(odd) {
-            background-color: #777;
-        }
-        
-        input[type="text"] {
-            padding: 8px;
-            margin-top: 10px;
-            width: 200px;
-        }
-        
-        button {
-            padding: 10px 20px;
-            margin-top: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
+
+        #online-oyuncular ul li button {
+            padding: 5px 10px;
+            font-size: 16px;
             cursor: pointer;
         }
-        
-        button:hover {
-            background-color: #45a049;
+
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 18px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <h1>X O Oyunu ve Skor Tablosu</h1>
-    <input type="text" id="kullaniciAdi" placeholder="Kullanıcı Adı">
-    <button onclick="oyunuBaslat()">Oyunu Başlat</button>
-    <button onclick="goruntuleSkorTablosu()">Skor Tablosu</button>
-    <table id="skor-tablosu">
-        <thead>
-            <tr>
-                <th>Kullanıcı Adı</th>
-                <th>Skor</th>
-            </tr>
-        </thead>
-        <tbody id="skorlar">
-            <!-- Skorlar buraya eklenecek -->
-        </tbody>
-    </table>
+    <h1>X O Oyunu</h1>
+    <div id="online-oyuncular">
+        <h2>Online Oyuncular</h2>
+        <ul id="oyuncular-listesi"></ul>
+    </div>
+    <div id="giris-formu">
+        <h2>Giriş Yap</h2>
+        <input type="text" id="kullaniciAdi" placeholder="Kullanıcı Adı">
+        <button onclick="kullaniciGiris()">Giriş Yap</button>
+    </div>
+    <div id="result"></div>
 
     <script>
-        var skorlar = [];
+        var kullaniciAdi = "";
+        var oyuncular = [];
 
-        function oyunuBaslat() {
-            var kullaniciAdi = document.getElementById("kullaniciAdi").value;
-            var skor = Math.floor(Math.random() * 100); // Rastgele skor oluştur
-
-            skorlar.push({ kullaniciAdi: kullaniciAdi, skor: skor });
-            guncelleSkorTablosu();
-            olusturLinkButon(kullaniciAdi);
+        function kullaniciGiris() {
+            kullaniciAdi = document.getElementById("kullaniciAdi").value;
+            document.getElementById("giris-formu").style.display = "none";
+            document.getElementById("online-oyuncular").style.display = "block";
+            ekleOyuncuListesi(kullaniciAdi);
         }
 
-        function goruntuleSkorTablosu() {
-            guncelleSkorTablosu();
+        function ekleOyuncuListesi(kullaniciAdi) {
+            oyuncular.push(kullaniciAdi);
+            var oyuncularListesi = document.getElementById("oyuncular-listesi");
+            oyuncularListesi.innerHTML = "";
+            oyuncular.forEach(function(oyuncu) {
+                if (oyuncu !== kullaniciAdi) {
+                    var li = document.createElement("li");
+                    var button = document.createElement("button");
+                    button.textContent = "Davet Et";
+                    button.onclick = function() { davetEt(oyuncu); };
+                    li.textContent = oyuncu + " ";
+                    li.appendChild(button);
+                    oyuncularListesi.appendChild(li);
+                }
+            });
         }
 
-        function guncelleSkorTablosu() {
-            var skorTablosuHTML = "";
-            for (var i = 0; i < skorlar.length; i++) {
-                skorTablosuHTML += "<tr>";
-                skorTablosuHTML += "<td>" + skorlar[i].kullaniciAdi + "</td>";
-                skorTablosuHTML += "<td>" + skorlar[i].skor + "</td>";
-                skorTablosuHTML += "</tr>";
-            }
-            document.getElementById("skorlar").innerHTML = skorTablosuHTML;
-        }
-
-        function olusturLinkButon(kullaniciAdi) {
-            var linkButonHTML = '<button onclick="oynaOnline(\'' + kullaniciAdi + '\')">Online Oyna (' + kullaniciAdi + ')</button>';
-            document.body.innerHTML += linkButonHTML;
-        }
-
-        function oynaOnline(rakipKullaniciAdi) {
-            alert("Oyunu " + rakipKullaniciAdi + " ile birlikte oyna!");
-            // Oyunun online versiyonunu başlatma işlemi buraya eklenebilir
+        function davetEt(davetEdilen) {
+            alert("Davet gönderildi: " + davetEdilen);
+            // Davet edilen oyuncuyla X O oyununu başlatma işlemi buraya eklenebilir
         }
     </script>
 </body>
