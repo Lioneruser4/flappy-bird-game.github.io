@@ -3,12 +3,12 @@ body {
     background-color: #000;
     margin: 0;
     padding: 0;
+    color: #fff;
 }
 
 .container {
     max-width: 600px;
     margin: 50px auto;
-    background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -18,7 +18,7 @@ h2 {
     text-align: center;
 }
 
-input[type="text"], input[type="password"], textarea, button {
+input[type="text"], input[type="password"], button {
     display: block;
     width: 100%;
     margin-bottom: 10px;
@@ -26,34 +26,21 @@ input[type="text"], input[type="password"], textarea, button {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-}
-
-.register-btn {
-    background-color: #28a745;
+    background-color: #222;
     color: #fff;
-    border: none;
-    cursor: pointer;
-}
-
-.register-btn:hover {
-    background-color: #218838;
 }
 
 .login-btn {
-    background-color: #007bff;
+    background-color: #1877f2;
     color: #fff;
     border: none;
     cursor: pointer;
 }
 
 .login-btn:hover {
-    background-color: #0056b3;
+    background-color: #0e55a3;
 }
 
-#register-form, #profile {
+#profile {
     display: none;
-}
-
-#login-form {
-    display: block;
 }
