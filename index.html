@@ -62,24 +62,21 @@
             input.value = '';
         });
 
-        function appendMessage(sender, message) {
-            const messageElement = document.createElement('div');
-            messageElement.textContent = `${sender}: ${message}`;
-            chatbox.appendChild(messageElement);
-        }
-
         async function fetchResponse(message) {
-            const response = await fetch('https://api.example.com/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer YOUR_OPENAI_API_KEY'
-                },
-                body: JSON.stringify({ message })
-            });
-            const data = await response.json();
-            appendMessage('AI', data.response);
-        }
-    </script>
+    const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer YOUR_OPENAI_API_KEY'
+        },
+        body: JSON.stringify({
+            prompt: message,
+            max_tokens: 150
+        })
+    });
+    const data = await response.json();
+    appendMessage('AI', data.choices[0].text.trim());
+}
+</script>
 </body>
 </html>
