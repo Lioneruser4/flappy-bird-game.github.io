@@ -5,22 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Video İzle</title>
     <style>
-        .video-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-            overflow: hidden;
-        }
-        
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
         .button-container {
             text-align: center;
             margin-top: 10px;
@@ -34,15 +18,17 @@
     </style>
 </head>
 <body>
-    <div class="video-container">
-        <!-- YouTube video embed kodu -->
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
-    </div>
     <div class="button-container">
+        <button onclick="openYouTube()">YouTube'da Aç</button>
         <button onclick="copyLink()">Bağlantıyı Kopyala</button>
     </div>
 
     <script>
+        // YouTube'u açma işlevi
+        function openYouTube() {
+            window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank", "width=800,height=600");
+        }
+
         // Bağlantıyı kopyalama işlevi
         function copyLink() {
             var copyText = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
