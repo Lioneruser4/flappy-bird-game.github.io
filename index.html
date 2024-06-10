@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Ana Sayfa</title>
-    <script>
-        // Otomatik olarak YouTube ana sayfasına yönlendir
-        window.onload = function() {
-            window.location.href = "https://www.youtube.com/";
-        };
+    <title>YouTube Video İzle</title>
+</head>
+<body>
+    <h1>YouTube Video İzle</h1>
+    <div>
+        <!-- YouTube video embed kodu -->
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <button onclick="copyLink()">Bağlantıyı Kopyala</button>
 
+    <script>
         // Bağlantıyı kopyalama işlevi
         function copyLink() {
-            var copyText = "https://www.youtube.com/";
+            var copyText = "https://www.youtube.com/embed/dQw4w9WgXcQ";
             navigator.clipboard.writeText(copyText).then(function() {
                 alert("Bağlantı kopyalandı: " + copyText);
             }, function() {
@@ -20,10 +24,5 @@
             });
         }
     </script>
-</head>
-<body>
-    <h1>YouTube Ana Sayfa</h1>
-    <p>YouTube'nun ana sayfasına yönlendiriliyorsunuz. Eğer yönlendirilme gerçekleşmezse <a href="https://www.youtube.com/">buraya tıklayın</a>.</p>
-    <button onclick="copyLink()">Bağlantıyı Kopyala</button>
 </body>
 </html>
