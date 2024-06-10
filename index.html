@@ -3,41 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Video İzle</title>
+    <title>Oyun Skor Tablosu</title>
     <style>
-        .button-container {
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 10px;
+            padding: 20px;
         }
-
-        .button-container button {
+        
+        #skor-tablosu {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        #skor-tablosu th, #skor-tablosu td {
+            border: 1px solid white;
+            padding: 8px;
+        }
+        
+        #skor-tablosu th {
+            background-color: #333;
+        }
+        
+        #skor-tablosu tr:nth-child(even) {
+            background-color: #555;
+        }
+        
+        #skor-tablosu tr:nth-child(odd) {
+            background-color: #777;
+        }
+        
+        input[type="text"] {
+            padding: 8px;
+            margin-top: 10px;
+            width: 200px;
+        }
+        
+        button {
             padding: 10px 20px;
-            font-size: 18px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
             cursor: pointer;
         }
-
-        /* YouTube iframe */
-        #youtube-iframe {
-            width: 100%;
-            height: 50vh; /* Yarısı kadar ekran yüksekliği */
+        
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <iframe id="youtube-iframe" src="https://www.youtube.com" frameborder="0"></iframe>
-    <div class="button-container">
-        <button onclick="copyLink()">Bağlantıyı Kopyala</button>
-    </div>
+    <h1>Oyun Skor Tablosu</h1>
+    <input type="text" id="kullaniciAdi" placeholder="Kullanıcı Adı">
+    <button onclick="skorEkle()">Skor Ekle</button>
+    <table id="skor-tablosu">
+        <thead>
+            <tr>
+                <th>Kullanıcı Adı</th>
+                <th>Skor</th>
+            </tr>
+        </thead>
+        <tbody id="skorlar">
+            <!-- Skorlar buraya eklenecek -->
+        </tbody>
+    </table>
 
     <script>
-        // Bağlantıyı kopyalama işlevi
-        function copyLink() {
-            var copyText = window.location.href;
-            navigator.clipboard.writeText(copyText).then(function() {
-                alert("Bağlantı kopyalandı: " + copyText);
-            }, function() {
-                alert("Kopyalama işlemi başarısız!");
-            });
+        function skorEkle() {
+            var kullaniciAdi = document.getElementById("kullaniciAdi").value;
+            var skor = Math.floor(Math.random() * 100); // Rastgele skor oluştur
+            
+            // Yeni bir satır oluştur
+            var row = document.createElement("tr");
+            // Kullanıcı adı sütunu
+            var kullaniciAdiCell = document.createElement("td");
+            kullaniciAdiCell.textContent = kullaniciAdi;
+            // Skor sütunu
+            var skorCell = document.createElement("td");
+            skorCell.textContent = skor;
+            // Satıra sütunları ekle
+            row.appendChild(kullaniciAdiCell);
+            row.appendChild(skorCell);
+            // Skor tablosuna satırı ekle
+            document.getElementById("skorlar").appendChild(row);
         }
     </script>
 </body>
