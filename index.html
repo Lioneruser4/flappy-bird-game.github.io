@@ -15,18 +15,24 @@
             font-size: 18px;
             cursor: pointer;
         }
+
+        /* YouTube iframe */
+        #youtube-iframe {
+            width: 100%;
+            height: 50vh; /* Yarısı kadar ekran yüksekliği */
+        }
     </style>
 </head>
 <body>
-    <script>
-        // YouTube'u açma işlevi
-        window.onload = function() {
-            window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank", "width=800,height=600");
-        }
+    <iframe id="youtube-iframe" src="https://www.youtube.com" frameborder="0"></iframe>
+    <div class="button-container">
+        <button onclick="copyLink()">Bağlantıyı Kopyala</button>
+    </div>
 
+    <script>
         // Bağlantıyı kopyalama işlevi
         function copyLink() {
-            var copyText = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+            var copyText = window.location.href;
             navigator.clipboard.writeText(copyText).then(function() {
                 alert("Bağlantı kopyalandı: " + copyText);
             }, function() {
@@ -34,9 +40,5 @@
             });
         }
     </script>
-
-    <div class="button-container">
-        <button onclick="copyLink()">Bağlantıyı Kopyala</button>
-    </div>
 </body>
 </html>
