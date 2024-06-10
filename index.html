@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Website</title>
+    <title>Ana Sayfa</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Hoş Geldiniz</h1>
         <div id="register-form">
             <h2>Kayıt Ol</h2>
             <input type="text" id="register-username" placeholder="Kullanıcı Adı">
             <input type="password" id="register-password" placeholder="Şifre">
-            <button onclick="register()">Kayıt Ol</button>
+            <button class="register-btn" onclick="register()">Kayıt Ol</button>
         </div>
         <div id="login-form">
             <h2>Giriş Yap</h2>
             <input type="text" id="login-username" placeholder="Kullanıcı Adı">
             <input type="password" id="login-password" placeholder="Şifre">
-            <button onclick="login()">Giriş Yap</button>
+            <button class="login-btn" onclick="login()">Giriş Yap</button>
         </div>
         <div id="profile">
             <h2>Profil</h2>
-            <p id="username"></p>
+            <textarea id="bio" placeholder="Biyografi"></textarea>
             <button onclick="logout()">Çıkış Yap</button>
         </div>
     </div>
