@@ -13,23 +13,37 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #000;
+            position: relative;
+            background: url('images/your-image.jpg') no-repeat center center fixed;
+            background-size: cover;
             color: #fff;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            filter: blur(10px);
+            z-index: -1;
         }
         #chat-container {
             width: 100%;
             max-width: 600px;
             height: 80%;
-            background-color: #333;
+            background-color: rgba(51, 51, 51, 0.8);
             display: flex;
             flex-direction: column;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1;
         }
         #chatbox {
             flex: 1;
             padding: 10px;
             overflow-y: auto;
-            background-color: #222;
+            background-color: rgba(34, 34, 34, 0.8);
             color: #fff;
             border-bottom: 1px solid #444;
         }
@@ -95,17 +109,27 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer sk-proj-kTX3wTQmYRo28pAJdyBsT3BlbkFJ0nduUMPH6knMmByXGsKs'
+                        'Authorization': `Bearer sk-proj-kTX3wTQmYRo28pAJdyBsT3BlbkFJ0nduUMPH6knMmByXGsKs`
                     },
                     body: JSON.stringify({
                         prompt: message,
                         max_tokens: 150
                     })
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const data = await response.json();
-                appendMessage('AI', data.choices[0].text.trim());
+                if (data.choices && data.choices.length > 0) {
+                    appendMessage('AI', data.choices[0].text.trim());
+                } else {
+                    appendMessage('AI', 'Sorry, there was no response from the AI.');
+                }
             } catch (error) {
-                appendMessage('AI', 'Sorry, there was an error.');
+                appendMessage('AI', `Sorry, there was an error: ${error.message}`);
+                console.error('Error:', error);
             }
         }
     </script>
