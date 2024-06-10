@@ -3,31 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Benzeri Profil</title>
+    <title>Site</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <div class="logo">
-            <img src="facebook-logo.png" alt="Facebook Logo">
+        <div class="buttons">
+            <button class="register-btn" onclick="showRegisterForm()">Kayıt Ol</button>
+            <button class="login-btn" onclick="showLoginForm()">Giriş Yap</button>
         </div>
-        <div id="login-form">
-            <input type="text" id="login-email" placeholder="E-posta">
-            <input type="password" id="login-password" placeholder="Şifre">
-            <button class="login-btn" onclick="login()">Giriş Yap</button>
-            <p class="register-link">Hesabın yok mu? <a href="#" onclick="showRegisterForm()">Hemen Kaydol!</a></p>
-        </div>
-        <div id="register-form">
+        <div id="register-form" class="form">
+            <h2>Kayıt Ol</h2>
             <input type="text" id="register-email" placeholder="E-posta">
             <input type="password" id="register-password" placeholder="Şifre">
-            <button class="register-btn" onclick="register()">Kayıt Ol</button>
-            <p class="login-link">Zaten bir hesabın var mı? <a href="#" onclick="showLoginForm()">Giriş Yap</a></p>
+            <button class="submit-btn" onclick="register()">Kayıt Ol</button>
         </div>
-        <div id="profile">
+        <div id="login-form" class="form">
+            <h2>Giriş Yap</h2>
+            <input type="text" id="login-email" placeholder="E-posta">
+            <input type="password" id="login-password" placeholder="Şifre">
+            <button class="submit-btn" onclick="login()">Giriş Yap</button>
+        </div>
+        <div id="profile" class="form">
             <h2>Profil</h2>
-            <p id="username">Kullanıcı Adı: John Doe</p>
-            <p id="email">E-posta: john@example.com</p>
-            <button onclick="logout()">Çıkış Yap</button>
+            <textarea id="tweet" placeholder="Bir şeyler paylaş..."></textarea>
+            <button class="submit-btn" onclick="tweet()">Paylaş</button>
         </div>
     </div>
     <script src="script.js"></script>
