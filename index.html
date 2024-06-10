@@ -3,33 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>YouTube Ana Sayfa</title>
+    <script>
+        // Otomatik olarak YouTube ana sayfasına yönlendir
+        window.onload = function() {
+            window.location.href = "https://www.youtube.com/";
+        };
+
+        // Bağlantıyı kopyalama işlevi
+        function copyLink() {
+            var copyText = "https://www.youtube.com/";
+            navigator.clipboard.writeText(copyText).then(function() {
+                alert("Bağlantı kopyalandı: " + copyText);
+            }, function() {
+                alert("Kopyalama işlemi başarısız!");
+            });
+        }
+    </script>
 </head>
 <body>
-    <div class="container">
-        <div class="buttons">
-            <button class="register-btn" onclick="showRegisterForm()">Kayıt Ol</button>
-            <button class="login-btn" onclick="showLoginForm()">Giriş Yap</button>
-        </div>
-        <div id="register-form" class="form">
-            <h2>Kayıt Ol</h2>
-            <input type="text" id="register-email" placeholder="E-posta">
-            <input type="password" id="register-password" placeholder="Şifre">
-            <button class="submit-btn" onclick="register()">Kayıt Ol</button>
-        </div>
-        <div id="login-form" class="form">
-            <h2>Giriş Yap</h2>
-            <input type="text" id="login-email" placeholder="E-posta">
-            <input type="password" id="login-password" placeholder="Şifre">
-            <button class="submit-btn" onclick="login()">Giriş Yap</button>
-        </div>
-        <div id="profile" class="form">
-            <h2>Profil</h2>
-            <textarea id="tweet" placeholder="Bir şeyler paylaş..."></textarea>
-            <button class="submit-btn" onclick="tweet()">Paylaş</button>
-        </div>
-    </div>
-    <script src="script.js"></script>
+    <h1>YouTube Ana Sayfa</h1>
+    <p>YouTube'nun ana sayfasına yönlendiriliyorsunuz. Eğer yönlendirilme gerçekleşmezse <a href="https://www.youtube.com/">buraya tıklayın</a>.</p>
+    <button onclick="copyLink()">Bağlantıyı Kopyala</button>
 </body>
 </html>
