@@ -1,9 +1,9 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #000;
+    background-color: #fff;
     margin: 0;
     padding: 0;
-    color: #fff;
+    color: #000;
 }
 
 .container {
@@ -26,21 +26,23 @@ input[type="text"], input[type="password"], button {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    background-color: #222;
-    color: #fff;
 }
 
-.login-btn {
-    background-color: #1877f2;
+.register-btn, .login-btn {
+    background-color: #3b5998;
     color: #fff;
     border: none;
     cursor: pointer;
 }
 
-.login-btn:hover {
-    background-color: #0e55a3;
+.register-btn:hover, .login-btn:hover {
+    background-color: #2d4373;
 }
 
-#profile {
+#register-form, #profile {
     display: none;
+}
+
+#login-form {
+    display: block;
 }
