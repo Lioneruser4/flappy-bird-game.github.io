@@ -18,14 +18,9 @@
     </style>
 </head>
 <body>
-    <div class="button-container">
-        <button onclick="openYouTube()">YouTube'da Aç</button>
-        <button onclick="copyLink()">Bağlantıyı Kopyala</button>
-    </div>
-
     <script>
         // YouTube'u açma işlevi
-        function openYouTube() {
+        window.onload = function() {
             window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank", "width=800,height=600");
         }
 
@@ -39,5 +34,9 @@
             });
         }
     </script>
+
+    <div class="button-container">
+        <button onclick="copyLink()">Bağlantıyı Kopyala</button>
+    </div>
 </body>
 </html>
