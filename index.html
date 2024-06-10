@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oyun Skor Tablosu</title>
+    <title>Oyun ve Skor Tablosu</title>
     <style>
         body {
             background-color: black;
@@ -57,9 +57,10 @@
     </style>
 </head>
 <body>
-    <h1>Oyun Skor Tablosu</h1>
+    <h1>Oyun ve Skor Tablosu</h1>
     <input type="text" id="kullaniciAdi" placeholder="Kullanıcı Adı">
-    <button onclick="skorEkle()">Skor Ekle</button>
+    <button onclick="oyunuBaslat()">Oyunu Başlat</button>
+    <button onclick="goruntuleSkorTablosu()">Skor Tablosu</button>
     <table id="skor-tablosu">
         <thead>
             <tr>
@@ -73,23 +74,29 @@
     </table>
 
     <script>
-        function skorEkle() {
+        var skorlar = [];
+
+        function oyunuBaslat() {
             var kullaniciAdi = document.getElementById("kullaniciAdi").value;
             var skor = Math.floor(Math.random() * 100); // Rastgele skor oluştur
-            
-            // Yeni bir satır oluştur
-            var row = document.createElement("tr");
-            // Kullanıcı adı sütunu
-            var kullaniciAdiCell = document.createElement("td");
-            kullaniciAdiCell.textContent = kullaniciAdi;
-            // Skor sütunu
-            var skorCell = document.createElement("td");
-            skorCell.textContent = skor;
-            // Satıra sütunları ekle
-            row.appendChild(kullaniciAdiCell);
-            row.appendChild(skorCell);
-            // Skor tablosuna satırı ekle
-            document.getElementById("skorlar").appendChild(row);
+
+            skorlar.push({ kullaniciAdi: kullaniciAdi, skor: skor });
+            guncelleSkorTablosu();
+        }
+
+        function goruntuleSkorTablosu() {
+            guncelleSkorTablosu();
+        }
+
+        function guncelleSkorTablosu() {
+            var skorTablosuHTML = "";
+            for (var i = 0; i < skorlar.length; i++) {
+                skorTablosuHTML += "<tr>";
+                skorTablosuHTML += "<td>" + skorlar[i].kullaniciAdi + "</td>";
+                skorTablosuHTML += "<td>" + skorlar[i].skor + "</td>";
+                skorTablosuHTML += "</tr>";
+            }
+            document.getElementById("skorlar").innerHTML = skorTablosuHTML;
         }
     </script>
 </body>
