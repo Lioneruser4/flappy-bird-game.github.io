@@ -3,98 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Özel Sohbet</title>
+    <title>Crypto Prices</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
-
-        #kullanici-listesi {
-            text-align: left;
-            margin-left: 20px;
-            float: left;
-            width: 30%;
-            border-right: 1px solid #ccc;
-        }
-
-        #sohbet-alani {
-            float: left;
-            width: 60%;
-            padding-left: 20px;
-        }
-
-        #mesajlar {
-            height: 300px;
-            overflow-y: scroll;
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"] {
-            padding: 8px;
-            font-size: 18px;
-            width: 70%;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
+        .crypto-price {
+            margin: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Özel Sohbet</h1>
-    <div id="kullanici-listesi">
-        <h2>Online Kullanıcılar</h2>
-        <ul id="online-kullanicilar"></ul>
+    <h1>Crypto Prices</h1>
+    <div id="prices">
+        Loading prices...
     </div>
-    <div id="sohbet-alani">
-        <h2>Sohbet</h2>
-        <div id="mesajlar"></div>
-        <input type="text" id="mesaj" placeholder="Mesajınızı yazın...">
-        <button onclick="gonderMesaj()">Gönder</button>
-    </div>
-
     <script>
-        var kullaniciAdi = prompt("Lütfen kullanıcı adınızı girin:");
-        var onlineKullanicilar = [];
-
-        // Kullanıcı adını gönder
-        socket.emit("kullanici_giris", kullaniciAdi);
-
-        // Kullanıcı listesi güncelleme
-        socket.on("online_kullanicilar", function(kullanicilar) {
-            onlineKullanicilar = kullanicilar;
-            guncelleKullaniciListesi();
-        });
-
-        // Mesajları al
-        socket.on("mesaj_al", function(mesaj) {
-            var mesajlarDiv = document.getElementById("mesajlar");
-            mesajlarDiv.innerHTML += "<p><strong>" + mesaj.gonderen + ":</strong> " + mesaj.icerik + "</p>";
-            mesajlarDiv.scrollTop = mesajlarDiv.scrollHeight;
-        });
-
-        // Kullanıcı listesini güncelle
-        function guncelleKullaniciListesi() {
-            var onlineKullanicilarListesi = document.getElementById("online-kullanicilar");
-            onlineKullanicilarListesi.innerHTML = "";
-            onlineKullanicilar.forEach(function(kullanici) {
-                var li = document.createElement("li");
-                li.textContent = kullanici;
-                onlineKullanicilarListesi.appendChild(li);
-            });
+        async function fetchPrices() {
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
+            const data = await response.json();
+            document.getElementById('prices').innerHTML = `
+                <div class="crypto-price">Bitcoin: $${data.bitcoin.usd}</div>
+                <div class="crypto-price">Ethereum: $${data.ethereum.usd}</div>
+            `;
         }
-
-        // Mesajı gönder
-        function gonderMesaj() {
-            var mesaj = document.getElementById("mesaj").value;
-            socket.emit("mesaj_gonder", { gonderen: kullaniciAdi, icerik: mesaj });
-            document.getElementById("mesaj").value = "";
-        }
+        fetchPrices();
     </script>
 </body>
 </html>
