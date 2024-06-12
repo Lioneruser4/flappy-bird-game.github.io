@@ -28,4 +28,18 @@ server.on('connection', (socket) => {
         broadcast(JSON.stringify({ type: 'update', data: players }));
     });
 
-    socket.on(
+    socket.on('close', () => {
+        players = players.filter(p => p.id !== socket);
+        broadcast(JSON.stringify({ type: 'update', data: players }));
+    });
+});
+
+function broadcast(message) {
+    server.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(message);
+        }
+    });
+}
+
+console.log('WebSocket server is running on ws://localhost:8080');
