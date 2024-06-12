@@ -4,7 +4,7 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const socket = new WebSocket('ws://localhost:8080');
+const socket = new WebSocket('ws://YOUR_SERVER_IP:8080'); // YOUR_SERVER_IP adresini sunucu adresinizle değiştirin
 
 let player = {};
 let players = [];
