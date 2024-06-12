@@ -28,16 +28,4 @@ server.on('connection', (socket) => {
         broadcast(JSON.stringify({ type: 'update', data: players }));
     });
 
-    socket.on('close', () => {
-        players = players.filter(p => p.id !== socket);
-        broadcast(JSON.stringify({ type: 'update', data: players }));
-    });
-});
-
-function broadcast(message) {
-    server.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(message);
-        }
-    });
-}
+    socket.on(
