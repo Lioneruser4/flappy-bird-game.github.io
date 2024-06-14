@@ -4,54 +4,46 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const socket = new WebSocket('ws://YOUR_SERVER_IP:8080'); // YOUR_SERVER_IP adresini sunucu adresinizle değiştirin
-
-let player = {};
-let players = [];
-
-socket.onmessage = (event) => {
-    const message = JSON.parse(event.data);
-    
-    if (message.type === 'init') {
-        player = message.data;
-    } else if (message.type === 'update') {
-        players = message.data;
+const bird = {
+    x: 50,
+    y: 50,
+    size: 20,
+    gravity: 0.5,
+    lift: -15,
+    velocity: 0,
+    show: function() {
+        ctx.fillStyle = 'yellow';
+        ctx.fillRect(this.x, this.y, this.size, this.size);
+    },
+    up: function() {
+        this.velocity += this.lift;
+    },
+    update: function() {
+        this.velocity += this.gravity;
+        this.velocity *= 0.9;
+        this.y += this.velocity;
+        
+        if (this.y > canvas.height - this.size) {
+            this.y = canvas.height - this.size;
+            this.velocity = 0;
+        }
+        
+        if (this.y < 0) {
+            this.y = 0;
+            this.velocity = 0;
+        }
     }
 };
 
-document.addEventListener('keydown', (event) => {
-    switch (event.key) {
-        case 'ArrowUp':
-            player.y -= 5;
-            break;
-        case 'ArrowDown':
-            player.y += 5;
-            break;
-        case 'ArrowLeft':
-            player.x -= 5;
-            break;
-        case 'ArrowRight':
-            player.x += 5;
-            break;
-    }
-
-    socket.send(JSON.stringify({ type: 'move', x: player.x, y: player.y }));
+window.addEventListener('click', () => {
+    bird.up();
 });
 
-function drawPlayers() {
-    players.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.fill();
-        ctx.closePath();
-    });
-}
-
-function update() {
+function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPlayers();
-    requestAnimationFrame(update);
+    bird.show();
+    bird.update();
+    requestAnimationFrame(draw);
 }
 
-update();
+draw();
