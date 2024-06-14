@@ -4,6 +4,12 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+const birdImg = new Image();
+birdImg.src = 'images/bird.png';
+
+const backgroundImg = new Image();
+backgroundImg.src = 'images/background.png';
+
 const bird = {
     x: 50,
     y: 50,
@@ -12,8 +18,7 @@ const bird = {
     lift: -15,
     velocity: 0,
     show: function() {
-        ctx.fillStyle = 'yellow';
-        ctx.fillRect(this.x, this.y, this.size, this.size);
+        ctx.drawImage(birdImg, this.x, this.y, this.size, this.size);
     },
     up: function() {
         this.velocity += this.lift;
@@ -40,7 +45,7 @@ window.addEventListener('click', () => {
 });
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
     bird.show();
     bird.update();
     requestAnimationFrame(draw);
