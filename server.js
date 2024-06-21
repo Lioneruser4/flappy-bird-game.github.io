@@ -1,67 +1,58 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+
 const app = express();
-app.use(bodyParser.json());
-
-const TELEGRAM_BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN';
-const GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN';
-const REPO_OWNER = 'YOUR_GITHUB_USERNAME';
-const REPO_NAME = 'YOUR_REPO_NAME';
-
-app.post('/auth', async (req, res) => {
-    const { telegramUserId } = req.body;
-    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users/${telegramUserId}.json`;
-
-    let userData;
-    try {
-        const response = await axios.get(url, {
-            headers: {
-                Authorization: `token ${GITHUB_TOKEN}`
-            }
-        });
-        userData = Buffer.from(response.data.content, 'base64').toString('utf-8');
-    } catch (error) {
-        if (error.response.status === 404) {
-            userData = JSON.stringify({ score: 0, coins: 0 });
-            await axios.put(url, {
-                message: `Create user ${telegramUserId}`,
-                content: Buffer.from(userData).toString('base64')
-            }, {
-                headers: {
-                    Authorization: `token ${GITHUB_TOKEN}`
-                }
-            });
-        } else {
-            return res.status(500).send('Error fetching user data');
-        }
-    }
-
-    res.send(userData);
-});
-
-app.post('/update-score', async (req, res) => {
-    const { telegramUserId, score, coins } = req.body;
-    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/users/${telegramUserId}.json`;
-
-    const userData = JSON.stringify({ score, coins });
-    try {
-        await axios.put(url, {
-            message: `Update user ${telegramUserId}`,
-            content: Buffer.from(userData).toString('base64')
-        }, {
-            headers: {
-                Authorization: `token ${GITHUB_TOKEN}`
-            }
-        });
-    } catch (error) {
-        return res.status(500).send('Error updating user data');
-    }
-
-    res.send('User data updated');
-});
-
 const PORT = process.env.PORT || 3000;
+
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+const dataPath = path.join(__dirname, 'data', 'users.json');
+
+// Kullanıcı verilerini yükleme
+const loadUserData = () => {
+    if (!fs.existsSync(dataPath)) {
+        fs.writeFileSync(dataPath, JSON.stringify({}));
+    }
+    const data = fs.readFileSync(dataPath);
+    return JSON.parse(data);
+};
+
+// Kullanıcı verilerini kaydetme
+const saveUserData = (data) => {
+    fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+};
+
+// Kullanıcıyı doğrulama ve veri sağlama
+app.post('/auth', (req, res) => {
+    const { telegramUserId } = req.body;
+    let users = loadUserData();
+
+    if (!users[telegramUserId]) {
+        users[telegramUserId] = { score: 0, coins: 0 };
+        saveUserData(users);
+    }
+
+    res.send(users[telegramUserId]);
+});
+
+// Skor güncelleme
+app.post('/update-score', (req, res) => {
+    const { telegramUserId, score, coins } = req.body;
+    let users = loadUserData();
+
+    if (users[telegramUserId]) {
+        users[telegramUserId].score = score;
+        users[telegramUserId].coins = coins;
+        saveUserData(users);
+        res.send('User data updated');
+    } else {
+        res.status(404).send('User not found');
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
