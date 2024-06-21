@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,5 +11,29 @@
         <canvas id="game-canvas"></canvas>
     </div>
     <script src="game.js"></script>
+    <script>
+        // URL'den Telegram kullanıcı kimliğini al
+        const urlParams = new URLSearchParams(window.location.search);
+        const telegramUserId = urlParams.get('userId');
+
+        async function authenticateUser() {
+            const response = await fetch('/auth', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ telegramUserId })
+            });
+
+            const userData = await response.json();
+            console.log('Authenticated user data:', userData);
+        }
+
+        if (telegramUserId) {
+            authenticateUser();
+        } else {
+            alert('Kullanıcı kimliği bulunamadı. Lütfen Telegram üzerinden giriş yapın.');
+        }
+    </script>
 </body>
 </html>
