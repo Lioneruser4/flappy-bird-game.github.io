@@ -1,39 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coin Collector Game</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+<html>
+  <head>
+<script src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+  </head>
 <body>
-    <div id="game-container">
-        <canvas id="game-canvas"></canvas>
-    </div>
-    <script src="game.js"></script>
-    <script>
-        // URL'den Telegram kullanıcı kimliğini al
-        const urlParams = new URLSearchParams(window.location.search);
-        const telegramUserId = urlParams.get('userId');
-
-        async function authenticateUser() {
-            const response = await fetch('/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ telegramUserId })
-            });
-
-            const userData = await response.json();
-            console.log('Authenticated user data:', userData);
-        }
-
-        if (telegramUserId) {
-            authenticateUser();
-        } else {
-            alert('Kullanıcı kimliği bulunamadı. Lütfen Telegram üzerinden giriş yapın.');
-        }
-    </script>
+  <p>
+    <a href="javascript: window.location.href=window.location;">Tekrar</a>
+  </p>
+  <div id="snake-oyunu">
+  </div>
 </body>
 </html>
