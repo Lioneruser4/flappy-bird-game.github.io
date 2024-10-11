@@ -7,12 +7,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Şans Oyunu!</h1>
-    <div id="game-container">
-        <button id="spin-button">Çarkı Çevir</button>
+    <div class="game-container">
+        <h1>Top Şans Oyunu</h1>
+        <p>Bir renk seçin ve topun deliğe düşmesini bekleyin!</p>
+        <div id="color-picker">
+            <button class="color-button" data-color="red" style="background-color: red;"></button>
+            <button class="color-button" data-color="blue" style="background-color: blue;"></button>
+            <button class="color-button" data-color="green" style="background-color: green;"></button>
+        </div>
+        <div id="game-board">
+            <canvas id="gameCanvas"></canvas>
+        </div>
         <div id="result"></div>
     </div>
-
     <script src="game.js"></script>
 </body>
 </html>
