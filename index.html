@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobil Oyun - Engelli Parkur</title>
+    <title>Sonsuz Koşu Oyunu</title>
     <style>
         body {
             margin: 0;
@@ -13,56 +13,20 @@
         canvas {
             display: block;
             margin: auto;
-            background-color: white;
+            background-color: lightblue;
         }
-        #winnerMessage {
-            color: yellow;
+        #score {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2em;
-            display: none;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
-    <div id="winnerMessage">Kazanan Sensin!</div>
-    <script src="game.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobil Oyun - Engelli Parkur</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: black;
-        }
-        canvas {
-            display: block;
-            margin: auto;
-            background-color: white;
-        }
-        #winnerMessage {
-            color: yellow;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2em;
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <canvas id="gameCanvas"></canvas>
-    <div id="winnerMessage">Kazanan Sensin!</div>
-    <script src="game.js"></script>
+    <div id="score">Skor: 0</div>
+    <script src="runnerGame.js"></script>
 </body>
 </html>
