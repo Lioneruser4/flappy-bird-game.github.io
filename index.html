@@ -3,30 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sonsuz Koşu Oyunu</title>
+    <title>Korku Oyunu</title>
     <style>
         body {
-            margin: 0;
-            overflow: hidden;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             background-color: black;
         }
-        canvas {
-            display: block;
-            margin: auto;
-            background-color: lightblue;
+
+        .button-container {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
         }
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+
+        button {
+            width: 100%;
+            height: 100%;
+            background-color: darkred;
             color: white;
-            font-size: 24px;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: crimson;
+        }
+
+        #scary-video {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        #scary-video video {
+            width: 80vw;
+            height: 60vh;
+            border: 5px solid white;
+        }
+
+        #close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            z-index: 20;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    <div id="score">Skor: 0</div>
-    <script src="runnerGame.js"></script>
+
+<div id="button-container">
+    <!-- Butonlar buraya JavaScript ile eklenecek -->
+</div>
+
+<!-- Korku videosu -->
+<div id="scary-video">
+    <video controls>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Tarayıcınız video etiketini desteklemiyor.
+    </video>
+</div>
+
+<button id="close-btn">Kapat</button>
+
+<script src="scaryGame.js"></script>
 </body>
 </html>
