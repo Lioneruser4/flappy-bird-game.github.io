@@ -1,25 +1,68 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Şans Oyunu</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Mobil Oyun - Engelli Parkur</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+        }
+        canvas {
+            display: block;
+            margin: auto;
+            background-color: white;
+        }
+        #winnerMessage {
+            color: yellow;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <div class="game-container">
-        <h1>Top Şans Oyunu</h1>
-        <p>Bir renk seçin ve topun deliğe düşmesini bekleyin!</p>
-        <div id="color-picker">
-            <button class="color-button" data-color="red" style="background-color: red;"></button>
-            <button class="color-button" data-color="blue" style="background-color: blue;"></button>
-            <button class="color-button" data-color="green" style="background-color: green;"></button>
-        </div>
-        <div id="game-board">
-            <canvas id="gameCanvas"></canvas>
-        </div>
-        <div id="result"></div>
-    </div>
+    <canvas id="gameCanvas"></canvas>
+    <div id="winnerMessage">Kazanan Sensin!</div>
+    <script src="game.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobil Oyun - Engelli Parkur</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+        }
+        canvas {
+            display: block;
+            margin: auto;
+            background-color: white;
+        }
+        #winnerMessage {
+            color: yellow;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div id="winnerMessage">Kazanan Sensin!</div>
     <script src="game.js"></script>
 </body>
 </html>
