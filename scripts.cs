@@ -1,6 +1,9 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
+document.getElementById("aviator-btn").addEventListener("click", startAviator);
+document.getElementById("slot-btn").addEventListener("click", startSlot);
+
 // Aviator Oyunu Başlat
 function startAviator() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
