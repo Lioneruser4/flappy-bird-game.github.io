@@ -3,166 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slot Machine Game</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #003265;
-            color: white;
-        }
-
-        #slot-machine {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 50px;
-        }
-
-        .slot {
-            width: 100px;
-            height: 100px;
-            background-color: #428cdc;
-            margin: 10px;
-            font-size: 2em;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #084992;
-            border: none;
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #428cdc;
-        }
-    </style>
+    <title>3D Slot Machine Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Slot Machine Game</h1>
+    <h1>3D Slot Machine Game</h1>
 
     <div id="slot-machine">
         <div class="slot" id="slot1">🍒</div>
-        <div class="slot" id="slot2">🍒</div>
-        <div class="slot" id="slot3">🍒</div>
+        <div class="slot" id="slot2">🍋</div>
+        <div class="slot" id="slot3">🔔</div>
     </div>
 
     <button onclick="spin()">Spin</button>
 
     <h2 id="result"></h2>
 
-    <script>
-        function spin() {
-            const symbols = ['🍒', '🍋', '🍊', '🍉', '⭐', '🔔'];
-            const slot1 = document.getElementById('slot1');
-            const slot2 = document.getElementById('slot2');
-            const slot3 = document.getElementById('slot3');
-            const result = document.getElementById('result');
-
-            slot1.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-            slot2.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-            slot3.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-
-            if (slot1.innerText === slot2.innerText && slot2.innerText === slot3.innerText) {
-                result.innerText = "🎉 You Win! 🎉";
-            } else {
-                result.innerText = "Try Again!";
-            }
-        }
-    </script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slot Machine Game</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #003265;
-            color: white;
-        }
-
-        #slot-machine {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 50px;
-        }
-
-        .slot {
-            width: 100px;
-            height: 100px;
-            background-color: #428cdc;
-            margin: 10px;
-            font-size: 2em;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #084992;
-            border: none;
-            color: white;
-            font-size: 1em;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #428cdc;
-        }
-    </style>
-</head>
-<body>
-
-    <h1>Slot Machine Game</h1>
-
-    <div id="slot-machine">
-        <div class="slot" id="slot1">🍒</div>
-        <div class="slot" id="slot2">🍒</div>
-        <div class="slot" id="slot3">🍒</div>
-    </div>
-
-    <button onclick="spin()">Spin</button>
-
-    <h2 id="result"></h2>
-
-    <script>
-        function spin() {
-            const symbols = ['🍒', '🍋', '🍊', '🍉', '⭐', '🔔'];
-            const slot1 = document.getElementById('slot1');
-            const slot2 = document.getElementById('slot2');
-            const slot3 = document.getElementById('slot3');
-            const result = document.getElementById('result');
-
-            slot1.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-            slot2.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-            slot3.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-
-            if (slot1.innerText === slot2.innerText && slot2.innerText === slot3.innerText) {
-                result.innerText = "🎉 You Win! 🎉";
-            } else {
-                result.innerText = "Try Again!";
-            }
-        }
-    </script>
+    <script src="game.js"></script>
 
 </body>
 </html>
