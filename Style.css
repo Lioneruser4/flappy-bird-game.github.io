@@ -1,10 +1,60 @@
 body {
-    text-align: center;
     font-family: Arial, sans-serif;
-    background-color: #fff;
+    text-align: center;
+    background-color: #003265;
+    color: white;
+    perspective: 1000px; /* 3D efekti için perspektif ekliyoruz */
 }
 
-canvas {
-    background-color: #f0f0f0;
-    border: 2px solid #000;
+#slot-machine {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    transform-style: preserve-3d; /* 3D görünümü etkinleştir */
+    transition: transform 1s ease-in-out;
+}
+
+.slot {
+    width: 100px;
+    height: 100px;
+    background-color: #428cdc;
+    margin: 10px;
+    font-size: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Derinlik efekti */
+    transform: rotateX(0deg); /* 3D dönüşler için başlangıç ayarı */
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #084992;
+    border: none;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+
+button:hover {
+    background-color: #428cdc;
+}
+
+/* 3D dönüş animasyonları */
+.spin-animation {
+    animation: spin 1s cubic-bezier(0.5, 0.5, 0.5, 0.5) infinite;
+}
+
+/* 3D dönüş animasyonu tanımlaması */
+@keyframes spin {
+    0% {
+        transform: rotateX(0deg);
+    }
+    100% {
+        transform: rotateX(360deg);
+    }
 }
