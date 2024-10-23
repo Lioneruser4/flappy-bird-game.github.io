@@ -1,31 +1,31 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+function spin() {
+    const symbols = ['🍒', '🍋', '🍊', '🍉', '⭐', '🔔'];
+    const slot1 = document.getElementById('slot1');
+    const slot2 = document.getElementById('slot2');
+    const slot3 = document.getElementById('slot3');
+    const result = document.getElementById('result');
 
-let plane = {
-    x: canvas.width / 2,
-    y: canvas.height - 50,
-    width: 50,
-    height: 50,
-    dx: 5
-};
+    // 3D dönüş efektini başlat
+    slot1.classList.add('spin-animation');
+    slot2.classList.add('spin-animation');
+    slot3.classList.add('spin-animation');
 
-let planeImg = new Image();
-planeImg.src = 'https://www.google.com/search?q=plane+png&client=ms-android-xiaomi-terr1-rso2&sca_esv=0ba5b4315e0bd468&udm=2&biw=360&bih=729&ei=XUAWZ9m5F8jEwPAPjI_doQw&oq=plane+png&gs_lp=EhNtb2JpbGUtZ3dzLXdpei1zZXJwIglwbGFuZSBwbmcyBRAAGIAEMgUQABiABDIEEAAYHjIEEAAYHjIEEAAYHkjMDVBCWJUMcAF4AJABAZgB3gSgAZcTqgEHMi0zLjUtM7gBA8gBAPgBAZgCBKACuQaYAwCSBwcxLjAuMi4xoAe_Dw&sclient=mobile-gws-wiz-serp#vhid=VITCw9LjJ45iKM&vssid=mosaic';  // Burada təyyarənin şəklini qoymalısınız
+    // Animasyonu bir süre sonra durdurmak için
+    setTimeout(() => {
+        slot1.classList.remove('spin-animation');
+        slot2.classList.remove('spin-animation');
+        slot3.classList.remove('spin-animation');
 
-function drawPlane() {
-    ctx.drawImage(planeImg, plane.x, plane.y, plane.width, plane.height);
+        // Rastgele semboller seç
+        slot1.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        slot2.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        slot3.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+
+        // Sonucu kontrol et
+        if (slot1.innerText === slot2.innerText && slot2.innerText === slot3.innerText) {
+            result.innerText = "🎉 You Win! 🎉";
+        } else {
+            result.innerText = "Try Again!";
+        }
+    }, 1000); // 1 saniye sonra animasyonu durdur ve sonuçları göster
 }
-
-function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPlane();
-    plane.x += plane.dx;
-
-    if (plane.x + plane.width > canvas.width || plane.x < 0) {
-        plane.dx *= -1;
-    }
-
-    requestAnimationFrame(update);
-}
-
-update();
