@@ -13,15 +13,12 @@ body {
 }
 
 .reel {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Slotları sınırlamak için */
     width: 100px;
     height: 100px;
-    background-color: #428cdc;
-    margin: 10px;
+    overflow: hidden; /* Slotların dışına taşmasını önlemek için */
+    border: 3px solid #428cdc;
+    margin: 0 10px;
     border-radius: 10px;
-    position: relative;
 }
 
 .slot {
@@ -31,17 +28,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+}
+
+.spin-animation {
     animation: spin 1s linear infinite;
 }
 
-/* Animasyonu hızlandırıp yavaşlatacağız */
+/* Animasyon sırasında slotların yukarıdan aşağıya kaymasını sağlıyoruz */
 @keyframes spin {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(-300%);
-    }
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-500%); } /* Çarktaki tüm slotları döndürüyoruz */
 }
 
 button {
