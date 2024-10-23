@@ -1,32 +1,37 @@
 function spin() {
-    const symbols = ['🍒', '🍋', '🍊', '🍉', '⭐', '🔔'];
+    const reels = ['reel1', 'reel2', 'reel3'];
+    const symbols = ['🍒', '🍋', '🍉', '🔔', '⭐'];
     const result = document.getElementById('result');
-    
-    const slot1 = document.getElementById('slot1');
-    const slot2 = document.getElementById('slot2');
-    const slot3 = document.getElementById('slot3');
 
-    // Slotların rastgele sembolleri döndürmesi için rastgele animasyon süreleri belirliyoruz
-    let duration1 = Math.random() * 2000 + 1000;
-    let duration2 = Math.random() * 2000 + 1000;
-    let duration3 = Math.random() * 2000 + 1000;
+    // Her bir çarkın animasyonunu başlatıyoruz
+    reels.forEach((reel, index) => {
+        const reelElement = document.getElementById(reel);
+        reelElement.classList.add('spin-animation');
+    });
 
-    // Slotları döndürürken animasyon sürelerini uyguluyoruz
-    slot1.style.animation = `spin ${duration1 / 1000}s ease-out`;
-    slot2.style.animation = `spin ${duration2 / 1000}s ease-out`;
-    slot3.style.animation = `spin ${duration3 / 1000}s ease-out`;
-
+    // 2 saniye sonra animasyonu durdurup rastgele bir sembol seçiyoruz
     setTimeout(() => {
-        // Slotların duracağı sembolleri belirliyoruz
-        slot1.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-        slot2.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-        slot3.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        reels.forEach((reel, index) => {
+            const reelElement = document.getElementById(reel);
+            reelElement.classList.remove('spin-animation');
 
-        // Sonuçları kontrol ediyoruz
-        if (slot1.innerText === slot2.innerText && slot2.innerText === slot3.innerText) {
+            // Rastgele sembol seç ve çarkı bu sembolde durdur
+            const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+
+            // İlk sembolü (ilk div) güncelliyoruz
+            reelElement.children[0].innerText = randomSymbol;
+        });
+
+        // Sonuçları kontrol et
+        const slot1 = document.getElementById('reel1').children[0].innerText;
+        const slot2 = document.getElementById('reel2').children[0].innerText;
+        const slot3 = document.getElementById('reel3').children[0].innerText;
+
+        if (slot1 === slot2 && slot2 === slot3) {
             result.innerText = "🎉 You Win! 🎉";
         } else {
             result.innerText = "Try Again!";
         }
-    }, Math.max(duration1, duration2, duration3)); // En uzun sürede durmasını bekliyoruz
+
+    }, 2000); // 2 saniyelik animasyon süresi
 }
