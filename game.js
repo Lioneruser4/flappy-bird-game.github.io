@@ -1,50 +1,38 @@
-let scene, camera, renderer, wheel;
-const names = ["Ali", "Beyza", "Cem", "Deniz", "Ece", "Furkan", "Gizem"];
-let spinning = false;
-let spinVelocity = 0;
-
-function init() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.getElementById('container').appendChild(renderer.domElement);
-
-    const geometry = new THREE.CylinderGeometry(5, 5, 1, 7);
-    const material = new THREE.MeshBasicMaterial({ color: 0x0077ff, wireframe: true });
-    wheel = new THREE.Mesh(geometry, material);
-    scene.add(wheel);
-
-    camera.position.z = 10;
-
-    animate();
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-
-    if (spinning) {
-        wheel.rotation.y += spinVelocity;
-        spinVelocity *= 0.99;
-        if (spinVelocity < 0.01) {
-            spinning = false;
-            determineWinner();
-        }
-    }
-
-    renderer.render(scene, camera);
-}
+const emojis = ["⭐", "⭐", "⭐"];
+let probability = 0.7;  // Kazanma ihtimali
+const reels = [document.getElementById("reel1"), document.getElementById("reel2"), document.getElementById("reel3")];
 
 function spin() {
-    spinning = true;
-    spinVelocity = Math.random() * 0.2 + 0.05;
+    document.getElementById("result").innerText = "";
+
+    for (let i = 0; i < 3; i++) {
+        reels[i].style.transform = "rotate(360deg)";
+    }
+
+    setTimeout(() => {
+        let results = [];
+        for (let i = 0; i < 3; i++) {
+            if (Math.random() < probability) {
+                results.push(emojis[Math.floor(Math.random() * emojis.length)]);
+            } else {
+                results.push(emojis[Math.floor(Math.random() * emojis.length)]);
+            }
+        }
+
+        for (let i = 0; i < 3; i++) {
+            reels[i].innerText = results[i];
+            reels[i].style.transform = "rotate(0deg)";
+        }
+
+        checkJackpot(results);
+    }, 500);
 }
 
-function determineWinner() {
-    const segmentAngle = (2 * Math.PI) / names.length;
-    const angle = wheel.rotation.y % (2 * Math.PI);
-    const index = Math.floor(angle / segmentAngle);
-    document.getElementById("winner").innerText = names[index];
+function checkJackpot(results) {
+    const resultText = document.getElementById("result");
+    if (results[0] === results[1] && results[1] === results[2]) {
+        resultText.innerText = "Kazandınız!";
+    } else {
+        resultText.innerText = "Tekrar deneyin!";
+    }
 }
-
-init();
