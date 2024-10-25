@@ -1,37 +1,50 @@
-function spin() {
-    const reels = ['reel1', 'reel2', 'reel3'];
-    const symbols = ['🍒', '🍋', '🍉', '🔔', '⭐'];
-    const result = document.getElementById('result');
+let scene, camera, renderer, wheel;
+const names = ["Ali", "Beyza", "Cem", "Deniz", "Ece", "Furkan", "Gizem"];
+let spinning = false;
+let spinVelocity = 0;
 
-    // Her bir çarkın animasyonunu başlatıyoruz
-    reels.forEach((reel, index) => {
-        const reelElement = document.getElementById(reel);
-        reelElement.classList.add('spin-animation');
-    });
+function init() {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('container').appendChild(renderer.domElement);
 
-    // 2 saniye sonra animasyonu durdurup rastgele bir sembol seçiyoruz
-    setTimeout(() => {
-        reels.forEach((reel, index) => {
-            const reelElement = document.getElementById(reel);
-            reelElement.classList.remove('spin-animation');
+    const geometry = new THREE.CylinderGeometry(5, 5, 1, 7);
+    const material = new THREE.MeshBasicMaterial({ color: 0x0077ff, wireframe: true });
+    wheel = new THREE.Mesh(geometry, material);
+    scene.add(wheel);
 
-            // Rastgele sembol seç ve çarkı bu sembolde durdur
-            const randomSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+    camera.position.z = 10;
 
-            // İlk sembolü (ilk div) güncelliyoruz
-            reelElement.children[0].innerText = randomSymbol;
-        });
-
-        // Sonuçları kontrol et
-        const slot1 = document.getElementById('reel1').children[0].innerText;
-        const slot2 = document.getElementById('reel2').children[0].innerText;
-        const slot3 = document.getElementById('reel3').children[0].innerText;
-
-        if (slot1 === slot2 && slot2 === slot3) {
-            result.innerText = "🎉 You Win! 🎉";
-        } else {
-            result.innerText = "Try Again!";
-        }
-
-    }, 2000); // 2 saniyelik animasyon süresi
+    animate();
 }
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    if (spinning) {
+        wheel.rotation.y += spinVelocity;
+        spinVelocity *= 0.99;
+        if (spinVelocity < 0.01) {
+            spinning = false;
+            determineWinner();
+        }
+    }
+
+    renderer.render(scene, camera);
+}
+
+function spin() {
+    spinning = true;
+    spinVelocity = Math.random() * 0.2 + 0.05;
+}
+
+function determineWinner() {
+    const segmentAngle = (2 * Math.PI) / names.length;
+    const angle = wheel.rotation.y % (2 * Math.PI);
+    const index = Math.floor(angle / segmentAngle);
+    document.getElementById("winner").innerText = names[index];
+}
+
+init();
