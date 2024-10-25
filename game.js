@@ -1,4 +1,4 @@
-const emojis = ["⭐", "⭐", "⭐"];
+const emojis = ["⭐", "🎁", "🍒", "⭐"];
 let probability = 0.7;  // Kazanma ihtimali
 const reels = [document.getElementById("reel1"), document.getElementById("reel2"), document.getElementById("reel3")];
 
