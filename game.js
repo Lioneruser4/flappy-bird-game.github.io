@@ -5,9 +5,10 @@ const reels = [document.getElementById("reel1"), document.getElementById("reel2"
 function spin() {
     document.getElementById("result").innerText = "";
 
-    for (let i = 0; i < 3; i++) {
-        reels[i].style.transform = "rotate(360deg)";
-    }
+    reels.forEach((reel, i) => {
+        reel.style.transition = "transform 1s ease-out";
+        reel.style.transform = `rotate(${360 * (i + 1)}deg)`;
+    });
 
     setTimeout(() => {
         let results = [];
@@ -25,7 +26,7 @@ function spin() {
         }
 
         checkJackpot(results);
-    }, 500);
+    }, 1000);
 }
 
 function checkJackpot(results) {
