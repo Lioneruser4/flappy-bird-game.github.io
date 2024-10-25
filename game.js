@@ -1,4 +1,4 @@
-const emojis = ["⭐", "🎁", "🍒", "⭐"];
+const emojis = ["⭐", "🪙", "⭐"];
 let probability = 0.7;  // Kazanma ihtimali
 const reels = [document.getElementById("reel1"), document.getElementById("reel2"), document.getElementById("reel3")];
 
@@ -7,7 +7,7 @@ function spin() {
 
     reels.forEach((reel, i) => {
         reel.style.transition = "transform 1s ease-out";
-        reel.style.transform = `rotate(${360 * (i + 1)}deg)`;
+        reel.style.transform = `translateY(${2000 + i * 2000}px)`;
     });
 
     setTimeout(() => {
@@ -22,7 +22,7 @@ function spin() {
 
         for (let i = 0; i < 3; i++) {
             reels[i].innerText = results[i];
-            reels[i].style.transform = "rotate(0deg)";
+            reels[i].style.transform = "translateY(0)";
         }
 
         checkJackpot(results);
