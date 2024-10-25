@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>7D Çark Oyunu</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <title>Slot Oyunu</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>7D Çark Oyunu</h1>
-    <div id="container"></div>
-    <button onclick="spin()">Döndür</button>
-    <p>Kazanan: <span id="winner"></span></p>
+    <h1>Slot Oyunu</h1>
+    <div class="slot-machine">
+        <div id="reel1" class="reel">⭐</div>
+        <div id="reel2" class="reel">⭐</div>
+        <div id="reel3" class="reel">⭐</div>
+    </div>
+    <button onclick="spin()">Çevir</button>
+    <p id="result"></p>
     <script src="game.js"></script>
 </body>
 </html>
