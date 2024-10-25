@@ -1,44 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slot Machine Game</title>
-    <link rel="stylesheet" href="style.css">
+    <title>7D Çark Oyunu</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-
-    <h1>Slot Machine Game</h1>
-
-    <div id="slot-machine">
-        <div class="reel" id="reel1">
-            <div class="slot">🍒</div>
-            <div class="slot">🍋</div>
-            <div class="slot">🍉</div>
-            <div class="slot">🔔</div>
-            <div class="slot">⭐</div>
-        </div>
-        <div class="reel" id="reel2">
-            <div class="slot">🍒</div>
-            <div class="slot">🍋</div>
-            <div class="slot">🍉</div>
-            <div class="slot">🔔</div>
-            <div class="slot">⭐</div>
-        </div>
-        <div class="reel" id="reel3">
-            <div class="slot">🍒</div>
-            <div class="slot">🍋</div>
-            <div class="slot">🍉</div>
-            <div class="slot">🔔</div>
-            <div class="slot">⭐</div>
-        </div>
-    </div>
-
-    <button onclick="spin()">Spin</button>
-
-    <h2 id="result"></h2>
-
+    <h1>7D Çark Oyunu</h1>
+    <div id="container"></div>
+    <button onclick="spin()">Döndür</button>
+    <p>Kazanan: <span id="winner"></span></p>
     <script src="game.js"></script>
-
 </body>
 </html>
