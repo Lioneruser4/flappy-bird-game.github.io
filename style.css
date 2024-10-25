@@ -10,17 +10,21 @@ body {
     margin: 20px;
 }
 
+.reel-container {
+    display: flex;
+}
+
 .reel {
-    font-size: 70px;
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
     margin: 0 10px;
-    width: 100px;
-    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     border: 2px solid #ccc;
     background-color: #fff;
-    transition: transform 0.5s;
+    transition: transform 1s;
 }
 
 button {
