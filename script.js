@@ -7,15 +7,27 @@ spinButton.addEventListener('click', () => {
     const reel2 = document.getElementById('reel2');
     const reel3 = document.getElementById('reel3');
 
-    const rand1 = fruits[Math.floor(Math.random() * fruits.length)];
-    const rand2 = fruits[Math.floor(Math.random() * fruits.length)];
-    const rand3 = fruits[Math.floor(Math.random() * fruits.length)];
+    // Döndürme animasyonunu başlat
+    reel1.style.transition = 'transform 0.5s ease-in-out';
+    reel2.style.transition = 'transform 0.5s ease-in-out';
+    reel3.style.transition = 'transform 0.5s ease-in-out';
 
-    reel1.textContent = rand1;
-    reel2.textContent = rand2;
-    reel3.textContent = rand3;
+    // Dönme işlemi için bir döngü oluştur
+    const rand1 = Math.floor(Math.random() * fruits.length);
+    const rand2 = Math.floor(Math.random() * fruits.length);
+    const rand3 = Math.floor(Math.random() * fruits.length);
 
-    checkResult(rand1, rand2, rand3);
+    // Dönme hareketini uygula
+    reel1.style.transform = `translateY(-100px)`;
+    reel2.style.transform = `translateY(-100px)`;
+    reel3.style.transform = `translateY(-100px)`;
+
+    setTimeout(() => {
+        reel1.textContent = fruits[rand1];
+        reel2.textContent = fruits[rand2];
+        reel3.textContent = fruits[rand3];
+        checkResult(fruits[rand1], fruits[rand2], fruits[rand3]);
+    }, 500); // Animasyon süresi ile aynı olmalı
 });
 
 function checkResult(r1, r2, r3) {
