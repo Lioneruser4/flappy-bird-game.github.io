@@ -1,18 +1,36 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.container {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.slot-machine {
+    display: flex;
+}
+
 .reel {
     width: 100px;
     height: 150px;
     border: 2px solid #333;
     margin: 0 5px;
     display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Meyvelerin üstten başlamasını sağla */
+    flex-direction: column; /* Dikey hizalama */
+    justify-content: flex-start; /* Üstten başlat */
     font-size: 30px;
     background-color: white;
     overflow: hidden; /* Dönme sırasında taşmaların görünmemesi için */
-    position: relative; /* Animasyon için konum ayarı */
+    position: relative;
 }
 
-.reel img {
-    position: absolute; /* Görsellerin konumunu ayarlamak için */
+.reel div {
     transition: transform 0.5s ease-in-out; /* Dönme animasyonu */
 }
