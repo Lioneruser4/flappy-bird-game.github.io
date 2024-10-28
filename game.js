@@ -10,7 +10,7 @@ function createNumbers() {
         numberElement.className = 'number';
         numberElement.innerText = numbers[i];
         const angle = (i * 360) / 37;
-        numberElement.style.transform = `rotate(${angle}deg) translate(130px) rotate(-${angle}deg)`;
+        numberElement.style.transform = `rotate(${angle}deg) translate(160px) rotate(-${angle}deg)`;
         wheel.appendChild(numberElement);
     }
 }
