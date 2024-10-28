@@ -1,14 +1,27 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f0f0f0;
+    background-color: #000;  /* Arka plan siyah */
+    color: #fff;  /* Yazılar beyaz */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin-bottom: 20px;
 }
 
 .roulette-wheel {
-    width: 300px;
-    height: 300px;
-    margin: 0 auto;
-    border: 10px solid #000;
+    width: 90vw;
+    height: 90vw;
+    max-width: 300px;
+    max-height: 300px;
+    border: 10px solid #fff;  /* Beyaz kenarlık */
     border-radius: 50%;
     position: relative;
 }
@@ -54,4 +67,20 @@ body {
     top: 142.5px;
     left: 142.5px;
     transition: top 4s ease-out, left 4s ease-out;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 18px;
 }
