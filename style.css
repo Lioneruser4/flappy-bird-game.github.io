@@ -1,8 +1,8 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #000;  /* Arka plan siyah */
-    color: #fff;  /* Yazılar beyaz */
+    background-color: #000;
+    color: #fff;
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -19,9 +19,9 @@ h1 {
 .roulette-wheel {
     width: 90vw;
     height: 90vw;
-    max-width: 300px;
-    max-height: 300px;
-    border: 10px solid #fff;  /* Beyaz kenarlık */
+    max-width: 400px;
+    max-height: 400px;
+    border: 10px solid #fff;
     border-radius: 50%;
     position: relative;
 }
@@ -64,9 +64,9 @@ h1 {
     border-radius: 50%;
     background-color: white;
     position: absolute;
-    top: 142.5px;
-    left: 142.5px;
-    transition: top 4s ease-out, left 4s ease-out;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 button {
@@ -78,6 +78,14 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+input {
+    margin-top: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 #result {
