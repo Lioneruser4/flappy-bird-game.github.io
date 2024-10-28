@@ -1,53 +1,26 @@
-let scene, camera, renderer;
-let symbols = [];
-let spinning = false;
 
-function init() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("slotCanvas") });
-    renderer.setSize(400, 300);
-    camera.position.z = 5;
+ var $inner = $('.inner'),
+     $spin = $('#spin'),
+     $reset = $('#reset'),
+     $data = $('.data'),
+     $mask = $('.mask'),
+     maskDefault = 'Place Your Bets',
+     timer = 9000;
 
-    // Meyve sembollerini ekleyin
-    const geometry = new THREE.BoxGeometry();
-    const fruits = ["🍒", "🍋", "🍉"];
-    fruits.forEach((fruit, index) => {
-        const material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
-        const symbol = new THREE.Mesh(geometry, material);
-        symbol.position.x = index - 1;
-        scene.add(symbol);
-        symbols.push(symbol);
-    });
+var red = [32,19,21,25,34,27,36,30,23,5,16,1,14,9,18,7,12,3];
 
-    animate();
-}
+$reset.hide();
 
-function animate() {
-    requestAnimationFrame(animate);
-    if (spinning) {
-        symbols.forEach((symbol) => {
-            symbol.rotation.x += 0.1;
-            symbol.rotation.y += 0.1;
-        });
-    }
-    renderer.render(scene, camera);
-}
+$mask.text(maskDefault);
 
-function spin() {
-    spinning = true;
-    setTimeout(() => {
-        spinning = false;
-        checkJackpot();
-    }, 2000);
-}
-
-function checkJackpot() {
-    if (Math.random() > 0.8) {
-        alert("Jackpot! 🍒🍒🍒");
-    } else {
-        alert("Şansını tekrar dene!");
-    }
-}
-
-window.onload = init;
+$spin.on('click',function(){
+  
+  // get a random number between 0 and 36 and apply it to the nth-child selector
+ var  randomNumber = Math.floor(Math.random() * 36),
+      color = null;
+      $inner.attr('data-spinto', randomNumber).find('li:nth-child('+ randomNumber +') input').prop('checked','checked');
+      // prevent repeated clicks on the spin button by hiding it
+       $(this).hide();
+      // disable the reset button until the ball has stopped spinning
+       $reset.addClass('disabled').prop('disabled','disabled').show();
+  
