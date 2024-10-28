@@ -1,24 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rulet Oyunu</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .container {
+      text-align: center;
+      max-width: 300px;
+      padding: 20px;
+      background-color: #222;
+      border-radius: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #f39c12;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #e67e22;
+    }
+  </style>
+</head>
+<body>
 
-@platesize:350px; // sets width and height
-@pitwidth:32px; // the width of each pit. 32 seems to work best
-@rotate:(360/@to)+0deg; // how far to rotate each slice depends on how many slices you have
+  <div class="container">
+    <h1>Rulet Oyunu</h1>
+    <p>1 ile 36 arasında bir sayı tahmin edin.</p>
+    <input type="number" id="betAmount" placeholder="Bahis miktarı" min="1" max="1000">
+    <input type="number" id="guess" placeholder="Sayı Tahmininiz" min="1" max="36">
+    <button onclick="playGame()">Bahsi Oyna</button>
+    <p id="result"></p>
+  </div>
 
-@rimsize:6px; // size of the bevelled rim edge
-@trim:gold; // or hex value
-@trimSecondary:silver; // or hex value
-@spinButton:green; // or hex value
-@resetButton:darkgreen; // or hex value
-
-@spins:8; // the number of laps the ball spins before resting
-
-@from: 1; 
-@to: 37; // number of slices (36 numbers plus zero)
-.loop(@index) when(@index < @to) {
-  .number:nth-child(@{index}) {
-   transform:rotateZ(@rotate*@index);
-  }
-  .loop(@index + 1);
-}
-.loop(@from);
-
-body{ 
+  <script src="script.js"></script>
+</body>
+</html>
