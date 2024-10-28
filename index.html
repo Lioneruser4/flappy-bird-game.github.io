@@ -2,14 +2,19 @@
 <html>
 <head>
     <title>Rulet Oyunu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
     <h1>Rulet Oyunu</h1>
     <div class="roulette-wheel">
         <div id="wheel"></div>
+        <div id="ball"></div>
     </div>
-    <button onclick="spin()">Çevir</button>
+    <div class="bet-container">
+        <input type="number" id="bet-number" placeholder="0-36 arası sayı seçin">
+        <button onclick="spin()">Çevir</button>
+    </div>
     <p id="result"></p>
     <script src="game.js"></script>
 </body>
