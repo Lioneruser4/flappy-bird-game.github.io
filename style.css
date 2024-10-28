@@ -18,46 +18,40 @@ body {
     height: 100%;
     border-radius: 50%;
     background: conic-gradient(
-        #ff0000 0 10deg,
-        #000000 10deg 20deg,
-        #ff0000 20deg 30deg,
-        #000000 30deg 40deg,
-        #ff0000 40deg 50deg,
-        #000000 50deg 60deg,
-        #ff0000 60deg 70deg,
-        #000000 70deg 80deg,
-        #ff0000 80deg 90deg,
-        #000000 90deg 100deg,
-        #ff0000 100deg 110deg,
-        #000000 110deg 120deg,
-        #ff0000 120deg 130deg,
-        #000000 130deg 140deg,
-        #ff0000 140deg 150deg,
-        #000000 150deg 160deg,
-        #ff0000 160deg 170deg,
-        #000000 170deg 180deg,
-        #ff0000 180deg 190deg,
-        #000000 190deg 200deg,
-        #ff0000 200deg 210deg,
-        #000000 210deg 220deg,
-        #ff0000 220deg 230deg,
-        #000000 230deg 240deg,
-        #ff0000 240deg 250deg,
-        #000000 250deg 260deg,
-        #ff0000 260deg 270deg,
-        #000000 270deg 280deg,
-        #ff0000 280deg 290deg,
-        #000000 290deg 300deg,
-        #ff0000 300deg 310deg,
-        #000000 310deg 320deg,
-        #ff0000 320deg 330deg,
-        #000000 330deg 340deg,
-        #ff0000 340deg 350deg,
-        #000000 350deg 360deg
+        #ff0000 0 10deg, #000000 10deg 20deg, #ff0000 20deg 30deg, #000000 30deg 40deg,
+        #ff0000 40deg 50deg, #000000 50deg 60deg, #ff0000 60deg 70deg, #000000 70deg 80deg,
+        #ff0000 80deg 90deg, #000000 90deg 100deg, #ff0000 100deg 110deg, #000000 110deg 120deg,
+        #ff0000 120deg 130deg, #000000 130deg 140deg, #ff0000 140deg 150deg, #000000 150deg 160deg,
+        #ff0000 160deg 170deg, #000000 170deg 180deg, #ff0000 180deg 190deg, #000000 190deg 200deg,
+        #ff0000 200deg 210deg, #000000 210deg 220deg, #ff0000 220deg 230deg, #000000 230deg 240deg,
+        #ff0000 240deg 250deg, #000000 250deg 260deg, #ff0000 260deg 270deg, #000000 270deg 280deg,
+        #ff0000 280deg 290deg, #000000 290deg 300deg, #ff0000 300deg 310deg, #000000 310deg 320deg,
+        #ff0000 320deg 330deg, #000000 330deg 340deg, #ff0000 340deg 350deg, #000000 350deg 360deg
     );
     position: absolute;
     top: 0;
     left: 0;
     transform: rotate(0deg);
     transition: transform 4s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.number {
+    position: absolute;
+    font-size: 16px;
+    color: white;
+    transform: rotate(-90deg);
+}
+
+#ball {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    top: 142.5px;
+    left: 142.5px;
+    transition: top 4s ease-out, left 4s ease-out;
 }
