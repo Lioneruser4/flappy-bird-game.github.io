@@ -1,51 +1,37 @@
-const numbers = [
-    32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24,
-    16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26, 0
-];
+var $inner = document.querySelector('.inner'),
+    $spin = document.getElementById('spin'),
+    $reset = document.getElementById('reset'),
+    $data = document.querySelector('.data'),
+    $mask = document.querySelector('.mask'),
+    maskDefault = 'Place Your Bets',
+    timer = 9000;
 
-function createNumbers() {
-    const wheel = document.getElementById('wheel');
-    for (let i = 0; i < 37; i++) {
-        const numberElement = document.createElement('div');
-        numberElement.className = 'number';
-        numberElement.innerText = numbers[i];
-        const angle = (i * 360) / 37;
-        numberElement.style.transform = `rotate(${angle}deg) translate(160px) rotate(-${angle}deg)`;
-        wheel.appendChild(numberElement);
-    }
-}
+var red = [32, 19, 21, 25, 34, 27, 36, 30, 23, 5, 16, 1, 14, 9, 18, 7, 12, 3];
 
-let deg = 0;
+$reset.style.display = 'none';
+$mask.textContent = maskDefault;
 
-function spin() {
-    const betNumber = parseInt(document.getElementById("bet-number").value, 10);
-    if (isNaN(betNumber) || betNumber < 0 || betNumber > 36) {
-        alert("Lütfen 0 ile 36 arasında bir sayı girin.");
-        return;
-    }
+$spin.addEventListener('click', function() {
+    var randomNumber = Math.floor(Math.random() * 36),
+        color = null;
 
-    document.getElementById("result").innerText = "";
-    const wheel = document.getElementById("wheel");
-    const ball = document.getElementById("ball");
-    deg = Math.floor(5000 + Math.random() * 5000);
-    const realDeg = deg % 360;
-    wheel.style.transform = `rotate(${deg}deg)`;
+    $inner.setAttribute('data-spinto', randomNumber);
+    document.querySelector(`li:nth-child(${randomNumber + 1}) input`).checked = true;
 
-    setTimeout(() => {
-        const sector = Math.floor(realDeg / (360 / 37));
-        const resultNumber = numbers[sector];
-        document.getElementById("result").innerText = `Kazanan numara: ${resultNumber}`;
+    this.style.display = 'none';
+    $reset.classList.add('disabled');
+    $reset.disabled = true;
+    $reset.style.display = 'inline-block';
 
-        const ballAngle = realDeg + (Math.random() * 30 - 15);
-        ball.style.top = `${50 + 40 * Math.sin(ballAngle * Math.PI / 180)}%`;
-        ball.style.left = `${50 - 40 * Math.cos(ballAngle * Math.PI / 180)}%`;
+    setTimeout(function() {
+        $reset.classList.remove('disabled');
+        $reset.disabled = false;
+    }, timer);
+});
 
-        if (resultNumber === betNumber) {
-            document.getElementById("result").innerText += " - Tebrikler, kazandınız!";
-        } else {
-            document.getElementById("result").innerText += " - Maalesef, kaybettiniz.";
-        }
-    }, 4000);
-}
-
-createNumbers();
+$reset.addEventListener('click', function() {
+    $inner.style.transform = 'rotate(0deg)';
+    $mask.textContent = maskDefault;
+    $spin.style.display = 'inline-block';
+    this.style.display = 'none';
+});
