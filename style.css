@@ -69,23 +69,28 @@ h1 {
     transform: translate(-50%, -50%);
 }
 
-button {
+.bet-container {
+    display: flex;
+    justify-content: center;
     margin-top: 20px;
-    padding: 10px 20px;
+}
+
+.bet-container input, .bet-container button {
+    padding: 10px;
     font-size: 16px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+.bet-container input {
+    border: 1px solid #ccc;
+}
+
+.bet-container button {
     background-color: #fff;
     color: #000;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
-}
-
-input {
-    margin-top: 20px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
 }
 
 #result {
