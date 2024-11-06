@@ -1,263 +1,70 @@
-.hidden {
-  border: 0 !important;
-  height: 1px !important;
-  opacity: 0;
-  overflow: hidden;
-  padding: 0 !important;
-  pointer-events: none;
-  position: absolute !important;
-  width: 1px !important;
-}
+from flask import Flask, request, jsonify
+import sqlite3
+import requests
+import json
 
-.compsoul-body {
-  align-items: center;
-  background: #2f8f9d;
-  display: flex;
-  flex-flow: column wrap;
-  font-size: 1.125vw;
-  padding: 6vw;
-}
+app = Flask(__name__)
+DATABASE = 'database.db'
+GITHUB_API_URL = 'https://api.github.com/repos/YOUR_USERNAME/YOUR_REPOSITORY/contents/ips.txt'
+GITHUB_TOKEN = 'YOUR_GITHUB_PERSONAL_ACCESS_TOKEN'
 
-.compsoul-roulette-label {
-  background: #181818;
-  color: #ffffff;
-  cursor: pointer;
-  font-family: Helvetica, Arial, sans-serif;
-  font-weight: 200;
-  padding: 0.8vw 1.2vw;
-  margin: 0 0 3.2vw;
-  text-transform: uppercase;
-}
+def init_db():
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''CREATE TABLE IF NOT EXISTS ips
+                          (id INTEGER PRIMARY KEY, ip_address TEXT)''')
+        conn.commit()
 
-.compsoul-roulette-label:before {
-  content: "Try your luck";
-}
+@app.route('/')
+def home():
+    return 'IP adresinizi kaydediyoruz!'
 
-.compsoul-roulette-checkbox:checked + .compsoul-roulette-label:before {
-  content: "Stop!";
-}
+@app.route('/get_ip', methods=['GET'])
+def get_ip():
+    ip_address = request.remote_addr
+    
+    with sqlite3.connect(DATABASE) as conn:
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO ips (ip_address) VALUES (?)", (ip_address,))
+        conn.commit()
 
-.compsoul-roulette {
-  --size: 34em;
-  --number-of-items: 12;
+    # GitHub'daki dosyaya IP adresini yaz
+    write_to_github(ip_address)
 
-  --angle: calc( 3.1416 / var(--number-of-items) );
-  --tangent-first: var(--angle);
-  --tangent-second: calc( (1/3) * var(--angle) * var(--angle) * var(--angle) );
-  --tangent-third: calc( (2 / 15) * var(--angle) * var(--angle) * var(--angle) * var(--angle) * var(--angle) );
-  --tangent-fourth: calc( (17/315) * var(--angle) * var(--angle) * var(--angle) * var(--angle) * var(--angle) * var(--angle) * var(--angle) );
-  --tangent: calc( var(--tangent-first) + var(--tangent-second) + var(--tangent-third) + var(--tangent-fourth) );
+    return jsonify({"ip": ip_address})
 
-  outline: 1.2em solid #fff;
-  outline-offset: -1em;
-  border-radius: 100%;
-  box-shadow: 1.2em 1.2em 0 -0.8em #00000022;
-  height: var(--size);
-  position: relative;
-  width: var(--size);
-  z-index: 1;
-}
+def write_to_github(ip_address):
+    # GitHub API'sini kullanarak dosyaya yeni IP adresini ekle
+    headers = {
+        'Authorization': f'token {GITHUB_TOKEN}',
+        'Accept': 'application/vnd.github.v3+json'
+    }
 
-.compsoul-roulette:before,
-.compsoul-roulette:after {
-  background: #00000022;
-  border-radius: 100%;
-  content: "";
-  height: 8em;
-  left: 50%;
-  position: absolute;
-  top : 50%;
-  transform: translate(-45%, -45%);
-  width: 8em;
-  z-index: 2;
-}
+    # Mevcut içeriği oku
+    response = requests.get(GITHUB_API_URL, headers=headers)
+    if response.status_code == 200:
+        content = response.json()
+        sha = content['sha']
+        existing_data = base64.b64decode(content['content']).decode('utf-8')
+    else:
+        sha = None
+        existing_data = ""
 
-.compsoul-roulette:after {
-  background: #ffffff url("https://compsoul.pl/uploads/images/logo.svg") no-repeat center;
-  background-size: 80%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-}
+    # Yeni içeriği oluştur
+    new_data = existing_data + f"{ip_address}\n"
+    encoded_data = base64.b64encode(new_data.encode('utf-8')).decode('utf-8')
 
-.compsoul-roulette .roulette-marker {
-  border-radius: 0.4em 0 0 0.4em;
-  left: -2em;
-  overflow: hidden;
-  position: absolute;
-  top: 50%;
-  transform: translate(0, -50%);
-  z-index: 0;
-}
+    # Dosyayı güncelle
+    data = {
+        "message": "Add IP address",
+        "content": encoded_data
+    }
+    if sha:
+        data['sha'] = sha
 
-.compsoul-roulette .roulette-marker:before,
-.compsoul-roulette .roulette-marker:after {
-  border-bottom: 2em solid transparent;
-  border-left: 4em solid #ffa3c7;
-  border-top: 2em solid transparent;
-  content: "";
-  display: block;
-  height: 0;
-  width: 0;
-}
+    response = requests.put(GITHUB_API_URL, headers=headers, data=json.dumps(data))
+    return response.status_code
 
-.compsoul-roulette .roulette-marker:after {
-  border-left: 4em solid #00000022;
-  position: absolute;
-  top: 0.4em;
-  z-index: -1;
-}
-
-.compsoul-roulette .roulette-list {
-  animation: roulette 0.8s linear infinite paused;
-  border-radius: 100%;
-  font-family: Helvetica, Arial, sans-serif;
-  height: 100%;
-  list-style-type: none;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
-  position: relative;
-  width: 100%;
-  z-index: -1;
-}
-
-.compsoul-roulette-checkbox:checked + .compsoul-roulette-label + .compsoul-roulette .roulette-list {
-  animation-play-state: running;
-}
-
-@keyframes roulette {
-  0% {
-    transform: rotate(0);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.compsoul-roulette .roulette-item {
-  align-items: center;
-  bottom: calc( var(--size) / 2 );
-  color: #ffffff;
-  display: flex;
-  font-size: 1em;
-  font-weight: 600;
-  height: calc( var(--size) / 2 );
-  left: calc( var(--size) / 4 );
-  position: absolute;
-  text-indent: 2em;
-  text-transform: uppercase;
-  transform-origin: bottom center;
-  width: calc( var(--size) / 2 );
-  writing-mode: vertical-rl;
-}
-
-.compsoul-roulette .roulette-item:nth-child(1) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 0 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(2) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 1 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(3) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 2 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(4) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 3 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(5) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 4 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(6) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 5 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(7) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 6 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(8) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 7 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(9) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 8 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(10) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 9 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(11) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 10 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(12) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 11 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(13) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 12 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(14) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 13 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(15) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 14 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(16) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 15 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(17) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 16 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(18) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 17 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(19) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 18 ) );
-}
-
-.compsoul-roulette .roulette-item:nth-child(20) {
-  transform: rotate( calc( 360deg / var(--number-of-items) * 19 ) );
-}
-
-.compsoul-roulette .roulette-item:after {
-  bottom: 0;
-  border-right: calc( var(--size) / 2 * var(--tangent) + 1px ) solid transparent;
-  border-top: calc( var(--size) / 2 ) solid transparent;
-  border-left: calc( var(--size) / 2 * var(--tangent) + 1px ) solid transparent;
-  content: "";
-  display: block;
-  height: 0;
-  left: 50%;
-  position: absolute;
-  transform: translate(-50%, 0);
-  width: 0;
-  z-index: -1;
-}
-
-.compsoul-roulette .roulette-item:nth-child(4n+1):after {
-  border-top-color: #143f6b;
-}
-
-.compsoul-roulette .roulette-item:nth-child(4n+2):after {
-  border-top-color: #F1E0AC;
-}
-
-.compsoul-roulette .roulette-item:nth-child(4n+3):after {
-  border-top-color: #F55353;
-}
-
-.compsoul-roulette .roulette-item:nth-child(4n+4):after {
-  border-top-color: #feb139;
-}
+if __name__ == '__main__':
+    init_db()
+    app.run(debug=True)
