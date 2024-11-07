@@ -2,6 +2,7 @@ let interval;
 let reportCount = 0;
 let totalReports = 0;
 let spamInterval;
+let spamCount = 0;
 
 document.getElementById('start-button').addEventListener('click', function() {
     const username = document.getElementById('username').value;
@@ -41,14 +42,28 @@ document.getElementById('stop-button').addEventListener('click', function() {
 
 document.getElementById('spam-button').addEventListener('click', function() {
     const liveStreamUrl = document.getElementById('live-stream-url').value;
+    const spamCountDisplay = document.getElementById('spam-count');
     if (liveStreamUrl) {
+        spamCount = 0;
+        document.getElementById('spam-button').disabled = true;
+        document.getElementById('stop-spam-button').disabled = false;
+
         spamInterval = setInterval(() => {
             spamLiveStream(liveStreamUrl);
-        }, 1000); // 1 saniye aralıklarla spam mesaj gönder
+            spamCount++;
+            spamCountDisplay.textContent = `Gönderilen spam mesaj sayısı: ${spamCount}`;
+        }, 500); // 0.5 saniye aralıklarla spam mesaj gönder
         document.getElementById('response-message').textContent = 'Canlı yayına spam mesajlar gönderiliyor.';
     } else {
         document.getElementById('response-message').textContent = 'Lütfen geçerli bir canlı yayın linki girin.';
     }
+});
+
+document.getElementById('stop-spam-button').addEventListener('click', function() {
+    clearInterval(spamInterval);
+    document.getElementById('response-message').textContent = 'Spam işlemi durduruldu.';
+    document.getElementById('spam-button').disabled = false;
+    document.getElementById('stop-spam-button').disabled = true;
 });
 
 function reportAccount(username) {
@@ -73,7 +88,6 @@ function reportAccount(username) {
 }
 
 function spamLiveStream(url) {
-    // Burada canlı yayına spam mesaj gönderecek kodu yazmalısınız.
-    // Varsayımsal bir URL, gerçek bir API veya fonksiyon kullanmanız gerekebilir.
+    // Burada canlı yayına spam mesaj gönderilecek
     console.log(`Spam mesaj gönderildi: ${url}`);
 }
