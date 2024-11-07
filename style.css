@@ -56,6 +56,6 @@ button:hover {
     background-color: #e04848;
 }
 
-#response-message, #spam-count {
+#response-message, #report-live-count {
     margin-top: 10px;
 }
