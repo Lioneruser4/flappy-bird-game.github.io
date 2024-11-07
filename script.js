@@ -1,16 +1,13 @@
 let interval;
 let reportCount = 0;
-let spamCount = 0;
 
 document.getElementById('start-button').addEventListener('click', function() {
     const username = document.getElementById('username').value;
-    const reportCountInput = document.getElementById('report-count').value;
     const responseMessage = document.getElementById('response-message');
     const liveStreamUrl = document.getElementById('live-stream-url').value;
-    totalReports = parseInt(reportCountInput, 10);
 
-    if (!username || totalReports <= 0 || !liveStreamUrl) {
-        responseMessage.textContent = 'Lütfen geçerli bir kullanıcı adı, rapor sayısı ve canlı yayın linki girin.';
+    if (!username || !liveStreamUrl) {
+        responseMessage.textContent = 'Lütfen geçerli bir kullanıcı adı ve canlı yayın linki girin.';
         return;
     }
 
@@ -23,13 +20,6 @@ document.getElementById('start-button').addEventListener('click', function() {
         reportCount++;
         responseMessage.textContent = `Şu ana kadar gönderilen rapor sayısı: ${reportCount}`;
     }, 100); // 0.1 saniye aralıklarla rapor gönder
-
-    if (reportCount >= totalReports) {
-        clearInterval(interval);
-        responseMessage.textContent = `${username} kullanıcısı için toplam ${totalReports} rapor gönderildi.`;
-        document.getElementById('start-button').disabled = false;
-        document.getElementById('stop-button').disabled = true;
-    }
 });
 
 document.getElementById('stop-button').addEventListener('click', function() {
