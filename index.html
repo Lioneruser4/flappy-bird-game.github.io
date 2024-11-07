@@ -3,36 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP Adresi Alıcı</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-            margin: 0;
-        }
-        .container {
-            text-align: center;
-        }
-    </style>
+    <title>TikTok Şikayet Botu</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>IP Adresinizi Alıyoruz</h1>
-        <p>IP adresiniz kaydediliyor...</p>
-        <p id="ipAddress"></p>
-    </div>
-    <script>
-        async function getIp() {
-            const response = await fetch('/get_ip');
-            const data = await response.json();
-            document.getElementById('ipAddress').innerText = `IP Adresiniz: ${data.ip}`;
-        }
-
-        window.onload = getIp;
-    </script>
+    <header>
+        <h1>TikTok Dolandırıcılık Şikayet Botu</h1>
+    </header>
+    <main>
+        <form id="report-form">
+            <label for="username">Şikayet Edilecek Kullanıcı Adı:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="report-count">Kaç Rapor:</label>
+            <input type="number" id="report-count" name="report-count" value="1" min="1" required>
+            <button type="button" id="start-button">Başlat</button>
+            <button type="button" id="stop-button" disabled>Dur</button>
+        </form>
+        <p id="response-message"></p>
+    </main>
+    <script src="script.js"></script>
 </body>
 </html>
