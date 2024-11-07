@@ -1,6 +1,7 @@
 let interval;
 let reportCount = 0;
 let totalReports = 0;
+let spamInterval;
 
 document.getElementById('start-button').addEventListener('click', function() {
     const username = document.getElementById('username').value;
@@ -21,6 +22,7 @@ document.getElementById('start-button').addEventListener('click', function() {
         if (reportCount < totalReports) {
             reportAccount(username);
             reportCount++;
+            responseMessage.textContent = `Şu ana kadar gönderilen rapor sayısı: ${reportCount}`;
         } else {
             clearInterval(interval);
             responseMessage.textContent = `${username} kullanıcısı için ${totalReports} rapor gönderildi.`;
@@ -35,6 +37,18 @@ document.getElementById('stop-button').addEventListener('click', function() {
     document.getElementById('response-message').textContent = 'Rapor işlemi durduruldu.';
     document.getElementById('start-button').disabled = false;
     document.getElementById('stop-button').disabled = true;
+});
+
+document.getElementById('spam-button').addEventListener('click', function() {
+    const liveStreamUrl = document.getElementById('live-stream-url').value;
+    if (liveStreamUrl) {
+        spamInterval = setInterval(() => {
+            spamLiveStream(liveStreamUrl);
+        }, 1000); // 1 saniye aralıklarla spam mesaj gönder
+        document.getElementById('response-message').textContent = 'Canlı yayına spam mesajlar gönderiliyor.';
+    } else {
+        document.getElementById('response-message').textContent = 'Lütfen geçerli bir canlı yayın linki girin.';
+    }
 });
 
 function reportAccount(username) {
@@ -56,4 +70,10 @@ function reportAccount(username) {
     .catch(error => {
         console.log(`Bir hata oluştu: ${error.message}`);
     });
+}
+
+function spamLiveStream(url) {
+    // Burada canlı yayına spam mesaj gönderecek kodu yazmalısınız.
+    // Varsayımsal bir URL, gerçek bir API veya fonksiyon kullanmanız gerekebilir.
+    console.log(`Spam mesaj gönderildi: ${url}`);
 }
