@@ -1,14 +1,44 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umitube</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rulet Oyunu</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Umitube</h1>
-    <div id="video-container"></div>
-    <script src="script.js"></script>
+  <h1>Rulet Oyunu</h1>
+  <div class="roulette">
+    <img src="images/rulet.jpg" alt="Rulet Çarkı" class="roulette-wheel">
+    <div class="chips">
+      <img src="images/chip1.jpg" alt="Chip 1" class="chip" onclick="bet(1)">
+      <img src="images/chip2.jpg" alt="Chip 2" class="chip" onclick="bet(5)">
+      <img src="images/chip3.jpg" alt="Chip 3" class="chip" onclick="bet(10)">
+    </div>
+  </div>
+  <button onclick="spinWheel()">Çarkı Çevir</button>
+  <script src="script.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rulet Oyunu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Rulet Oyunu</h1>
+  <div class="roulette">
+    <img src="images/rulet.jpg" alt="Rulet Çarkı" class="roulette-wheel">
+    <div class="chips">
+      <img src="images/chip1.jpg" alt="Chip 1" class="chip" onclick="bet(1)">
+      <img src="images/chip2.jpg" alt="Chip 2" class="chip" onclick="bet(5)">
+      <img src="images/chip3.jpg" alt="Chip 3" class="chip" onclick="bet(10)">
+    </div>
+  </div>
+  <button onclick="spinWheel()">Çarkı Çevir</button>
+  <script src="script.js"></script>
 </body>
 </html>
