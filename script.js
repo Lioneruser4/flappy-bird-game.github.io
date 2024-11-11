@@ -1,18 +1,34 @@
-// YouTube API Anahtarınızı buraya ekleyin
-const API_KEY = 'YOUR_API_KEY';
-const VIDEO_ID = 'dQw4w9WgXcQ'; // Gösterilecek video ID'si
+let currentBet = 0;
 
-// Videoyu ekrana ekle
-const videoContainer = document.getElementById('video-container');
-videoContainer.innerHTML = `
-    <iframe width="100%" height="400" src="https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&controls=1&modestbranding=1&rel=0&showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-`;
-// YouTube API Anahtarınızı buraya ekleyin
-const API_KEY = 'YOUR_API_KEY';
-const VIDEO_ID = 'dQw4w9WgXcQ'; // Gösterilecek video ID'si
+function bet(amount) {
+  currentBet = amount;
+  alert(`Bahis miktarınız: ${currentBet} chip`);
+}
 
-// Videoyu ekrana ekle
-const videoContainer = document.getElementById('video-container');
-videoContainer.innerHTML = `
-    <iframe width="100%" height="400" src="https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&controls=1&modestbranding=1&rel=0&showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-`;
+function spinWheel() {
+  if (currentBet === 0) {
+    alert("Lütfen bahis yapın!");
+    return;
+  }
+
+  const result = Math.floor(Math.random() * 37); // Rulet çarkı için 37 sayı
+  alert(`Çark döndü! Sonuç: ${result}`);
+  currentBet = 0; // Bahis sıfırlanır
+}
+let currentBet = 0;
+
+function bet(amount) {
+  currentBet = amount;
+  alert(`Bahis miktarınız: ${currentBet} chip`);
+}
+
+function spinWheel() {
+  if (currentBet === 0) {
+    alert("Lütfen bahis yapın!");
+    return;
+  }
+
+  const result = Math.floor(Math.random() * 37); // Rulet çarkı için 37 sayı
+  alert(`Çark döndü! Sonuç: ${result}`);
+  currentBet = 0; // Bahis sıfırlanır
+}
