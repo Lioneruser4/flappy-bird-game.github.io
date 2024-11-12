@@ -1,34 +1,32 @@
-let currentBet = 0;
+let nickname;
+let room = null;
 
-function bet(amount) {
-  currentBet = amount;
-  alert(`Bahis miktarınız: ${currentBet} chip`);
+function setNickname() {
+    nickname = document.getElementById("nicknameInput").value;
+    document.getElementById("nickname").style.display = "none";
+    document.getElementById("lobby").style.display = "block";
 }
 
-function spinWheel() {
-  if (currentBet === 0) {
-    alert("Lütfen bahis yapın!");
-    return;
-  }
-
-  const result = Math.floor(Math.random() * 37); // Rulet çarkı için 37 sayı
-  alert(`Çark döndü! Sonuç: ${result}`);
-  currentBet = 0; // Bahis sıfırlanır
-}
-let currentBet = 0;
-
-function bet(amount) {
-  currentBet = amount;
-  alert(`Bahis miktarınız: ${currentBet} chip`);
+function createRoom() {
+    room = { name: `Room_${Math.floor(Math.random() * 1000)}`, players: [nickname] };
+    document.getElementById("lobby").style.display = "none";
+    document.getElementById("room").style.display = "block";
+    document.getElementById("roomName").innerText = room.name;
+    document.getElementById("players").innerText = room.players.join(", ");
 }
 
-function spinWheel() {
-  if (currentBet === 0) {
-    alert("Lütfen bahis yapın!");
-    return;
-  }
-
-  const result = Math.floor(Math.random() * 37); // Rulet çarkı için 37 sayı
-  alert(`Çark döndü! Sonuç: ${result}`);
-  currentBet = 0; // Bahis sıfırlanır
+function joinRoom() {
+    // Burada otağa qoşulmaq üçün məntiq əlavə edilməlidir (məsələn, WebSocket və ya API çağırışı vasitəsilə)
 }
+
+function startGame() {
+    if (room.players.length < 2) {
+        alert("Oyunu başlamaq üçün ən azı 2 oyunçu olmalıdır.");
+        return;
+    }
+    document.getElementById("room").style.display = "none";
+    document.getElementById("gameBoard").style.display = "block";
+    // Oyunun başlanğıc məntiqini buraya əlavə edin
+}
+
+// Əlavə oyun məntiqini buraya əlavə edin
