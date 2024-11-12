@@ -1,33 +1,30 @@
 body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
 }
-
-.roulette {
-  position: relative;
-  display: inline-block;
+#game {
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 80%;
+    max-width: 600px;
 }
-
-.roulette-wheel {
-  width: 300px;
-  height: 300px;
+input {
+    padding: 10px;
+    margin: 10px;
 }
-
-.chips {
-  margin-top: 20px;
-}
-
-.chip {
-  width: 50px;
-  margin: 0 10px;
-  cursor: pointer;
-}
-
 button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #218838;
 }
