@@ -1,44 +1,33 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rulet Oyunu</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Domino Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Rulet Oyunu</h1>
-  <div class="roulette">
-    <img src="images/rulet.jpg" alt="Rulet Çarkı" class="roulette-wheel">
-    <div class="chips">
-      <img src="images/chip1.jpg" alt="Chip 1" class="chip" onclick="bet(1)">
-      <img src="images/chip2.jpg" alt="Chip 2" class="chip" onclick="bet(5)">
-      <img src="images/chip3.jpg" alt="Chip 3" class="chip" onclick="bet(10)">
+    <h1>Online Domino Game</h1>
+    <div id="game">
+        <div id="nickname">
+            <input type="text" id="nicknameInput" placeholder="Enter your nickname">
+            <button onclick="setNickname()">Enter</button>
+        </div>
+        <div id="lobby" style="display:none;">
+            <button onclick="createRoom()">Create Room</button>
+            <button onclick="joinRoom()">Join Room</button>
+            <ul id="roomList"></ul>
+        </div>
+        <div id="room" style="display:none;">
+            <h2>Room: <span id="roomName"></span></h2>
+            <div id="players"></div>
+            <button onclick="startGame()">Start Game</button>
+        </div>
+        <div id="gameBoard" style="display:none;">
+            <div id="board"></div>
+            <div id="hand"></div>
+        </div>
     </div>
-  </div>
-  <button onclick="spinWheel()">Çarkı Çevir</button>
-  <script src="script.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rulet Oyunu</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>Rulet Oyunu</h1>
-  <div class="roulette">
-    <img src="images/rulet.jpg" alt="Rulet Çarkı" class="roulette-wheel">
-    <div class="chips">
-      <img src="images/chip1.jpg" alt="Chip 1" class="chip" onclick="bet(1)">
-      <img src="images/chip2.jpg" alt="Chip 2" class="chip" onclick="bet(5)">
-      <img src="images/chip3.jpg" alt="Chip 3" class="chip" onclick="bet(10)">
-    </div>
-  </div>
-  <button onclick="spinWheel()">Çarkı Çevir</button>
-  <script src="script.js"></script>
+    <script src="game.js"></script>
 </body>
 </html>
