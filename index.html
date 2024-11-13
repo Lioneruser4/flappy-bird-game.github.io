@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crypto Tracker</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <h1>Crypto Tracker</h1>
     <div>
         <label for="coin">Choose a coin:</label>
         <select id="coin" name="coin" onchange="fetchCoinData()">
-            <option value="BTC">Bitcoin</option>
-            <option value="ETH">Ethereum</option>
-            <option value="BNB">Binance Coin</option>
+            <option value="bitcoin">Bitcoin</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="binancecoin">Binance Coin</option>
             <!-- Daha fazla coin ekleyebilirsiniz -->
         </select>
     </div>
@@ -23,7 +24,9 @@
         <button onclick="setPriceAlert()">Set Alert</button>
     </div>
     <div id="coinData"></div>
-    <div id="coinGraph"></div>
+    <div id="coinGraph">
+        <canvas id="myChart"></canvas>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
