@@ -3,31 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Domino Game</title>
+    <title>Crypto Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Online Domino Game</h1>
-    <div id="game">
-        <div id="nickname">
-            <input type="text" id="nicknameInput" placeholder="Enter your nickname">
-            <button onclick="setNickname()">Enter</button>
-        </div>
-        <div id="lobby" style="display:none;">
-            <button onclick="createRoom()">Create Room</button>
-            <button onclick="joinRoom()">Join Room</button>
-            <ul id="roomList"></ul>
-        </div>
-        <div id="room" style="display:none;">
-            <h2>Room: <span id="roomName"></span></h2>
-            <div id="players"></div>
-            <button onclick="startGame()">Start Game</button>
-        </div>
-        <div id="gameBoard" style="display:none;">
-            <div id="board"></div>
-            <div id="hand"></div>
-        </div>
+    <h1>Crypto Tracker</h1>
+    <div>
+        <label for="coin">Choose a coin:</label>
+        <select id="coin" name="coin" onchange="fetchCoinData()">
+            <option value="BTC">Bitcoin</option>
+            <option value="ETH">Ethereum</option>
+            <option value="BNB">Binance Coin</option>
+            <!-- Daha fazla coin ekleyebilirsiniz -->
+        </select>
     </div>
-    <script src="game.js"></script>
+    <div>
+        <label for="priceAlert">Set Price Alert:</label>
+        <input type="number" id="priceAlert" name="priceAlert">
+        <button onclick="setPriceAlert()">Set Alert</button>
+    </div>
+    <div id="coinData"></div>
+    <div id="coinGraph"></div>
+    <script src="script.js"></script>
 </body>
 </html>
