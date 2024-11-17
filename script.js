@@ -5,14 +5,15 @@ function verifyCode() {
     if (accessCode === '1234') { // Doğru kodu buraya girin
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'block';
+        showPopup("Giriş başarılı!");
     } else {
-        alert('Hatalı Kod!');
+        showPopup("Hatalı Kod!");
     }
 }
 
 function setBet(amount) {
     betAmount = amount;
-    alert(`Bahis Miktarı: ${amount}`);
+    showPopup(`Bahis Miktarı: ${amount}`);
 }
 
 function spinWheel() {
@@ -38,22 +39,29 @@ function spinWheel() {
 
     // Çarkı döndürme animasyonu
     const spinAngle = Math.random() * 360 + 360 * 3; // En az 3 tur döner
-    let currentAngle = 0;
+    wheelImage.style.transition = "transform 4s ease-out";
+    wheelImage.style.transform = `rotate(${spinAngle}deg)`;
 
-    const spin = setInterval(() => {
-        currentAngle += 10;
-        wheelImage.style.transform = `rotate(${currentAngle}deg)`;
-        
-        if (currentAngle >= spinAngle) {
-            clearInterval(spin);
-            if (randomSector.multiplier === 0) {
-                alert("Kaybettiniz!");
-            } else {
-                balance += betAmount * randomSector.multiplier;
-                alert(`Tebrikler! ${randomSector.label} kazandınız!`);
-            }
-            balanceElement.innerText = balance;
-            wheelImage.style.transform = "rotate(0deg)"; // Çarkı sıfırlayın
+    setTimeout(() => {
+        if (randomSector.multiplier === 0) {
+            showPopup("Kaybettiniz!");
+        } else {
+            balance += betAmount * randomSector.multiplier;
+            showPopup(`Tebrikler! ${randomSector.label} kazandınız!`);
         }
-    }, 30);
+        balanceElement.innerText = balance;
+        wheelImage.style.transition = "none";
+        wheelImage.style.transform = "rotate(0deg)"; // Çarkı sıfırlayın
+    }, 4000); // Animasyon süresi kadar bekler
+}
+
+function showPopup(message) {
+    const popup = document.getElementById('notificationPopup');
+    document.getElementById('notificationMessage').innerText = message;
+    popup.style.display = 'block';
+}
+
+function closePopup() {
+    const popup = document.getElementById('notificationPopup');
+    popup.style.display = 'none';
 }
