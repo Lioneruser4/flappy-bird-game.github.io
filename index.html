@@ -3,30 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Tracker</title>
+    <title>Rulet Oyunu</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>Crypto Tracker</h1>
-    <div>
-        <label for="coin">Choose a coin:</label>
-        <select id="coin" name="coin" onchange="fetchCoinData()">
-            <option value="bitcoin">Bitcoin</option>
-            <option value="ethereum">Ethereum</option>
-            <option value="binancecoin">Binance Coin</option>
-            <!-- Daha fazla coin ekleyebilirsiniz -->
-        </select>
+    <div id="loginScreen">
+        <h2>Giriş Yap</h2>
+        <input type="text" id="accessCode" placeholder="Kodunuzu girin">
+        <button onclick="verifyCode()">Giriş</button>
     </div>
-    <div>
-        <label for="priceAlert">Set Price Alert:</label>
-        <input type="number" id="priceAlert" name="priceAlert">
-        <button onclick="setPriceAlert()">Set Alert</button>
+
+    <div id="gameScreen" style="display:none;">
+        <h2>Rulet Oyunu</h2>
+        <div id="rouletteWheel"></div>
+        <div id="balance">Bakiye: <span id="balanceAmount">100</span></div>
+        <button onclick="spinWheel()">Çevir</button>
     </div>
-    <div id="coinData"></div>
-    <div id="coinGraph">
-        <canvas id="myChart"></canvas>
-    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
