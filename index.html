@@ -3,42 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rulet Oyunu</title>
+    <title>YouTube İndirme</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="loginScreen">
-        <h2>Giriş Yap</h2>
-        <input type="password" id="accessCode" placeholder="Kodunuzu girin">
-        <button onclick="verifyCode()">Giriş</button>
-    </div>
-
-    <div id="gameScreen" style="display:none;">
-        <h2>Rulet Oyunu</h2>
-        <div id="balance">Bakiye: <span id="balanceAmount">100</span></div>
-
-        <div id="betButtons">
-            <button onclick="setBet(1)">1</button>
-            <button onclick="setBet(2)">2</button>
-            <button onclick="setBet(3)">3</button>
-            <button onclick="setBet(4)">4</button>
-            <button onclick="setBet(5)">5</button>
-            <button onclick="setBet(6)">6</button>
-            <button onclick="setBet(7)">7</button>
-            <button onclick="setBet(8)">8</button>
-            <button onclick="setBet(9)">9</button>
-            <button onclick="setBet(10)">10</button>
-        </div>
-
-        <div id="rouletteWheel">
-            <img id="wheelImage" src="İmages/file_303159-1.jpg" alt="Rulet Çarkı">
-        </div>
-        <button onclick="spinWheel()">Çevir</button>
-    </div>
-
-    <div id="notificationPopup" style="display:none;">
-        <p id="notificationMessage"></p>
-        <button onclick="closePopup()">Tamam</button>
+    <div class="container">
+        <h1>YouTube Müzik ve Video İndirme</h1>
+        <input type="text" id="url" placeholder="YouTube URL'si">
+        <button onclick="downloadVideo()">İndir</button>
+        <div id="message"></div>
     </div>
 
     <script src="script.js"></script>
