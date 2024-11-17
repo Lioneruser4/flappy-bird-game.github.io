@@ -1,13 +1,3 @@
-Anladım, çark görselini ekleyip döndürmek için aşağıdaki adımları izleyebilirsiniz. Bu adımlarla çarkın dönmesini sağlayacağız.
-
-### 1. Çark Görseli
-Öncelikle, çark görselini indirip projenize ekleyin. İşte basit bir çark görseli:
-![Rulet Çarkı](https://i.imgur.com/ASapNYf.png)
-
-### 2. HTML Dosyası (`index.html`)
-Giriş ekranı ve rulet oyunu için gerekli elementleri oluşturacağız. Çark görselini de ekleyelim.
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +9,7 @@ Giriş ekranı ve rulet oyunu için gerekli elementleri oluşturacağız. Çark 
 <body>
     <div id="loginScreen">
         <h2>Giriş Yap</h2>
-        <input type="text" id="accessCode" placeholder="Kodunuzu girin">
+        <input type="password" id="accessCode" placeholder="Kodunuzu girin">
         <button onclick="verifyCode()">Giriş</button>
     </div>
 
@@ -46,126 +36,11 @@ Giriş ekranı ve rulet oyunu için gerekli elementleri oluşturacağız. Çark 
         <button onclick="spinWheel()">Çevir</button>
     </div>
 
+    <div id="notificationPopup" style="display:none;">
+        <p id="notificationMessage"></p>
+        <button onclick="closePopup()">Tamam</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-```
-
-### 3. CSS Dosyası (`style.css`)
-Bu dosyada sitenin stilini belirleyeceğiz.
-
-```css
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-}
-
-#loginScreen, #gameScreen {
-    margin-top: 100px;
-}
-
-#rouletteWheel {
-    width: 500px;
-    height: 500px;
-    margin: 20px auto;
-    position: relative;
-}
-
-#rouletteWheel img {
-    width: 100%;
-    height: 100%;
-    transition: transform 4s ease-out;
-}
-
-#betButtons button {
-    padding: 10px;
-    margin: 5px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button {
-    padding: 10px 20px;
-    margin: 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #218838;
-}
-```
-
-### 4. JavaScript Dosyası (`script.js`)
-Giriş kontrolü, bahis seçimi ve rulet çarkı mantığını ekleyeceğiz.
-
-```javascript
-let betAmount = 1; // Başlangıç bahis miktarı
-
-function verifyCode() {
-    const accessCode = document.getElementById('accessCode').value;
-    if (accessCode === '1234') { // Doğru kodu buraya girin
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('gameScreen').style.display = 'block';
-    } else {
-        alert('Hatalı Kod!');
-    }
-}
-
-function setBet(amount) {
-    betAmount = amount;
-    alert(`Bahis Miktarı: ${amount}`);
-}
-
-function spinWheel() {
-    const wheelImage = document.getElementById('wheelImage');
-    const balanceElement = document.getElementById('balanceAmount');
-    let balance = parseInt(balanceElement.innerText);
-
-    const sectors = [
-        { multiplier: 1, label: "1x" },
-        { multiplier: 2, label: "2x" },
-        { multiplier: 3, label: "3x" },
-        { multiplier: 4, label: "4x" },
-        { multiplier: 5, label: "5x" },
-        { multiplier: 6, label: "6x" },
-        { multiplier: 7, label: "7x" },
-        { multiplier: 8, label: "8x" },
-        { multiplier: 9, label: "9x" },
-        { multiplier: 10, label: "10x" },
-        { multiplier: 0, label: "❌" }
-    ];
-
-    const randomSector = sectors[Math.floor(Math.random() * sectors.length)];
-
-    // Çarkı döndürme animasyonu
-    const spinAngle = Math.random() * 360 + 360 * 3; // En az 3 tur döner
-    wheelImage.style.transform = `rotate(${spinAngle}deg)`;
-
-    setTimeout(() => {
-        if (randomSector.multiplier === 0) {
-            alert("Kaybettiniz!");
-        } else {
-            balance += betAmount * randomSector.multiplier;
-            alert(`Tebrikler! ${randomSector.label} kazandınız!`);
-        }
-        balanceElement.innerText = balance;
-        wheelImage.style.transform = "rotate(0deg)"; // Çarkı sıfırlayın
-    }, 4000); // Animasyon süresi kadar bekler
-}
-```
-
-### Dosyaları Yükleme ve Test Etme
-1. **Dosyaları Bilgisayarınızda Oluşturun**: Yukarıdaki kodları ilgili dosyalara yapıştırın.
-2. **Tarayıcıda Açın**: `index.html` dosyasını tarayıcıda açarak testi gerçekleştirin.
-
-Bu adımlarla giriş ekranı, bahis butonları ve dönme animasyonu olan bir rulet çarkı oluşturmuş olacaksınız. Yardımcı olabileceğim başka bir konu var mı? 😊[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/EleanorEllingson/web-dev/tree/b2f2a382e77a20fd6895677c8b8f402ac4bae352/7-bank-project%2F1-template-route%2Ftranslations%2FREADME.ko.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")
