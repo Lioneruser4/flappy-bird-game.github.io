@@ -3,17 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram İndirme</title>
+    <title>Forum Sitesi</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="container">
-        <h1>Instagram İndirme</h1>
-        <input type="text" id="url" placeholder="Instagram URL'si">
-        <button onclick="downloadContent()">İndir</button>
-        <div id="message"></div>
-    </div>
+        <header>
+            <h1>Forum Sitesi</h1>
+            <nav>
+                <button onclick="showSection('register')">Kayıt Ol</button>
+                <button onclick="showSection('login')">Giriş Yap</button>
+                <button onclick="showSection('forum')">Forum</button>
+            </nav>
+        </header>
 
-    <script src="script.js"></script>
+        <main>
+            <section id="register" class="hidden">
+                <h2>Kayıt Ol</h2>
+                <input type="text" id="registerEmail" placeholder="E-posta">
+                <input type="password" id="registerPassword" placeholder="Şifre">
+                <button onclick="register()">Kayıt Ol</button>
+                <button onclick="googleSignUp()">Google ile Kayıt Ol</button>
+            </section>
+
+            <section id="login" class="hidden">
+                <h2>Giriş Yap</h2>
+                <input type="text" id="loginEmail" placeholder="E-posta">
+                <input type="password" id="loginPassword" placeholder="Şifre">
+                <button onclick="login()">Giriş Yap</button>
+                <button onclick="googleSignIn()">Google ile Giriş Yap</button>
+            </section>
+
+            <section id="forum" class="hidden">
+                <h2>Forum</h2>
+                <div id="forumTopics">
+                    <!-- Forum konuları burada listelenecek -->
+                </div>
+                <input type="text" id="newTopic" placeholder="Yeni Konu Başlığı">
+                <button onclick="addTopic()">Ekle</button>
+            </section>
+        </main>
+    </div>
 </body>
 </html>
