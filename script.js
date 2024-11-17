@@ -1,4 +1,4 @@
-function downloadVideo() {
+function simulateDownload() {
     const url = document.getElementById('url').value;
     const message = document.getElementById('message');
 
@@ -7,8 +7,7 @@ function downloadVideo() {
         return;
     }
 
-    // youtube-dl servisini kullanarak indirme bağlantısı oluşturma (örnek amaçlı)
-    const downloadUrl = `https://example.com/download?url=${encodeURIComponent(url)}`;
-
-    message.innerHTML = `<a href="${downloadUrl}" target="_blank">İndirme Linki</a>`;
+    // Simüle edilen indirme işlemi
+    const simulatedDownloadUrl = `https://www.example.com/download?url=${encodeURIComponent(url)}`;
+    message.innerHTML = `<a href="${simulatedDownloadUrl}" target="_blank">İndirme Linki</a>`;
 }
