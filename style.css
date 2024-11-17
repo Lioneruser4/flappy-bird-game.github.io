@@ -3,20 +3,32 @@ body {
     text-align: center;
     background-color: #f0f0f0;
     margin: 0;
-    padding: 20px;
+    padding: 0;
 }
 
-h1 {
-    color: #333;
+#loginScreen, #gameScreen {
+    margin-top: 100px;
 }
 
-#coinData {
-    margin-top: 20px;
+#rouletteWheel {
+    width: 300px;
+    height: 300px;
+    border: 5px solid #000;
+    border-radius: 50%;
+    margin: 20px auto;
+    background-image: conic-gradient(red, yellow, green, blue, red);
 }
 
-#coinGraph {
-    margin-top: 20px;
-    height: 400px;
-    width: 600px;
-    margin: 0 auto;
+button {
+    padding: 10px 20px;
+    margin: 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
 }
