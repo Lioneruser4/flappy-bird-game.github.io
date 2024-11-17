@@ -2,10 +2,9 @@ let betAmount = 1; // Başlangıç bahis miktarı
 
 function verifyCode() {
     const accessCode = document.getElementById('accessCode').value;
-    if (accessCode === '0000') { // Doğru kodu buraya girin
+    if (accessCode === '1234') { // Doğru kodu buraya girin
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('gameScreen').style.display = 'block';
-        drawRouletteWheel();
     } else {
         alert('Hatalı Kod!');
     }
@@ -16,42 +15,8 @@ function setBet(amount) {
     alert(`Bahis Miktarı: ${amount}`);
 }
 
-function drawRouletteWheel() {
-    const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas.getContext('2d');
-    const sectors = [
-        "1x", "2x", "3x", "4x", "5x", "6x", "7x", "8x", "9x", "10x", "❌"
-    ];
-    const colors = [
-        "red", "blue", "green", "yellow", "purple", "orange", "pink", "cyan", "brown", "magenta", "black"
-    ];
-    const numSectors = sectors.length;
-    const anglePerSector = (2 * Math.PI) / numSectors;
-
-    for (let i = 0; i < numSectors; i++) {
-        ctx.beginPath();
-        ctx.moveTo(canvas.width / 2, canvas.height / 2);
-        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, i * anglePerSector, (i + 1) * anglePerSector);
-        ctx.closePath();
-        ctx.fillStyle = colors[i];
-        ctx.fill();
-        ctx.stroke();
-
-        // Sektör metni
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate(i * anglePerSector + anglePerSector / 2);
-        ctx.textAlign = "right";
-        ctx.fillStyle = "white";
-        ctx.font = "20px Arial";
-        ctx.fillText(sectors[i], canvas.width / 2 - 10, 10);
-        ctx.restore();
-    }
-}
-
 function spinWheel() {
-    const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas.getContext('2d');
+    const wheelImage = document.getElementById('wheelImage');
     const balanceElement = document.getElementById('balanceAmount');
     let balance = parseInt(balanceElement.innerText);
 
@@ -77,14 +42,8 @@ function spinWheel() {
 
     const spin = setInterval(() => {
         currentAngle += 10;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2);
-        ctx.rotate((currentAngle * Math.PI) / 180);
-        ctx.translate(-canvas.width / 2, -canvas.height / 2);
-        drawRouletteWheel();
-        ctx.restore();
-
+        wheelImage.style.transform = `rotate(${currentAngle}deg)`;
+        
         if (currentAngle >= spinAngle) {
             clearInterval(spin);
             if (randomSector.multiplier === 0) {
@@ -94,6 +53,7 @@ function spinWheel() {
                 alert(`Tebrikler! ${randomSector.label} kazandınız!`);
             }
             balanceElement.innerText = balance;
+            wheelImage.style.transform = "rotate(0deg)"; // Çarkı sıfırlayın
         }
     }, 30);
 }
