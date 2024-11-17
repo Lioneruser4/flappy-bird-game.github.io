@@ -1,56 +1,36 @@
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #000; /* Siyah arka fon */
-    color: white; /* Yazı rengi beyaz */
+    background-color: #f0f0f0;
     margin: 0;
     padding: 0;
-}
-
-#loginScreen, #gameScreen {
-    margin-top: 50px;
-}
-
-#rouletteWheel {
-    width: 100%;
-    max-width: 500px;
-    margin: 20px auto;
-    position: relative;
-}
-
-#rouletteWheel img {
-    width: 100%;
-    height: auto;
-    max-height: 500px; /* Maksimum yükseklik */
-    border-radius: 50%; /* Yuvarlak görüntü */
-}
-
-#betButtons {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    margin: 20px 0;
+    align-items: center;
+    height: 100vh;
 }
 
-#betButtons button {
-    padding: 20px; /* Buton boyutunu büyüt */
-    margin: 5px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    flex: 1 1 20%; /* Ekrana sığması için esneklik */
-    max-width: 60px; /* Buton genişliği sınırlaması */
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ccc;
 }
 
 button {
-    padding: 20px; /* Mobilde daha büyük görünüm */
-    margin: 20px;
+    padding: 10px 20px;
     background-color: #28a745;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -58,19 +38,7 @@ button:hover {
     background-color: #218838;
 }
 
-#notificationPopup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    color: #000;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    z-index: 1000;
-}
-
-#notificationPopup button {
-    margin-top: 10px;
+#message {
+    margin-top: 20px;
+    color: red;
 }
