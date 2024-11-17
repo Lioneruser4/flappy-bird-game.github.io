@@ -21,6 +21,8 @@ body {
 #rouletteWheel img {
     width: 100%;
     height: auto;
+    max-height: 500px; /* Maksimum yükseklik */
+    border-radius: 50%; /* Yuvarlak görüntü */
 }
 
 #betButtons {
@@ -43,7 +45,7 @@ body {
 }
 
 button {
-    padding: 10px 20px;
+    padding: 20px; /* Mobilde daha büyük görünüm */
     margin: 20px;
     background-color: #28a745;
     color: white;
