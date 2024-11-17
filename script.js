@@ -1,9 +1,9 @@
-function simulateDownload() {
+function downloadContent() {
     const url = document.getElementById('url').value;
     const message = document.getElementById('message');
 
     if (!url) {
-        message.innerText = 'Lütfen bir YouTube URL\'si girin.';
+        message.innerText = 'Lütfen bir Instagram URL\'si girin.';
         return;
     }
 
