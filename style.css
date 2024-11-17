@@ -17,6 +17,11 @@ body {
     position: relative;
 }
 
+#rouletteWheel img {
+    width: 100%;
+    height: 100%;
+}
+
 #betButtons button {
     padding: 10px;
     margin: 5px;
