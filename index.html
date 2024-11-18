@@ -9,15 +9,26 @@
 <body>
     <div class="container">
         <h1>Casino Slot Oyunu</h1>
-        <div id="balance">Bakiye: $<span id="balanceAmount">100</span></div>
-        <div id="slotMachine">
+        <div id="loginContainer">
+            <input type="text" id="username" placeholder="Kullanıcı Adı">
+            <input type="password" id="password" placeholder="Şifre">
+            <button onclick="login()">Giriş</button>
+        </div>
+        <div id="balanceContainer" class="hidden">
+            Bakiye: $<span id="balanceAmount">0</span>
+        </div>
+        <div id="bonusContainer" class="hidden">
+            <input type="text" id="bonusCode" placeholder="Bonus Kodu">
+            <button onclick="applyBonus()">Bonusu Kullan</button>
+        </div>
+        <div id="slotMachine" class="hidden">
             <img src="slot-machine.jpg" alt="Slot Makinesi" class="slot-machine">
             <div class="reel" id="reel1"></div>
             <div class="reel" id="reel2"></div>
             <div class="reel" id="reel3"></div>
         </div>
-        <button id="betButton" onclick="toggleBetPopup()">Bahis</button>
-        <button id="spinButton" onclick="spin()">Çevir</button>
+        <button id="betButton" class="hidden" onclick="toggleBetPopup()">Bahis</button>
+        <button id="spinButton" class="hidden" onclick="spin()">Çevir</button>
         <div id="message"></div>
         <audio id="spinSound" src="sounds/spin.mp3"></audio>
         <audio id="winSound" src="sounds/win.mp3"></audio>
@@ -42,6 +53,13 @@
                 <p>Tebrikler! 15 ücretsiz çevirme hakkı kazandınız!</p>
                 <button onclick="closeBonusPopup()">Tamam</button>
             </div>
+        </div>
+        
+        <!-- Admin Paneli -->
+        <div id="adminPanel" class="hidden">
+            <h2>Admin Paneli</h2>
+            <p>Toplam Kaybedilen Bakiye: $<span id="totalLosses">0</span></p>
+            <button onclick="logout()">Çıkış</button>
         </div>
     </div>
 
