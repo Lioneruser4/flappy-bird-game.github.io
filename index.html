@@ -9,14 +9,19 @@
 <body>
   <div class="background"></div>
 
-  <!-- Giriş ve Kayıt Butonları -->
+  <!-- Navigasyon Barı -->
   <div class="nav-bar">
     <button onclick="showModal('loginModal')">Giriş Yap</button>
     <button onclick="showModal('registerModal')">Kayıt Ol</button>
     <button onclick="startDemo()">Demo Oyna</button>
   </div>
 
-  <!-- Slot Oyunu -->
+  <!-- Kullanıcı Bilgisi -->
+  <div class="user-info" id="userInfo" style="display:none;">
+    Hoşgeldin, <span id="usernameDisplay"></span> | Bakiye: <span id="userBalance">0</span>
+  </div>
+
+  <!-- Slot Makinesi -->
   <div class="slot-machine">
     <div class="reel" id="reel1">🍒</div>
     <div class="reel" id="reel2">🔔</div>
@@ -50,6 +55,15 @@
         <input type="password" id="registerPassword" required>
         <button type="submit">Kayıt Ol</button>
       </form>
+    </div>
+  </div>
+
+  <!-- Admin Panel -->
+  <div id="adminPanel" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('adminPanel')">&times;</span>
+      <h2>Admin Panel</h2>
+      <div id="userList"></div>
     </div>
   </div>
 
