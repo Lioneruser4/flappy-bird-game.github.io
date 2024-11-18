@@ -9,7 +9,8 @@ const message = document.getElementById('message');
 const balanceAmount = document.getElementById('balanceAmount');
 
 const fruits = ['🍒', '🍋', '🍉', '🍇', '🍓', '🍑', '🍍']; // Meyve simgeleri
-const winProbability = 0.7; // Kazanma olasılığı
+
+let winProbability = 0.7; // Kazanma olasılığı (%70)
 
 function setBet(amount) {
     betAmount = amount;
@@ -28,27 +29,51 @@ function spin() {
     balance -= betAmount;
     balanceAmount.innerText = balance;
 
-    const isWinning = Math.random() < winProbability;
-    const winningFruit = fruits[Math.floor(Math.random() * fruits.length)];
-    const result1 = isWinning ? winningFruit : fruits[Math.floor(Math.random() * fruits.length)];
-    const result2 = isWinning ? winningFruit : fruits[Math.floor(Math.random() * fruits.length)];
-    const result3 = isWinning ? winningFruit : fruits[Math.floor(Math.random() * fruits.length)];
-
-    animateReel(reel1, result1, 0);
-    animateReel(reel2, result2, 1000);
-    animateReel(reel3, result3, 2000);
+    const result1 = getRandomFruit();
+    const result2 = getRandomFruit();
+    const result3 = getRandomFruit();
 
     setTimeout(() => {
-        checkWin(result1, result2, result3);
-    }, 3000); // Animasyon süresi (3 saniye)
+        animateReel(reel1, result1);
+    }, 0);
+
+    setTimeout(() => {
+        animateReel(reel2, result2);
+    }, 1000);
+
+    setTimeout(() => {
+        animateReel(reel3, result3);
+        setTimeout(() => {
+            checkWin(result1, result2, result3);
+        }, 1000); // Çark durma süresi
+    }, 2000);
 }
 
-function animateReel(reel, result, delay) {
+function getRandomFruit() {
+    return fruits[Math.floor(Math.random() * fruits.length)];
+}
+
+function animateReel(reel, result) {
+    reel.innerHTML = `<div>${result}</div>`;
+    reel.style.animation = 'none'; // Animasyonu durdur
     setTimeout(() => {
-        reel.innerHTML = `<div>${result}</div>`;
-    }, delay);
+        reel.style.animation = ''; // Animasyonu yeniden başlat
+    }, 10);
 }
 
 function checkWin(result1, result2, result3) {
-    if (result1 === result2 && result2 === result3) {
-        win
+    const isWin = Math.random() < winProbability;
+    if (isWin && result1 === result2 && result2 === result3) {
+        winSound.play();
+        balance += betAmount * 5;
+        balanceAmount.innerText = balance;
+        message.innerText = 'Tebrikler! Kazandınız!';
+    } else {
+        message.innerText = '';
+    }
+}
+
+// Kazanma olasılığını değiştirme fonksiyonu
+function setWinProbability(probability) {
+    winProbability = probability;
+}
