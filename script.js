@@ -7,6 +7,7 @@ const winSound = document.getElementById('winSound');
 const spinSound = document.getElementById('spinSound');
 const message = document.getElementById('message');
 const balanceAmount = document.getElementById('balanceAmount');
+const spinButton = document.getElementById('spinButton');
 
 const fruits = ['🍒', '🍋', '🍉', '🍇', '🍓', '🍑', '🍍']; // Meyve simgeleri
 
@@ -25,6 +26,7 @@ function spin() {
 
     // Spin sesini çal
     spinSound.play();
+    spinButton.disabled = true;
 
     balance -= betAmount;
     balanceAmount.innerText = balance;
@@ -35,13 +37,14 @@ function spin() {
 
     // Çarkları sırayla döndür ve durdur
     spinReel(reel1, result1, 0);
-    spinReel(reel2, result2, 1000);
-    spinReel(reel3, result3, 2000);
+    spinReel(reel2, result2, 500);
+    spinReel(reel3, result3, 1000);
 
     // Kazanma kontrolü
     setTimeout(() => {
         checkWin(result1, result2, result3);
-    }, 3000); // Tüm çarkların durma süresi
+        spinButton.disabled = false;
+    }, 1500); // Tüm çarkların durma süresi
 }
 
 function getRandomFruit() {
@@ -49,17 +52,18 @@ function getRandomFruit() {
 }
 
 function spinReel(reel, result, delay) {
+    let spins = 10; // Çarkın kaç kez döneceği
     setTimeout(() => {
-        let spins = 10; // Çarkın kaç kez döneceği
         const interval = setInterval(() => {
             const randomFruit = getRandomFruit();
             reel.innerHTML = `<div>${randomFruit}</div>`;
-        }, 100); // Döndürme süresi
+            spins--;
 
-        setTimeout(() => {
-            clearInterval(interval);
-            reel.innerHTML = `<div>${result}</div>`;
-        }, 1000); // Çarkın durma süresi
+            if (spins === 0) {
+                clearInterval(interval);
+                reel.innerHTML = `<div>${result}</div>`;
+            }
+        }, 100); // Döndürme süresi
     }, delay);
 }
 
@@ -71,7 +75,7 @@ function checkWin(result1, result2, result3) {
         balanceAmount.innerText = balance;
         message.innerText = 'Tebrikler! Kazandınız!';
     } else {
-        message.innerText = 'Tekrar deneyin!';
+        message.innerText = '';
     }
 }
 
