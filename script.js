@@ -92,13 +92,4 @@ function checkWin(result1, result2, result3) {
         }
     } else {
         message.innerText = '';
-    }
-}
-
-// Kazanma olasılığını değiştirme fonksiyonu
-function setWinProbability(probability) {
-    winProbability = probability;
-}
-
-// Bahis seçimi pop-up'ı açma/kapatma fonksiyonları
-function toggleBet[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/EleanorEllingson/web-dev/tree/b2f2a382e77a20fd6895677c8b8f402ac4bae352/7-bank-project%2F1-template-route%2Ftranslations%2FREADME.ko.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")
+   [43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/EleanorEllingson/web-dev/tree/b2f2a382e77a20fd6895677c8b8f402ac4bae352/7-bank-project%2F1-template-route%2Ftranslations%2FREADME.ko.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")
