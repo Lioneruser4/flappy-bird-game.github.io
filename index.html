@@ -9,14 +9,23 @@
 <body>
     <div class="container">
         <h1>Casino Slot Oyunu</h1>
+        <div id="balance">Bakiye: $<span id="balanceAmount">100</span></div>
         <div id="slotMachine">
             <div class="reel" id="reel1"></div>
             <div class="reel" id="reel2"></div>
             <div class="reel" id="reel3"></div>
         </div>
+        <div id="betButtons">
+            <button onclick="setBet(1)">1$</button>
+            <button onclick="setBet(2)">2$</button>
+            <button onclick="setBet(5)">5$</button>
+            <button onclick="setBet(10)">10$</button>
+            <button onclick="setBet(50)">50$</button>
+            <button onclick="setBet(100)">100$</button>
+        </div>
         <button onclick="spin()">Çevir</button>
+        <div id="message"></div>
         <audio id="winSound" src="sounds/win.mp3"></audio>
-        <audio id="loseSound" src="sounds/lose.mp3"></audio>
     </div>
 
     <script src="script.js"></script>
