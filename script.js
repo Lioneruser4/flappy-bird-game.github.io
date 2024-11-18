@@ -33,32 +33,35 @@ function spin() {
     const result2 = getRandomFruit();
     const result3 = getRandomFruit();
 
-    setTimeout(() => {
-        animateReel(reel1, result1);
-    }, 0);
+    // Çarkları sırayla döndür ve durdur
+    spinReel(reel1, result1, 0);
+    spinReel(reel2, result2, 1000);
+    spinReel(reel3, result3, 2000);
 
+    // Kazanma kontrolü
     setTimeout(() => {
-        animateReel(reel2, result2);
-    }, 1000);
-
-    setTimeout(() => {
-        animateReel(reel3, result3);
-        setTimeout(() => {
-            checkWin(result1, result2, result3);
-        }, 1000); // Çark durma süresi
-    }, 2000);
+        checkWin(result1, result2, result3);
+    }, 3000); // Tüm çarkların durma süresi
 }
 
 function getRandomFruit() {
     return fruits[Math.floor(Math.random() * fruits.length)];
 }
 
-function animateReel(reel, result) {
-    reel.innerHTML = `<div>${result}</div>`;
-    reel.style.animation = 'none'; // Animasyonu durdur
+function spinReel(reel, result, delay) {
     setTimeout(() => {
-        reel.style.animation = ''; // Animasyonu yeniden başlat
-    }, 10);
+        let spins = 10; // Çarkın kaç kez döneceği
+        const interval = setInterval(() => {
+            const randomFruit = getRandomFruit();
+            reel.innerHTML = `<div>${randomFruit}</div>`;
+            spins--;
+
+            if (spins === 0) {
+                clearInterval(interval);
+                reel.innerHTML = `<div>${result}</div>`;
+            }
+        }, 100); // Döndürme süresi
+    }, delay);
 }
 
 function checkWin(result1, result2, result3) {
