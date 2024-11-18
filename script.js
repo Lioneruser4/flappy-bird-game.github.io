@@ -12,15 +12,71 @@ const balanceAmount = document.getElementById('balanceAmount');
 const spinButton = document.getElementById('spinButton');
 const betPopup = document.getElementById('betPopup');
 const bonusPopup = document.getElementById('bonusPopup');
+const loginContainer = document.getElementById('loginContainer');
+const balanceContainer = document.getElementById('balanceContainer');
+const adminPanel = document.getElementById('adminPanel');
+const totalLosses = document.getElementById('totalLosses');
 
 const fruits = ['🍒', '🍋', '🍉', '🍇', '🍓', '🍑', '🍍', '🎁']; // Meyve simgeleri, bonus için 🎁 eklendi
 
 let winProbability = 0.7; // Kazanma olasılığı (%70)
 
+window.onload = function () {
+    const savedUsername = localStorage.getItem('username');
+    if (savedUsername) {
+        login(savedUsername);
+    }
+}
+
 function setBet(amount) {
     betAmount = amount;
     message.innerText = `Bahis Miktarı: ${amount}$`;
     closeBetPopup();
+}
+
+function login(username) {
+    if (!username) {
+        username = document.getElementById('username').value;
+    }
+    if (username) {
+        localStorage.setItem('username', username);
+        if (!localStorage.getItem('balance')) {
+            localStorage.setItem('balance', 100); // Her kullanıcı için başlangıç bakiyesi
+        }
+        if (!localStorage.getItem('totalLosses')) {
+            localStorage.setItem('totalLosses', 0); // Admin için toplam kayıplar
+        }
+        balance = parseInt(localStorage.getItem('balance'));
+        updateUI();
+    }
+}
+
+function logout() {
+    localStorage.removeItem('username');
+    localStorage.removeItem('balance');
+    localStorage.removeItem('totalLosses');
+    updateUI();
+}
+
+function updateUI() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        loginContainer.classList.add('hidden');
+        balanceContainer.classList.remove('hidden');
+        spinButton.classList.remove('hidden');
+        balanceAmount.innerText = localStorage.getItem('balance');
+        if (username === 'admin') {
+            adminPanel.classList.remove('hidden');
+            totalLosses.innerText = localStorage.getItem('totalLosses');
+        } else {
+            adminPanel.classList.add('hidden');
+        }
+    } else {
+        loginContainer.classList.remove('hidden');
+        balanceContainer.classList.add('hidden');
+        spinButton.classList.add('hidden');
+        adminPanel.classList.add('hidden');
+    }
 }
 
 function spin() {
@@ -39,6 +95,7 @@ function spin() {
         freeSpins--;
     }
 
+    localStorage.setItem('balance', balance);
     balanceAmount.innerText = balance;
 
     const result1 = getRandomFruit();
@@ -89,22 +146,31 @@ function checkWin(result1, result2, result3) {
     if (result1 === result2 && result2 === result3) {
         if (result1 === '🎁') {
             bonusSound.play();
-            freeSpins += 15;
+            freeSpins += 10;
             openBonusPopup();
         } else if (isWin) {
             winSound.play();
             balance += betAmount * 5;
-            balanceAmount.innerText = balance;
-            message.innerText = 'Tebrikler! Kazandınız!';
         }
     } else {
-        message.innerText = '';
+        localStorage.setItem('totalLosses', parseInt(localStorage.getItem('totalLosses')) + betAmount);
+        if (localStorage.getItem('username') === 'admin') {
+            totalLosses.innerText = localStorage.getItem('totalLosses');
+        }
     }
+    localStorage.setItem('balance', balance);
+    balanceAmount.innerText = balance;
 }
 
-// Kazanma olasılığını değiştirme fonksiyonu
-function setWinProbability(probability) {
-    winProbability = probability;
+function applyBonusCode() {
+    const bonusCode = document.getElementById('bonusCode').value;
+    if (bonusCode === 'mm') {
+        freeSpins += 10;
+        message.innerText = '10 Ücretsiz çevirme hakkı kazandınız!';
+        document.getElementById('bonusCode').value = '';
+    } else {
+        message.innerText = 'Geçersiz bonus kodu!';
+    }
 }
 
 // Bahis seçimi pop-up'ı açma/kapatma fonksiyonları
