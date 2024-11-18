@@ -64,19 +64,20 @@ function getRandomFruit() {
 function spinReel(reel, result, delay) {
     setTimeout(() => {
         reel.innerHTML = '';
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++) { // 3 adet meyve ekleyelim ki dönüşler düzgün olsun
             const fruit = getRandomFruit();
             const fruitDiv = document.createElement('div');
             fruitDiv.innerText = fruit;
             reel.appendChild(fruitDiv);
         }
+        
         const finalFruitDiv = document.createElement('div');
         finalFruitDiv.innerText = result;
         reel.appendChild(finalFruitDiv);
 
         let position = 0; // Başlangıç pozisyonu
         const interval = setInterval(() => {
-            position += 10; // Her döngüde 10px yukarı kaydır
+            position += 20; // Her döngüde 20px yukarı kaydır
             reel.style.transform = `translateY(-${position}px)`;
 
             if (position >= 100) { // 100px yukarı kaydırıldığında
