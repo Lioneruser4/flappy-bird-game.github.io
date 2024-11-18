@@ -1,20 +1,43 @@
-const ball = document.getElementById('ball');
-const gameBoard = document.getElementById('gameBoard');
-const multipliers = [1, 1.2, 1.5, 2, 0.5, 1.8, 1.3, 0.7, 1.1, 2.5]; // Çarpanlar
+const reel1 = document.getElementById('reel1');
+const reel2 = document.getElementById('reel2');
+const reel3 = document.getElementById('reel3');
+const winSound = document.getElementById('winSound');
+const loseSound = document.getElementById('loseSound');
 
-function dropBall() {
-    ball.style.display = 'block';
-    let topPosition = 0;
-    const interval = setInterval(() => {
-        topPosition += 5;
-        ball.style.top = topPosition + 'px';
+const fruits = ['🍒', '🍋', '🍉', '🍇', '🍓', '🍑', '🍍']; // Meyve simgeleri
 
-        if (topPosition >= gameBoard.clientHeight - ball.clientHeight) {
-            clearInterval(interval);
-            const randomMultiplier = multipliers[Math.floor(Math.random() * multipliers.length)];
-            alert('Kazandığınız çarpan: ' + randomMultiplier);
-            ball.style.display = 'none';
-            ball.style.top = '0';
-        }
-    }, 30);
+function spin() {
+    const result1 = fruits[Math.floor(Math.random() * fruits.length)];
+    const result2 = fruits[Math.floor(Math.random() * fruits.length)];
+    const result3 = fruits[Math.floor(Math.random() * fruits.length)];
+
+    reel1.innerHTML = `<div>${result1}</div>`;
+    reel2.innerHTML = `<div>${result2}</div>`;
+    reel3.innerHTML = `<div>${result3}</div>`;
+
+    animateReels(result1, result2, result3);
+}
+
+function animateReels(result1, result2, result3) {
+    reel1.classList.add('spin');
+    reel2.classList.add('spin');
+    reel3.classList.add('spin');
+
+    setTimeout(() => {
+        reel1.classList.remove('spin');
+        reel2.classList.remove('spin');
+        reel3.classList.remove('spin');
+
+        checkWin(result1, result2, result3);
+    }, 2000); // Animasyon süresi
+}
+
+function checkWin(result1, result2, result3) {
+    if (result1 === result2 && result2 === result3) {
+        winSound.play();
+        alert('Tebrikler! Kazandınız!');
+    } else {
+        loseSound.play();
+        alert('Maalesef, kaybettiniz.');
+    }
 }
