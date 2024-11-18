@@ -1,131 +1,58 @@
-<div class="mainContainer">
-  <div class="loader-container">
-    <img src="https://i.ibb.co/R3cf4Gw/7639633.png" alt="Slot Machine Image" class="w-100">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slot Casino Oyunu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background"></div>
+
+  <!-- Giriş ve Kayıt Butonları -->
+  <div class="nav-bar">
+    <button onclick="showModal('loginModal')">Giriş Yap</button>
+    <button onclick="showModal('registerModal')">Kayıt Ol</button>
+    <button onclick="startDemo()">Demo Oyna</button>
   </div>
+
+  <!-- Slot Oyunu -->
   <div class="slot-machine">
-    <div class="slotwrapper" id="example1">
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li class="text-danger">7</li>
-        <li>8</li>
-        <li>9</li>
-        <li>10</li>
-      </ul>
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li class="text-danger">7</li>
-      </ul>
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li class="text-danger">7</li>
-      </ul>
-    </div>
-    <img src="https://i.ibb.co/MfSZ71p/7670530.png" alt="" class="w-100">
-    <button type="button" class="slot-machine-btn" id="btn-example1">
-      <img src="https://i.ibb.co/0VTc2LZ/spin-btn.png" alt="" class="w-100">
-    </button>
+    <div class="reel" id="reel1">🍒</div>
+    <div class="reel" id="reel2">🔔</div>
+    <div class="reel" id="reel3">💎</div>
   </div>
-  
-</div>
+  <button class="spin-button" onclick="spinReels()">Spin</button>
 
+  <!-- Modallar -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('loginModal')">&times;</span>
+      <h2>Giriş Yap</h2>
+      <form id="loginForm">
+        <label for="loginUsername">Kullanıcı Adı:</label>
+        <input type="text" id="loginUsername" required>
+        <label for="loginPassword">Şifre:</label>
+        <input type="password" id="loginPassword" required>
+        <button type="submit">Giriş Yap</button>
+      </form>
+    </div>
+  </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-#kayt
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('registerModal')">&times;</span>
+      <h2>Kayıt Ol</h2>
+      <form id="registerForm">
+        <label for="registerUsername">Kullanıcı Adı:</label>
+        <input type="text" id="registerUsername" required>
+        <label for="registerPassword">Şifre:</label>
+        <input type="password" id="registerPassword" required>
+        <button type="submit">Kayıt Ol</button>
+      </form>
+    </div>
+  </div>
 
-
-HTML CSS JSResult Skip Results Iframe
-body {
-     background: rgb(49,0,144);
-     background: radial-gradient(circle, rgba(49,0,144,1) 0%,rgba(15,0,48,1) 80%);
-     min-height: 100vh;
-}
- .loader-container {
-     max-width: 210px;
-     margin: 0 auto;
-}
- .slot-machine {
-     max-width: 400px;
-     width: fit-content;
-     margin: 0 auto;
-     position: relative;
-}
- .slot-machine > img {
-     display: block;
-     position: relative;
-     right: -20px;
-}
-
-.slotwrapper {
-    position: absolute;
-    overflow: hidden;
-    display: flex;
-    height: 200px;
-    width: 93%;
-    bottom: 20px;
-    padding: 0 25px;
-    margin-left: 22px;
-      background: #fff;
-}
-.slotwrapper ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    position: relative;
-    float: left;
-    width: 200px;
-    height: 200px;
-    font-size: 150px;
-    line-height: 200px;
-    text-align: center;
-}
-.slotwrapper ul li img {
-    vertical-align: top;
-}
-.slotwrapper > ul > li {
-    background: #fff;
-    font-size: 0.5em;
-/*   box-shadow: 0px 0px 49px 15px rgba(0,0,0,0.37) inset;
--webkit-box-shadow: 0px 0px 49px 15px rgba(0,0,0,0.37) inset;
--moz-box-shadow: 0px 0px 49px 15px rgba(0,0,0,0.37) inset; */
-  
-}
-.slot-machine-btn {
-    position: absolute;
-    top: 50%;
-    right: -70px;
-    transform: translate(0, -50%);
-    background: transparent;
-    border: none;
-    width: 80px;
-    margin-top: 70px;
-    transition: 0.4s all ease-in-out;
-}
-.slot-machine-btn.clicked {
-    transform: translate(0, -50%) rotateX(190deg);
-}
-button#btn-example1:hover > img {
-    filter: drop-shadow(2px 4px 6px yellow);
-}
-button#btn-example1 > img {
-    transition: 0.4s all ease-in-out;
-   user-select: none;
-}
-:not(button) img {
-  pointer-events: none;
-}
-Resources
+  <script src="script.js"></script>
+</body>
+</html>
