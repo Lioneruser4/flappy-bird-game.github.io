@@ -15,20 +15,16 @@
             <button onclick="login()">Giriş</button>
         </div>
         <div id="balanceContainer" class="hidden">
-            Bakiye: $<span id="balanceAmount">0</span>
+            Bakiye: $<span id="balanceAmount">100</span>
         </div>
-        <div id="bonusContainer" class="hidden">
-            <input type="text" id="bonusCode" placeholder="Bonus Kodu">
-            <button onclick="applyBonus()">Bonusu Kullan</button>
-        </div>
-        <div id="slotMachine" class="hidden">
+        <div id="slotMachine">
             <img src="slot-machine.jpg" alt="Slot Makinesi" class="slot-machine">
             <div class="reel" id="reel1"></div>
             <div class="reel" id="reel2"></div>
             <div class="reel" id="reel3"></div>
         </div>
-        <button id="betButton" class="hidden" onclick="toggleBetPopup()">Bahis</button>
-        <button id="spinButton" class="hidden" onclick="spin()">Çevir</button>
+        <button id="betButton" onclick="toggleBetPopup()">Bahis</button>
+        <button id="spinButton" onclick="spin()" class="hidden">Çevir</button>
         <div id="message"></div>
         <audio id="spinSound" src="sounds/spin.mp3"></audio>
         <audio id="winSound" src="sounds/win.mp3"></audio>
