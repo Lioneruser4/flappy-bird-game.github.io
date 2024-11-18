@@ -23,8 +23,9 @@ let winProbability = 0.7; // Kazanma olasılığı (%70)
 
 window.onload = function () {
     const savedUsername = localStorage.getItem('username');
-    if (savedUsername) {
-        login(savedUsername);
+    const savedPassword = localStorage.getItem('password');
+    if (savedUsername && savedPassword) {
+        login(savedUsername, savedPassword);
     }
 }
 
@@ -34,12 +35,14 @@ function setBet(amount) {
     closeBetPopup();
 }
 
-function login(username) {
-    if (!username) {
+function login(username, password) {
+    if (!username || !password) {
         username = document.getElementById('username').value;
+        password = document.getElementById('password').value;
     }
-    if (username) {
+    if (username && password) {
         localStorage.setItem('username', username);
+        localStorage.setItem('password', password);
         if (!localStorage.getItem('balance')) {
             localStorage.setItem('balance', 100); // Her kullanıcı için başlangıç bakiyesi
         }
@@ -53,8 +56,7 @@ function login(username) {
 
 function logout() {
     localStorage.removeItem('username');
-    localStorage.removeItem('balance');
-    localStorage.removeItem('totalLosses');
+    localStorage.removeItem('password');
     updateUI();
 }
 
