@@ -1,72 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Slot Casino Oyunu</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="background"></div>
+  <div id="background-image">
+    <!-- Slot oyunu ve modallar burada olacak -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('loginModal')">&times;</span>
+        <h2>Giriş Yap</h2>
+        <form id="loginForm">
+          <input type="text" id="loginUsername" placeholder="Kullanıcı Adı" required>
+          <input type="password" id="loginPassword" placeholder="Şifre" required>
+          <button type="submit">Giriş Yap</button>
+        </form>
+        <button onclick="showModal('registerModal')">Kayıt Ol</button>
+        <button onclick="startDemo()">Demo Oyna</button>
+      </div>
+    </div>
 
-  <!-- Navigasyon Barı -->
-  <div class="nav-bar">
-    <button onclick="showModal('loginModal')">Giriş Yap</button>
-    <button onclick="showModal('registerModal')">Kayıt Ol</button>
-    <button onclick="startDemo()">Demo Oyna</button>
-  </div>
+    <!-- Kayıt Modalı -->
+    <div id="registerModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('registerModal')">&times;</span>
+        <h2>Kayıt Ol</h2>
+        <form id="registerForm">
+          <input type="text" id="registerUsername" placeholder="Kullanıcı Adı" required>
+          <input type="password" id="registerPassword" placeholder="Şifre" required>
+          <button type="submit">Kayıt Ol</button>
+        </form>
+      </div>
+    </div>
 
-  <!-- Kullanıcı Bilgisi -->
-  <div class="user-info" id="userInfo" style="display:none;">
-    Hoşgeldin, <span id="usernameDisplay"></span> | Bakiye: <span id="userBalance">0</span>
-  </div>
-
-  <!-- Slot Makinesi -->
-  <div class="slot-machine">
-    <div class="reel" id="reel1">🍒</div>
-    <div class="reel" id="reel2">🔔</div>
-    <div class="reel" id="reel3">💎</div>
-  </div>
-  <button class="spin-button" onclick="spinReels()">Spin</button>
-
-  <!-- Modallar -->
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('loginModal')">&times;</span>
-      <h2>Giriş Yap</h2>
-      <form id="loginForm">
-        <label for="loginUsername">Kullanıcı Adı:</label>
-        <input type="text" id="loginUsername" required>
-        <label for="loginPassword">Şifre:</label>
-        <input type="password" id="loginPassword" required>
-        <button type="submit">Giriş Yap</button>
-      </form>
+    <!-- Admin Paneli -->
+    <div id="adminPanel" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal('adminPanel')">&times;</span>
+        <h2>Admin Paneli</h2>
+        <div id="userList"></div>
+        <button onclick="addBalanceToUser()">Bakiye Ekle</button>
+      </div>
     </div>
   </div>
-
-  <div id="registerModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('registerModal')">&times;</span>
-      <h2>Kayıt Ol</h2>
-      <form id="registerForm">
-        <label for="registerUsername">Kullanıcı Adı:</label>
-        <input type="text" id="registerUsername" required>
-        <label for="registerPassword">Şifre:</label>
-        <input type="password" id="registerPassword" required>
-        <button type="submit">Kayıt Ol</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Admin Panel -->
-  <div id="adminPanel" class="modal" style="display:none;">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('adminPanel')">&times;</span>
-      <h2>Admin Panel</h2>
-      <div id="userList"></div>
-    </div>
-  </div>
-
   <script src="script.js"></script>
 </body>
 </html>
