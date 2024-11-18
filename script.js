@@ -4,6 +4,7 @@ const reel1 = document.getElementById('reel1');
 const reel2 = document.getElementById('reel2');
 const reel3 = document.getElementById('reel3');
 const winSound = document.getElementById('winSound');
+const spinSound = document.getElementById('spinSound');
 const message = document.getElementById('message');
 const balanceAmount = document.getElementById('balanceAmount');
 
@@ -20,6 +21,9 @@ function spin() {
         return;
     }
 
+    // Spin sesini çal
+    spinSound.play();
+
     balance -= betAmount;
     balanceAmount.innerText = balance;
 
@@ -27,11 +31,21 @@ function spin() {
     const result2 = fruits[Math.floor(Math.random() * fruits.length)];
     const result3 = fruits[Math.floor(Math.random() * fruits.length)];
 
-    reel1.innerText = result1;
-    reel2.innerText = result2;
-    reel3.innerText = result3;
+    animateReel(reel1, result1);
+    animateReel(reel2, result2);
+    animateReel(reel3, result3);
 
-    checkWin(result1, result2, result3);
+    setTimeout(() => {
+        checkWin(result1, result2, result3);
+    }, 2000); // Animasyon süresi
+}
+
+function animateReel(reel, result) {
+    reel.innerHTML = `<div>${result}</div>`;
+    reel.style.animation = 'none'; // Animasyonu durdur
+    setTimeout(() => {
+        reel.style.animation = ''; // Animasyonu yeniden başlat
+    }, 10);
 }
 
 function checkWin(result1, result2, result3) {
