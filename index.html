@@ -3,49 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slot Casino Oyunu</title>
+  <title>Animasyonlu Slot Casino Oyunu</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div id="background-image">
-    <!-- Slot oyunu ve modallar burada olacak -->
-    <div id="loginModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeModal('loginModal')">&times;</span>
-        <h2>Giriş Yap</h2>
-        <form id="loginForm">
-          <input type="text" id="loginUsername" placeholder="Kullanıcı Adı" required>
-          <input type="password" id="loginPassword" placeholder="Şifre" required>
-          <button type="submit">Giriş Yap</button>
-        </form>
-        <button onclick="showModal('registerModal')">Kayıt Ol</button>
-        <button onclick="startDemo()">Demo Oyna</button>
-      </div>
-    </div>
+  <!-- Arka Plan -->
+  <div id="background"></div>
 
-    <!-- Kayıt Modalı -->
-    <div id="registerModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeModal('registerModal')">&times;</span>
-        <h2>Kayıt Ol</h2>
-        <form id="registerForm">
-          <input type="text" id="registerUsername" placeholder="Kullanıcı Adı" required>
-          <input type="password" id="registerPassword" placeholder="Şifre" required>
-          <button type="submit">Kayıt Ol</button>
-        </form>
-      </div>
-    </div>
+  <!-- Kayıt ve Giriş Butonları -->
+  <div id="loginContainer">
+    <button id="demoButton">Demo Oyna</button>
+    <button id="signupButton">Kayıt Ol</button>
+    <button id="loginButton">Giriş Yap</button>
+  </div>
 
-    <!-- Admin Paneli -->
-    <div id="adminPanel" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeModal('adminPanel')">&times;</span>
-        <h2>Admin Paneli</h2>
-        <div id="userList"></div>
-        <button onclick="addBalanceToUser()">Bakiye Ekle</button>
-      </div>
+  <!-- Kayıt ve Giriş Pop-up -->
+  <div id="loginPopup" class="popup">
+    <div class="popupContent">
+      <h2>Kayıt Ol / Giriş Yap</h2>
+      <form id="loginForm">
+        <input type="text" id="username" placeholder="Kullanıcı Adı" required />
+        <input type="password" id="password" placeholder="Şifre" required />
+        <button type="submit">Giriş Yap</button>
+        <p>Hesabınız yok mu? <span id="registerLink">Kayıt Ol</span></p>
+      </form>
     </div>
   </div>
+
+  <!-- Slot Oyun Alanı -->
+  <div id="slotGameContainer" style="display: none;">
+    <h2>Slot Çarkı</h2>
+    <div id="slotMachine">
+      <div class="slot"></div>
+      <div class="slot"></div>
+      <div class="slot"></div>
+    </div>
+    <button id="spinButton">Çevir</button>
+    <p id="balance">Bakiye: 1000</p>
+  </div>
+
+  <!-- Sesler -->
+  <audio id="spinSound" src="spin.mp3" preload="auto"></audio>
+  <audio id="winSound" src="win.mp3" preload="auto"></audio>
+
   <script src="script.js"></script>
 </body>
 </html>
