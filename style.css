@@ -68,7 +68,27 @@ button:hover {
     background-color: #c0392b;
 }
 
-#betButtons button {
+.hidden {
+    display: none;
+}
+
+#betPopup, #bonusPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 2px solid #2c3e50;
+    border-radius: 10px;
+    z-index: 1000;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+#betPopup button, #bonusPopup button {
     padding: 10px;
     margin: 5px;
     background-color: #3498db;
@@ -78,7 +98,7 @@ button:hover {
     cursor: pointer;
 }
 
-#betButtons button:hover {
+#betPopup button:hover, #bonusPopup button:hover {
     background-color: #2980b9;
 }
 
