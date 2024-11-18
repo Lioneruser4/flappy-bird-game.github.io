@@ -21,7 +21,7 @@ body {
 
 #slotMachine {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     margin: 20px auto;
     width: 300px;
@@ -42,16 +42,22 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
+    font-size: 2rem;
 }
 
 .reel div {
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
     width: 100%;
-    text-align: center;
-    font-size: 2rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: spin 1s infinite;
+}
+
+@keyframes spin {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
 }
 
 button {
