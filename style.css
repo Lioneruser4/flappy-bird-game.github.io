@@ -14,6 +14,11 @@ body {
     text-align: center;
 }
 
+#balance {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
 #slotMachine {
     display: flex;
     justify-content: space-around;
@@ -51,4 +56,24 @@ button {
 
 button:hover {
     background-color: #c0392b;
+}
+
+#betButtons button {
+    padding: 10px;
+    margin: 5px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#betButtons button:hover {
+    background-color: #2980b9;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #e74c3c;
 }
