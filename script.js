@@ -1,24 +1,33 @@
-import { Easing, Group, Tween } from 'https://unpkg.com/@tweenjs/tween.js@23.1.3/dist/tween.esm.js';
-import GUI from 'https://cdn.jsdelivr.net/npm/lil-gui@0.19/+esm';
+const symbols = ["🍒", "🔔", "⭐", "🍋", "🍉", "💎", "🎰"]; // Bonus icon: 💎
+let spinButton = document.getElementById("spinButton");
+let message = document.getElementById("message");
 
-const gui = new GUI();
-const IgnoreStartSymbolCount = 3;
-const assetBaseURL = 'https://n1md7.github.io/slot-game';
+function getRandomSymbol() {
+  return symbols[Math.floor(Math.random() * symbols.length)];
+}
 
-const BARx1 = '1xBAR';
-const BARx2 = '2xBAR';
-const BARx3 = '3xBAR';
-const Seven = 'Seven';
-const Cherry = 'Cherry';
-const AnyBar = 'AnyBar';
-const AllSame = 'AllSame';
-const CherryOrSeven = 'CherryOrSeven';
+function spinReels() {
+  const reel1 = getRandomSymbol();
+  const reel2 = getRandomSymbol();
+  const reel3 = getRandomSymbol();
 
-const LineOne = 0;
-const LineTwo = 1;
-const LineThree = 2;
-const LineFour = 3;
-const LineFive = 4;
+  document.getElementById("reel1").innerText = reel1;
+  document.getElementById("reel2").innerText = reel2;
+  document.getElementById("reel3").innerText = reel3;
 
-const ModeFixed = 'fixed';
-const ModeRandom = 'random';
+  checkWin(reel1, reel2, reel3);
+}
+
+function checkWin(r1, r2, r3) {
+  if (r1 === r2 && r2 === r3) {
+    if (r1 === "💎") {
+      message.innerText = "Jackpot! 10 Free Spins!";
+    } else {
+      message.innerText = "You Win!";
+    }
+  } else {
+    message.innerText = "Try Again!";
+  }
+}
+
+spinButton.addEventListener("click", spinReels);
