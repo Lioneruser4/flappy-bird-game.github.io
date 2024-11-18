@@ -9,6 +9,7 @@ const message = document.getElementById('message');
 const balanceAmount = document.getElementById('balanceAmount');
 
 const fruits = ['🍒', '🍋', '🍉', '🍇', '🍓', '🍑', '🍍']; // Meyve simgeleri
+const winProbability = 0.7; // Kazanma olasılığı
 
 function setBet(amount) {
     betAmount = amount;
@@ -27,34 +28,27 @@ function spin() {
     balance -= betAmount;
     balanceAmount.innerText = balance;
 
-    const result1 = fruits[Math.floor(Math.random() * fruits.length)];
-    const result2 = fruits[Math.floor(Math.random() * fruits.length)];
-    const result3 = fruits[Math.floor(Math.random() * fruits.length)];
+    const isWinning = Math.random() < winProbability;
+    const winningFruit = fruits[Math.floor(Math.random() * fruits.length)];
+    const result1 = isWinning ? winningFruit : fruits[Math.floor(Math.random() * fruits.length)];
+    const result2 = isWinning ? winningFruit : fruits[Math.floor(Math.random() * fruits.length)];
+    const result3 = isWinning ? winningFruit : fruits[Math.floor(Math.random() * fruits.length)];
 
-    animateReel(reel1, result1);
-    animateReel(reel2, result2);
-    animateReel(reel3, result3);
+    animateReel(reel1, result1, 0);
+    animateReel(reel2, result2, 1000);
+    animateReel(reel3, result3, 2000);
 
     setTimeout(() => {
         checkWin(result1, result2, result3);
-    }, 2000); // Animasyon süresi
+    }, 3000); // Animasyon süresi (3 saniye)
 }
 
-function animateReel(reel, result) {
-    reel.innerHTML = `<div>${result}</div>`;
-    reel.style.animation = 'none'; // Animasyonu durdur
+function animateReel(reel, result, delay) {
     setTimeout(() => {
-        reel.style.animation = ''; // Animasyonu yeniden başlat
-    }, 10);
+        reel.innerHTML = `<div>${result}</div>`;
+    }, delay);
 }
 
 function checkWin(result1, result2, result3) {
     if (result1 === result2 && result2 === result3) {
-        winSound.play();
-        balance += betAmount * 5;
-        balanceAmount.innerText = balance;
-        message.innerText = 'Tebrikler! Kazandınız!';
-    } else {
-        message.innerText = '';
-    }
-}
+        win
