@@ -1,43 +1,46 @@
+let balance = 100; // Başlangıç bakiyesi
+let betAmount = 1; // Başlangıç bahis miktarı
 const reel1 = document.getElementById('reel1');
 const reel2 = document.getElementById('reel2');
 const reel3 = document.getElementById('reel3');
 const winSound = document.getElementById('winSound');
-const loseSound = document.getElementById('loseSound');
+const message = document.getElementById('message');
+const balanceAmount = document.getElementById('balanceAmount');
 
 const fruits = ['🍒', '🍋', '🍉', '🍇', '🍓', '🍑', '🍍']; // Meyve simgeleri
 
+function setBet(amount) {
+    betAmount = amount;
+    message.innerText = `Bahis Miktarı: ${amount}$`;
+}
+
 function spin() {
+    if (balance < betAmount) {
+        message.innerText = 'Yetersiz bakiye!';
+        return;
+    }
+
+    balance -= betAmount;
+    balanceAmount.innerText = balance;
+
     const result1 = fruits[Math.floor(Math.random() * fruits.length)];
     const result2 = fruits[Math.floor(Math.random() * fruits.length)];
     const result3 = fruits[Math.floor(Math.random() * fruits.length)];
 
-    reel1.innerHTML = `<div>${result1}</div>`;
-    reel2.innerHTML = `<div>${result2}</div>`;
-    reel3.innerHTML = `<div>${result3}</div>`;
+    reel1.innerText = result1;
+    reel2.innerText = result2;
+    reel3.innerText = result3;
 
-    animateReels(result1, result2, result3);
-}
-
-function animateReels(result1, result2, result3) {
-    reel1.classList.add('spin');
-    reel2.classList.add('spin');
-    reel3.classList.add('spin');
-
-    setTimeout(() => {
-        reel1.classList.remove('spin');
-        reel2.classList.remove('spin');
-        reel3.classList.remove('spin');
-
-        checkWin(result1, result2, result3);
-    }, 2000); // Animasyon süresi
+    checkWin(result1, result2, result3);
 }
 
 function checkWin(result1, result2, result3) {
     if (result1 === result2 && result2 === result3) {
         winSound.play();
-        alert('Tebrikler! Kazandınız!');
+        balance += betAmount * 5;
+        balanceAmount.innerText = balance;
+        message.innerText = 'Tebrikler! Kazandınız!';
     } else {
-        loseSound.play();
-        alert('Maalesef, kaybettiniz.');
+        message.innerText = '';
     }
 }
