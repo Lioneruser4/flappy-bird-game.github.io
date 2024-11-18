@@ -12,73 +12,15 @@ const balanceAmount = document.getElementById('balanceAmount');
 const spinButton = document.getElementById('spinButton');
 const betPopup = document.getElementById('betPopup');
 const bonusPopup = document.getElementById('bonusPopup');
-const loginContainer = document.getElementById('loginContainer');
-const balanceContainer = document.getElementById('balanceContainer');
-const adminPanel = document.getElementById('adminPanel');
-const totalLosses = document.getElementById('totalLosses');
 
 const fruits = ['🍒', '🍋', '🍉', '🍇', '🍓', '🍑', '🍍', '🎁']; // Meyve simgeleri, bonus için 🎁 eklendi
 
 let winProbability = 0.7; // Kazanma olasılığı (%70)
 
-window.onload = function () {
-    const savedUsername = localStorage.getItem('username');
-    const savedPassword = localStorage.getItem('password');
-    if (savedUsername && savedPassword) {
-        login(savedUsername, savedPassword);
-    }
-}
-
 function setBet(amount) {
     betAmount = amount;
     message.innerText = `Bahis Miktarı: ${amount}$`;
     closeBetPopup();
-}
-
-function login(username, password) {
-    if (!username || !password) {
-        username = document.getElementById('username').value;
-        password = document.getElementById('password').value;
-    }
-    if (username && password) {
-        localStorage.setItem('username', username);
-        localStorage.setItem('password', password);
-        if (!localStorage.getItem('balance')) {
-            localStorage.setItem('balance', 100); // Her kullanıcı için başlangıç bakiyesi
-        }
-        if (!localStorage.getItem('totalLosses')) {
-            localStorage.setItem('totalLosses', 0); // Admin için toplam kayıplar
-        }
-        balance = parseInt(localStorage.getItem('balance'));
-        updateUI();
-    }
-}
-
-function logout() {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
-    updateUI();
-}
-
-function updateUI() {
-    const username = localStorage.getItem('username');
-    if (username) {
-        loginContainer.classList.add('hidden');
-        balanceContainer.classList.remove('hidden');
-        spinButton.classList.remove('hidden');
-        balanceAmount.innerText = localStorage.getItem('balance');
-        if (username === 'admin') {
-            adminPanel.classList.remove('hidden');
-            totalLosses.innerText = localStorage.getItem('totalLosses');
-        } else {
-            adminPanel.classList.add('hidden');
-        }
-    } else {
-        loginContainer.classList.remove('hidden');
-        balanceContainer.classList.add('hidden');
-        spinButton.classList.add('hidden');
-        adminPanel.classList.add('hidden');
-    }
 }
 
 function spin() {
@@ -97,7 +39,6 @@ function spin() {
         freeSpins--;
     }
 
-    localStorage.setItem('balance', balance);
     balanceAmount.innerText = balance;
 
     const result1 = getRandomFruit();
@@ -143,51 +84,4 @@ function spinReel(reel, result, delay) {
     }, delay);
 }
 
-function checkWin(result1, result2, result3) {
-    const isWin = Math.random() < winProbability;
-    if (result1 === result2 && result2 === result3) {
-        if (result1 === '🎁') {
-            bonusSound.play();
-            freeSpins += 10;
-            openBonusPopup();
-        } else if (isWin) {
-            winSound.play();
-            balance += betAmount * 5;
-        }
-    } else {
-        localStorage.setItem('totalLosses', parseInt(localStorage.getItem('totalLosses')) + betAmount);
-        if (localStorage.getItem('username') === 'admin') {
-            totalLosses.innerText = localStorage.getItem('totalLosses');
-        }
-    }
-    localStorage.setItem('balance', balance);
-    balanceAmount.innerText = balance;
-}
-
-function applyBonusCode() {
-    const bonusCode = document.getElementById('bonusCode').value;
-    if (bonusCode === 'mm') {
-        freeSpins += 10;
-        message.innerText = '10 Ücretsiz çevirme hakkı kazandınız!';
-        document.getElementById('bonusCode').value = '';
-    } else {
-        message.innerText = 'Geçersiz bonus kodu!';
-    }
-}
-
-// Bahis seçimi pop-up'ı açma/kapatma fonksiyonları
-function toggleBetPopup() {
-    betPopup.classList.toggle('hidden');
-}
-
-function closeBetPopup() {
-    betPopup.classList.add('hidden');
-}
-
-function openBonusPopup() {
-    bonusPopup.classList.remove('hidden');
-}
-
-function closeBonusPopup() {
-    bonusPopup.classList.add('hidden');
-}
+function checkWin(result1, result
