@@ -42,12 +42,6 @@ body {
     justify-content: center;
     align-items: center;
     position: relative;
-    animation: spinReel 1s infinite linear;
-}
-
-@keyframes spinReel {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-100%); }
 }
 
 .reel div {
@@ -58,12 +52,6 @@ body {
     width: 100%;
     text-align: center;
     font-size: 2rem;
-    animation: spin 2s infinite linear;
-}
-
-@keyframes spin {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-200%); }
 }
 
 button {
