@@ -1,95 +1,118 @@
-let users = {}; // Kullanıcı verileri burada saklanacak
-let currentUser = null; // Şu anda giriş yapmış kullanıcı
-let isAdmin = false; // Admin kontrolü
+// Ses dosyaları
+const spinSound = document.getElementById('spinSound');
+const winSound = document.getElementById('winSound');
 
-// Modal açma ve kapama fonksiyonları
-function showModal(id) {
-  document.getElementById(id).style.display = 'block';
-}
+// Kullanıcı ve Bakiye Bilgileri
+let users = {}; // Kullanıcılar verisi
+let loggedInUser = null;
+let userBalance = 1000; // Başlangıç bakiyesi
 
-function closeModal(id) {
-  document.getElementById(id).style.display = 'none';
-}
+// Pop-up açma
+const loginPopup = document.getElementById('loginPopup');
+const loginButton = document.getElementById('loginButton');
+const signupButton = document.getElementById('signupButton');
+const registerLink = document.getElementById('registerLink');
+const loginForm = document.getElementById('loginForm');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
 
-// Giriş yapmak
-document.getElementById('loginForm').addEventListener('submit', function(e) {
+// Slot Oyun Başlatma
+const demoButton = document.getElementById('demoButton');
+const slotGameContainer = document.getElementById('slotGameContainer');
+const spinButton = document.getElementById('spinButton');
+const balanceDisplay = document.getElementById('balance');
+
+// Kullanıcı Giriş ve Kayıt
+loginButton.addEventListener('click', () => {
+  loginPopup.style.display = 'flex';
+});
+
+signupButton.addEventListener('click', () => {
+  loginForm.reset();
+  registerLink.style.display = 'none';
+  loginButton.style.display = 'none';
+  loginPopup.style.display = 'flex';
+});
+
+registerLink.addEventListener('click', () => {
+  loginButton.style.display = 'block';
+  registerLink.style.display = 'none';
+});
+
+loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  const username = document.getElementById('loginUsername').value;
-  const password = document.getElementById('loginPassword').value;
+  const username = usernameInput.value;
+  const password = passwordInput.value;
 
-  // Admin giriş kontrolü
-  if (username === 'admin' && password === 'admin') {
-    isAdmin = true;
-    showAdminPanel();
-    closeModal('loginModal');
-    return;
-  }
-
-  // Kullanıcı giriş kontrolü
+  // Giriş Kontrolü
   if (users[username] && users[username].password === password) {
-    currentUser = { username, ...users[username] };
-    updateUserInfo();
-    closeModal('loginModal');
+    loggedInUser = username;
+    userBalance = users[username].balance;
+    updateBalanceDisplay();
+    loginPopup.style.display = 'none';
+    slotGameContainer.style.display = 'block';
   } else {
-    alert('Kullanıcı adı veya şifre yanlış!');
+    alert('Hatalı kullanıcı adı veya şifre');
   }
 });
 
-// Kayıt olmak
-document.getElementById('registerForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const username = document.getElementById('registerUsername').value;
-  const password = document.getElementById('registerPassword').value;
-
-  if (users[username]) {
-    alert('Bu kullanıcı adı zaten alındı!');
-  } else {
-    users[username] = { password, balance: 20, freeSpins: 20 };
-    alert('Kayıt başarılı!');
-    closeModal('registerModal');
-  }
+// Demo butonuna basıldığında
+demoButton.addEventListener('click', () => {
+  loggedInUser = 'Demo Kullanıcı';
+  userBalance = 1000;
+  updateBalanceDisplay();
+  slotGameContainer.style.display = 'block';
 });
 
-// Demo oyun başlat
-function startDemo() {
-  currentUser = { username: 'Demo_' + Math.floor(Math.random() * 1000), balance: 0, freeSpins: 0 };
-  updateUserInfo();
-  closeModal('loginModal');
-}
+// Slot Oyunu
+spinButton.addEventListener('click', () => {
+  playSpinSound();
+  const slots = document.querySelectorAll('.slot');
+  slots.forEach(slot => {
+    const randomEmoji = getRandomEmoji();
+    slot.textContent = randomEmoji;
+    slot.style.animation = 'spinAnimation 1s ease-in-out';
+  });
 
-// Kullanıcı bilgilerini güncelle
-function updateUserInfo() {
-  if (currentUser) {
-    document.getElementById('userBalance').innerText = currentUser.balance;
-    document.getElementById('userFreeSpins').innerText = currentUser.freeSpins;
+  setTimeout(() => {
+    checkWin();
+  }, 1000);
+});
+
+// Kazanma Kontrolü
+function checkWin() {
+  const slots = document.querySelectorAll('.slot');
+  const emojis = Array.from(slots).map(slot => slot.textContent);
+  const allSame = emojis.every(emoji => emoji === emojis[0]);
+  
+  if (allSame) {
+    playWinSound();
+    userBalance += 100; // Kazanç ekle
+    updateBalanceDisplay();
+    alert('Kazandınız!');
+  } else {
+    alert('Kaybettiniz, tekrar deneyin!');
   }
 }
 
-// Admin Paneli
-function showAdminPanel() {
-  if (!isAdmin) return;
-
-  const userListDiv = document.getElementById('userList');
-  userListDiv.innerHTML = ''; // Listeyi temizle
-
-  for (const [username, data] of Object.entries(users)) {
-    const userDiv = document.createElement('div');
-    userDiv.innerHTML = `
-      <strong>${username}</strong> - Bakiye: ${data.balance} - Ücretsiz Spin: ${data.freeSpins}
-      <button onclick="addBalance('${username}')">Bakiye Ekle</button>
-    `;
-    userListDiv.appendChild(userDiv);
-  }
-
-  showModal('adminPanel');
+// Bakiye güncellemesi
+function updateBalanceDisplay() {
+  balanceDisplay.textContent = `Bakiye: ${userBalance}`;
 }
 
-// Kullanıcıya bakiye ekle
-function addBalance(username) {
-  const amount = prompt('Eklemek istediğiniz bakiye miktarını girin:');
-  if (amount && !isNaN(amount)) {
-    users[username].balance += parseInt(amount, 10);
-    alert('Bakiye başarıyla eklendi!');
-    showAdminPanel();
-  }
+// Spin sesi çalma
+function playSpinSound() {
+  spinSound.play();
+}
+
+// Kazanma sesi çalma
+function playWinSound() {
+  winSound.play();
+}
+
+// Rastgele Emoji Üretme
+function getRandomEmoji() {
+  const emojis = ['🍒', '🍉', '🍋', '🍇', '🍓', '🍊'];
+  const randomIndex = Math.floor(Math.random() * emojis.length);
+  return emojis[randomIndex];
 }
