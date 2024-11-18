@@ -47,14 +47,14 @@ function spin() {
 
     // Çarkları sırayla döndür ve durdur
     spinReel(reel1, result1, 0);
-    spinReel(reel2, result2, 500);
-    spinReel(reel3, result3, 1000);
+    spinReel(reel2, result2, 1000);
+    spinReel(reel3, result3, 2000);
 
     // Kazanma kontrolü
     setTimeout(() => {
         checkWin(result1, result2, result3);
         spinButton.disabled = false;
-    }, 1500); // Tüm çarkların durma süresi
+    }, 3000); // Tüm çarkların durma süresi
 }
 
 function getRandomFruit() {
@@ -62,18 +62,29 @@ function getRandomFruit() {
 }
 
 function spinReel(reel, result, delay) {
-    let spins = 10; // Çarkın kaç kez döneceği
     setTimeout(() => {
-        const interval = setInterval(() => {
-            const randomFruit = getRandomFruit();
-            reel.innerHTML = `<div>${randomFruit}</div>`;
-            spins--;
+        reel.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+            const fruit = getRandomFruit();
+            const fruitDiv = document.createElement('div');
+            fruitDiv.innerText = fruit;
+            reel.appendChild(fruitDiv);
+        }
+        const finalFruitDiv = document.createElement('div');
+        finalFruitDiv.innerText = result;
+        reel.appendChild(finalFruitDiv);
 
-            if (spins === 0) {
+        let position = 0; // Başlangıç pozisyonu
+        const interval = setInterval(() => {
+            position += 10; // Her döngüde 10px yukarı kaydır
+            reel.style.transform = `translateY(-${position}px)`;
+
+            if (position >= 100) { // 100px yukarı kaydırıldığında
                 clearInterval(interval);
+                reel.style.transform = 'translateY(0)';
                 reel.innerHTML = `<div>${result}</div>`;
             }
-        }, 100); // Döndürme süresi
+        }, 50); // Her 50ms'de bir döndürme
     }, delay);
 }
 
