@@ -1,5 +1,5 @@
-const spinSound = new Audio('assets/spin.mp3');
-const winSound = new Audio('assets/win.mp3');
+const spinSound = new Audio('sounds/spin.mp3');
+const winSound = new Audio('sounds/win.mp3');
 let loggedIn = false;
 
 function spinReels() {
