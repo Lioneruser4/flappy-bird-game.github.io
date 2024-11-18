@@ -15,18 +15,33 @@
             <div class="reel" id="reel2"></div>
             <div class="reel" id="reel3"></div>
         </div>
-        <div id="betButtons">
-            <button onclick="setBet(1)">1$</button>
-            <button onclick="setBet(2)">2$</button>
-            <button onclick="setBet(5)">5$</button>
-            <button onclick="setBet(10)">10$</button>
-            <button onclick="setBet(50)">50$</button>
-            <button onclick="setBet(100)">100$</button>
-        </div>
+        <button id="betButton" onclick="toggleBetPopup()">Bahis</button>
         <button id="spinButton" onclick="spin()">Çevir</button>
         <div id="message"></div>
         <audio id="spinSound" src="sounds/spin.mp3"></audio>
         <audio id="winSound" src="sounds/win.mp3"></audio>
+        <audio id="bonusSound" src="sounds/bonus.mp3"></audio>
+        
+        <!-- Bahis seçimi pop-up -->
+        <div id="betPopup" class="hidden">
+            <div class="popup-content">
+                <button onclick="setBet(1)">1$</button>
+                <button onclick="setBet(2)">2$</button>
+                <button onclick="setBet(5)">5$</button>
+                <button onclick="setBet(10)">10$</button>
+                <button onclick="setBet(50)">50$</button>
+                <button onclick="setBet(100)">100$</button>
+                <button onclick="closeBetPopup()">Kapat</button>
+            </div>
+        </div>
+        
+        <!-- Bonus bildirimi -->
+        <div id="bonusPopup" class="hidden">
+            <div class="popup-content">
+                <p>Tebrikler! 15 ücretsiz çevirme hakkı kazandınız!</p>
+                <button onclick="closeBonusPopup()">Tamam</button>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
