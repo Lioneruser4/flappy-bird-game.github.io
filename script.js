@@ -54,25 +54,24 @@ function spinReel(reel, result, delay) {
         const interval = setInterval(() => {
             const randomFruit = getRandomFruit();
             reel.innerHTML = `<div>${randomFruit}</div>`;
-            spins--;
-
-            if (spins === 0) {
-                clearInterval(interval);
-                reel.innerHTML = `<div>${result}</div>`;
-            }
         }, 100); // Döndürme süresi
+
+        setTimeout(() => {
+            clearInterval(interval);
+            reel.innerHTML = `<div>${result}</div>`;
+        }, 1000); // Çarkın durma süresi
     }, delay);
 }
 
 function checkWin(result1, result2, result3) {
     const isWin = Math.random() < winProbability;
-    if (isWin && result1 === result2 && result2 === result3) {
+    if (result1 === result2 && result2 === result3 && isWin) {
         winSound.play();
         balance += betAmount * 5;
         balanceAmount.innerText = balance;
         message.innerText = 'Tebrikler! Kazandınız!';
     } else {
-        message.innerText = '';
+        message.innerText = 'Tekrar deneyin!';
     }
 }
 
