@@ -39,16 +39,17 @@ body {
     border-radius: 5px;
     border: 2px solid #2c3e50;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
     position: relative;
     font-size: 2rem;
-    flex-direction: column;
 }
 
 .reel div {
     width: 100%;
     text-align: center;
+    height: 60px; /* Her meyve için */
 }
 
 button {
