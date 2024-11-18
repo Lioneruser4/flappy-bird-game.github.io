@@ -1,9 +1,16 @@
 const symbols = ["🍒", "🔔", "⭐", "🍋", "🍉", "💎", "🎰"]; // Bonus icon: 💎
+const bonusIcon = "💎";
 let spinButton = document.getElementById("spinButton");
 let message = document.getElementById("message");
+let freeSpins = 0;
+let winChance = 70; // Kazanma şansı yüzde 70
 
 function getRandomSymbol() {
-  return symbols[Math.floor(Math.random() * symbols.length)];
+  const chance = Math.random() * 100;
+  if (chance < winChance) {
+    return symbols[Math.floor(Math.random() * symbols.length)];
+  }
+  return bonusIcon;
 }
 
 function spinReels() {
@@ -20,13 +27,19 @@ function spinReels() {
 
 function checkWin(r1, r2, r3) {
   if (r1 === r2 && r2 === r3) {
-    if (r1 === "💎") {
-      message.innerText = "Jackpot! 10 Free Spins!";
+    if (r1 === bonusIcon) {
+      freeSpins += 10;
+      message.innerText = `Jackpot! 10 Free Spins! (Toplam Ücretsiz Spin: ${freeSpins})`;
     } else {
-      message.innerText = "You Win!";
+      message.innerText = "Kazandınız!";
     }
   } else {
-    message.innerText = "Try Again!";
+    if (freeSpins > 0) {
+      freeSpins--;
+      message.innerText = `Ücretsiz Spin Hakkı Kullanıldı! Kalan: ${freeSpins}`;
+    } else {
+      message.innerText = "Tekrar Deneyin!";
+    }
   }
 }
 
