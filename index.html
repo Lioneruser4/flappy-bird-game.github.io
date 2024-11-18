@@ -1,51 +1,7 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Animasyonlu Slot Casino Oyunu</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <!-- Arka Plan -->
-  <div id="background"></div>
-
-  <!-- Kayıt ve Giriş Butonları -->
-  <div id="loginContainer">
-    <button id="demoButton">Demo Oyna</button>
-    <button id="signupButton">Kayıt Ol</button>
-    <button id="loginButton">Giriş Yap</button>
-  </div>
-
-  <!-- Kayıt ve Giriş Pop-up -->
-  <div id="loginPopup" class="popup">
-    <div class="popupContent">
-      <h2>Kayıt Ol / Giriş Yap</h2>
-      <form id="loginForm">
-        <input type="text" id="username" placeholder="Kullanıcı Adı" required />
-        <input type="password" id="password" placeholder="Şifre" required />
-        <button type="submit">Giriş Yap</button>
-        <p>Hesabınız yok mu? <span id="registerLink">Kayıt Ol</span></p>
-      </form>
+<div id="viewport">
+    <div id="content">
+        <div id="game">
+            <canvas id="slots" width="550" height="430"></canvas>
+        </div>
     </div>
-  </div>
-
-  <!-- Slot Oyun Alanı -->
-  <div id="slotGameContainer" style="display: none;">
-    <h2>Slot Çarkı</h2>
-    <div id="slotMachine">
-      <div class="slot"></div>
-      <div class="slot"></div>
-      <div class="slot"></div>
-    </div>
-    <button id="spinButton">Çevir</button>
-    <p id="balance">Bakiye: 1000</p>
-  </div>
-
-  <!-- Sesler -->
-  <audio id="spinSound" src="spin.mp3" preload="auto"></audio>
-  <audio id="winSound" src="win.mp3" preload="auto"></audio>
-
-  <script src="script.js"></script>
-</body>
-</html>
+</div>
