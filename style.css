@@ -84,3 +84,13 @@ button:hover {
     padding: 10px;
     border-bottom: 1px solid #ccc;
 }
+.multiplier {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+}
+
+.multiplier img {
+    width: 100%;
+    height: auto;
+}
