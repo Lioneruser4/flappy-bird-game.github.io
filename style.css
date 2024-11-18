@@ -51,12 +51,6 @@ body {
     align-items: center;
     position: relative;
     font-size: 2rem;
-    animation: spin 1s infinite linear; /* Dönme animasyonu */
-}
-
-@keyframes spin {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-100%); }
 }
 
 .reel div {
