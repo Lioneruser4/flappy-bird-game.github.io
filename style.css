@@ -14,63 +14,49 @@ body {
     text-align: center;
 }
 
-#balance {
-    font-size: 24px;
+#loginContainer {
     margin-bottom: 20px;
 }
 
-#slotMachine {
-    position: relative;
-    width: 400px; /* Görüntüye göre ayarlayın */
-    height: 600px; /* Görüntüye göre ayarlayın */
-    background-color: #ecf0f1;
-    margin: 20px auto;
-    border: 5px solid #34495e;
-    border-radius: 10px;
-    overflow: hidden;
+#balanceContainer, #adminPanel {
+    margin-bottom: 20px;
 }
 
-.slot-machine {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
+.hidden {
+    display: none;
+}
+
+#slotMachine {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px auto;
+    width: 300px;
+    height: 200px;
+    background-color: #ecf0f1;
+    border: 5px solid #34495e;
+    border-radius: 10px;
 }
 
 .reel {
-    position: absolute;
     width: 80px;
     height: 180px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     overflow: hidden;
-    background-color: transparent;
-    z-index: 2;
-}
-
-#reel1 {
-    left: 25%;
-}
-
-#reel2 {
-    left: 50%;
-}
-
-#reel3 {
-    left: 75%;
+    background-color: #34495e;
+    border-radius: 5px;
+    border: 2px solid #2c3e50;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    font-size: 2rem;
 }
 
 .reel div {
     width: 100%;
     text-align: center;
     height: 60px; /* Her meyve için */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
 }
 
 button {
@@ -85,10 +71,6 @@ button {
 
 button:hover {
     background-color: #c0392b;
-}
-
-.hidden {
-    display: none;
 }
 
 #betPopup, #bonusPopup {
