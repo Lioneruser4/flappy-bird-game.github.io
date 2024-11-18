@@ -1,110 +1,25 @@
+:root {
+  --btn-bg: #313030;
+  --btn-color: white;
+  --btn-border: solid 4px white;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Black Ops One', sans-serif;
+}
+
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #2c3e50;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color: white;
+  background-image: url("https://n1md7.github.io/slot-game/img/background.webp");
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(6px);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
 }
 
-.container {
-    text-align: center;
-}
-
-#loginContainer {
-    margin-bottom: 20px;
-}
-
-#balanceContainer, #adminPanel {
-    margin-bottom: 20px;
-}
-
-.hidden {
-    display: none;
-}
-
-#slotMachine {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 20px auto;
-    width: 300px;
-    height: 200px;
-    background-color: #ecf0f1;
-    border: 5px solid #34495e;
-    border-radius: 10px;
-}
-
-.reel {
-    width: 80px;
-    height: 180px;
-    overflow: hidden;
-    background-color: #34495e;
-    border-radius: 5px;
-    border: 2px solid #2c3e50;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-    font-size: 2rem;
-}
-
-.reel div {
-    width: 100%;
-    text-align: center;
-    height: 60px; /* Her meyve için */
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-button:hover {
-    background-color: #c0392b;
-}
-
-#betPopup, #bonusPopup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    border: 2px solid #2c3e50;
-    border-radius: 10px;
-    z-index: 1000;
-}
-
-.popup-content {
-    text-align: center;
-}
-
-#betPopup button, #bonusPopup button {
-    padding: 10px;
-    margin: 5px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#betPopup button:hover, #bonusPopup button:hover {
-    background-color: #2980b9;
-}
-
-#message {
-    margin-top: 20px;
-    font-size: 20px;
-    color: #e74c3c;
-}
+.gold {
+  color: gold !important;
