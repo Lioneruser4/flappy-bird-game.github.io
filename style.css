@@ -1,50 +1,101 @@
-let balance = 100; // Başlangıç bakiyesi
-let betAmount = 1; // Başlangıç bahis miktarı
-const reel1 = document.getElementById('reel1');
-const reel2 = document.getElementById('reel2');
-const reel3 = document.getElementById('reel3');
-const winSound = document.getElementById('winSound');
-const spinSound = document.getElementById('spinSound');
-const message = document.getElementById('message');
-const balanceAmount = document.getElementById('balanceAmount');
-
-const fruits = ['🍒', '🍋', '🍉', '🍇', '🍓', '🍑', '🍍']; // Meyve simgeleri
-
-function setBet(amount) {
-    betAmount = amount;
-    message.innerText = `Bahis Miktarı: ${amount}$`;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2c3e50;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
 }
 
-function spin() {
-    if (balance < betAmount) {
-        message.innerText = 'Yetersiz bakiye!';
-        return;
-    }
-
-    // Spin sesini çal
-    spinSound.play();
-
-    balance -= betAmount;
-    balanceAmount.innerText = balance;
-
-    const result1 = fruits[Math.floor(Math.random() * fruits.length)];
-    const result2 = fruits[Math.floor(Math.random() * fruits.length)];
-    const result3 = fruits[Math.floor(Math.random() * fruits.length)];
-
-    reel1.innerText = result1;
-    reel2.innerText = result2;
-    reel3.innerText = result3;
-
-    checkWin(result1, result2, result3);
+.container {
+    text-align: center;
 }
 
-function checkWin(result1, result2, result3) {
-    if (result1 === result2 && result2 === result3) {
-        winSound.play();
-        balance += betAmount * 5;
-        balanceAmount.innerText = balance;
-        message.innerText = 'Tebrikler! Kazandınız!';
-    } else {
-        message.innerText = '';
-    }
+#balance {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#slotMachine {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    width: 300px;
+    height: 200px;
+    background-color: #ecf0f1;
+    border: 5px solid #34495e;
+    border-radius: 10px;
+}
+
+.reel {
+    width: 80px;
+    height: 180px;
+    overflow: hidden;
+    background-color: #34495e;
+    border-radius: 5px;
+    border: 2px solid #2c3e50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    animation: spinReel 1s infinite linear;
+}
+
+@keyframes spinReel {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); }
+}
+
+.reel div {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    animation: spin 2s infinite linear;
+}
+
+@keyframes spin {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-200%); }
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #c0392b;
+}
+
+#betButtons button {
+    padding: 10px;
+    margin: 5px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#betButtons button:hover {
+    background-color: #2980b9;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #e74c3c;
 }
