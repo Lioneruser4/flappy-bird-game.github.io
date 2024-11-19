@@ -1,34 +1,39 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slot Casino Oyunu</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ino Chat Room</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Arka Plan Fotoğrafı -->
-  <div class="background">
-    <img src="images/background.jpg" alt="Background Image" />
-  </div>
-  
-  <!-- Oyun Alanı -->
-  <div class="slot-machine">
-    <!-- Slot oyun elemanları burada olacak -->
-  </div>
-  
-  <!-- Spin Butonu -->
-  <button id="spinButton">Spin</button>
-  
-  <script src="script.js"></script>
+    <div class="container">
+        <h1>Ino Chat Room</h1>
+        <div id="loginContainer">
+            <input type="text" id="username" placeholder="Kullanıcı Adı">
+            <input type="password" id="password" placeholder="Şifre">
+            <button onclick="login()">Giriş</button>
+        </div>
+        <div id="gameContainer" class="hidden">
+            <div id="balanceContainer">
+                Bakiye: $<span id="balanceAmount">100</span>
+                <button onclick="applyBonus()">Bonus Kodu Uygula</button>
+                <input type="text" id="bonusCode" placeholder="Bonus Kodu">
+            </div>
+            <div id="chatContainer">
+                <div id="messages"></div>
+                <input type="text" id="chatInput" placeholder="Mesaj yaz...">
+                <button onclick="sendMessage()">Gönder</button>
+            </div>
+            <div id="roomContainer">
+                <button onclick="createRoom()">Oda Oluştur</button>
+                <div id="rooms"></div>
+            </div>
+        </div>
+        <div id="inoContainer" class="hidden">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+        <script src="script.js"></script>
+    </div>
 </body>
 </html>
-
-
-<div id="viewport">
-    <div id="content">
-        <div id="game">
-            <canvas id="slots" width="550" height="430"></canvas>
-        </div>
-    </div>
-</div>
