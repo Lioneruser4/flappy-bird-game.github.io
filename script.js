@@ -1,104 +1,103 @@
-let balance = 100; // Başlangıç bakiyesi
-const messages = document.getElementById('messages');
-const chatInput = document.getElementById('chatInput');
-const gameCanvas = document.getElementById('gameCanvas');
-const ctx = gameCanvas.getContext('2d');
-let inolar = [];
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const betAmountInput = document.getElementById('betAmount');
+const resultDiv = document.getElementById('result');
+const betPopup = document.getElementById('betPopup');
 
-// Kullanıcı girişi
-function login() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    if (username && password) {
-        localStorage.setItem('username', username);
-        localStorage.setItem('password', password);
-        if (!localStorage.getItem('balance')) {
-            localStorage.setItem('balance', 100); // Her kullanıcı için başlangıç bakiyesi
-        }
-        balance = parseInt(localStorage.getItem('balance'));
-        updateUI();
+let betAmount = 0;
+let balance = 100; // Kullanıcının başlangıç bakiyesi
+let car1 = { x: 50, y: 100, speed: Math.random() * 2 + 1 };
+let car2 = { x: 50, y: 200, speed: Math.random() * 2 + 1 };
+const finishLine = canvas.width - 100;
+let raceActive = false;
+
+// Araba resimleri ve yol resmi
+const car1Img = new Image();
+const car2Img = new Image();
+const roadImg = new Image();
+car1Img.src = 'car1.png'; // car1.png resmini ekleyin
+car2Img.src = 'car2.png'; // car2.png resmini ekleyin
+roadImg.src = 'road.png'; // road.png resmini ekleyin
+
+// Bahis yapma fonksiyonu
+function placeBet() {
+    betAmount = parseInt(betAmountInput.value);
+    if (isNaN(betAmount) || betAmount <= 0) {
+        alert('Lütfen geçerli bir bahis miktarı girin!');
+        return;
     }
+    if (betAmount > balance) {
+        alert('Yeterli bakiyeniz yok!');
+        return;
+    }
+    balance -= betAmount;
+    resultDiv.innerText = `Yarış başlıyor! Bahis miktarı: $${betAmount}`;
+    closeBetPopup();
+    startRace();
 }
 
-// UI güncellemesi
-function updateUI() {
-    const username = localStorage.getItem('username');
-    if (username) {
-        document.getElementById('loginContainer').classList.add('hidden');
-        document.getElementById('gameContainer').classList.remove('hidden');
-        document.getElementById('balanceAmount').innerText = localStorage.getItem('balance');
-        initGame();
+// Yarışı başlatma fonksiyonu
+function startRace() {
+    car1.x = 50;
+    car2.x = 50;
+    car1.speed = Math.random() * 2 + 1;
+    car2.speed = Math.random() * 2 + 1;
+    raceActive = true;
+    requestAnimationFrame(updateGame);
+}
+
+// Oyunu güncelleme fonksiyonu
+function updateGame() {
+    if (!raceActive) return;
+
+    // Yol hareketi
+    ctx.drawImage(roadImg, 0, 0, canvas.width, canvas.height);
+
+    // Arabaların hareketi
+    car1.x += car1.speed;
+    car2.x += car2.speed;
+    ctx.drawImage(car1Img, car1.x, car1.y, 50, 50);
+    ctx.drawImage(car2Img, car2.x, car2.y, 50, 50);
+
+    // Bitirme çizgisine ulaşıp ulaşmadığını kontrol et
+    if (car1.x >= finishLine || car2.x >= finishLine) {
+        raceActive = false;
+        declareWinner();
     } else {
-        document.getElementById('loginContainer').classList.remove('hidden');
-        document.getElementById('gameContainer').classList.add('hidden');
+        requestAnimationFrame(updateGame);
     }
 }
 
-// Mesaj gönderme
-function sendMessage() {
-    const messageText = chatInput.value;
-    if (messageText) {
-        const messageElement = document.createElement('div');
-        messageElement.innerText = `${localStorage.getItem('username')}: ${messageText}`;
-        messages.appendChild(messageElement);
-        chatInput.value = '';
+// Yarışın sonucunu belirleme fonksiyonu
+function declareWinner() {
+    let winner;
+    if (car1.x >= finishLine && car2.x >= finishLine) {
+        winner = (car1.x > car2.x) ? 'Araba 1' : 'Araba 2';
+    } else if (car1.x >= finishLine) {
+        winner = 'Araba 1';
+    } else {
+        winner = 'Araba 2';
     }
-}
 
-// Oyun başlangıcı
-function initGame() {
-    gameCanvas.width = window.innerWidth * 0.8;
-    gameCanvas.height = 400;
-    addIno();
-}
-
-// Ino ekleme
-function addIno() {
-    const ino = {
-        x: Math.random() * gameCanvas.width,
-        y: Math.random() * gameCanvas.height,
-        size: 20,
-        color: 'blue'
-    };
-    inolar.push(ino);
-    drawInolar();
-}
-
-// Ino çizimi
-function drawInolar() {
-    ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-    inolar.forEach(ino => {
-        ctx.fillStyle = ino.color;
-        ctx.fillRect(ino.x, ino.y, ino.size, ino.size);
-    });
-}
-
-// Bonus uygulama
-function applyBonus() {
-    const bonusCode = document.getElementById('bonusCode').value;
-    if (bonusCode === 'BONUS100') {
-        balance += 100;
-        localStorage.setItem('balance', balance);
-        document.getElementById('balanceAmount').innerText = balance;
-        document.getElementById('bonusCode').value = '';
+    if (winner === 'Araba 1') {
+        balance += betAmount * 3; // Kullanıcı kazandıysa bahis miktarının 3 katı kazansın
     }
+
+    resultDiv.innerText = `${winner} kazandı! Güncel bakiye: $${balance}`;
 }
 
-// Odalar
-function createRoom() {
-    const roomId = prompt('Oda ismi girin:');
-    if (roomId) {
-        const roomElement = document.createElement('div');
-        roomElement.innerText = roomId;
-        document.getElementById('rooms').appendChild(roomElement);
-    }
+// Pop-up gösterme fonksiyonu
+function showBetPopup() {
+    betPopup.classList.remove('hidden');
+}
+
+// Pop-up kapatma fonksiyonu
+function closeBetPopup() {
+    betPopup.classList.add('hidden');
 }
 
 window.onload = function() {
-    updateUI();
-    setInterval(() => {
-        balance += 10;
-        localStorage.setItem('balance', balance);
-        document.getElementById('balanceAmount').innerText = balance;
-    }, 3600000); // Her 1 saatte bir 10$
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    resultDiv.innerText = `Başlangıç bakiyesi: $${balance}`;
 };
