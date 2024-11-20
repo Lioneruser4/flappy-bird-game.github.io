@@ -3,37 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ino Chat Room</title>
+    <title>2D Yarış Oyunu</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Ino Chat Room</h1>
-        <div id="loginContainer">
-            <input type="text" id="username" placeholder="Kullanıcı Adı">
-            <input type="password" id="password" placeholder="Şifre">
-            <button onclick="login()">Giriş</button>
+        <h1>2D Yarış Oyunu</h1>
+        <div id="betContainer">
+            <button onclick="showBetPopup()">Bahis Yap</button>
         </div>
-        <div id="gameContainer" class="hidden">
-            <div id="balanceContainer">
-                Bakiye: $<span id="balanceAmount">100</span>
-                <button onclick="applyBonus()">Bonus Kodu Uygula</button>
-                <input type="text" id="bonusCode" placeholder="Bonus Kodu">
-            </div>
-            <div id="chatContainer">
-                <div id="messages"></div>
-                <input type="text" id="chatInput" placeholder="Mesaj yaz...">
-                <button onclick="sendMessage()">Gönder</button>
-            </div>
-            <div id="roomContainer">
-                <button onclick="createRoom()">Oda Oluştur</button>
-                <div id="rooms"></div>
-            </div>
-        </div>
-        <div id="inoContainer" class="hidden">
+        <div id="gameContainer">
             <canvas id="gameCanvas"></canvas>
         </div>
-        <script src="script.js"></script>
+        <div id="result"></div>
     </div>
+
+    <!-- Bahis Pop-up -->
+    <div id="betPopup" class="hidden">
+        <div class="popup-content">
+            <label for="betAmount">Bahis Miktarı:</label>
+            <input type="number" id="betAmount" min="1" placeholder="Bahis Miktarı">
+            <button onclick="placeBet()">Bahis Yap</button>
+            <button onclick="closeBetPopup()">Kapat</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
