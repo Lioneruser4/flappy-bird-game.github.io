@@ -1,11 +1,13 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const betAmountInput = document.getElementById('betAmount');
+const carSelect = document.getElementById('carSelect');
 const resultDiv = document.getElementById('result');
 const betPopup = document.getElementById('betPopup');
 
 let betAmount = 0;
 let balance = 100; // Kullanıcının başlangıç bakiyesi
+let selectedCar = 1; // Kullanıcının seçtiği araba
 let car1 = { x: 50, y: 100, speed: Math.random() * 2 + 1 };
 let car2 = { x: 50, y: 200, speed: Math.random() * 2 + 1 };
 const finishLine = canvas.width - 100;
@@ -15,13 +17,14 @@ let raceActive = false;
 const car1Img = new Image();
 const car2Img = new Image();
 const roadImg = new Image();
-car1Img.src = 'car1.png'; // car1.png resmini ekleyin
-car2Img.src = 'car2.png'; // car2.png resmini ekleyin
-roadImg.src = 'road.png'; // road.png resmini ekleyin
+car1Img.src = 'images/car1.png'; // resim yolu güncellendi
+car2Img.src = 'images/car2.png'; // resim yolu güncellendi
+roadImg.src = 'images/road.png'; // resim yolu güncellendi
 
 // Bahis yapma fonksiyonu
-function placeBet() {
-    betAmount = parseInt(betAmountInput.value);
+function placeBet(amount) {
+    betAmount = amount;
+    selectedCar = parseInt(carSelect.value);
     if (isNaN(betAmount) || betAmount <= 0) {
         alert('Lütfen geçerli bir bahis miktarı girin!');
         return;
@@ -31,7 +34,7 @@ function placeBet() {
         return;
     }
     balance -= betAmount;
-    resultDiv.innerText = `Yarış başlıyor! Bahis miktarı: $${betAmount}`;
+    resultDiv.innerText = `Yarış başlıyor! Bahis miktarı: $${betAmount}, Seçilen Araba: ${selectedCar}`;
     closeBetPopup();
     startRace();
 }
@@ -72,18 +75,18 @@ function updateGame() {
 function declareWinner() {
     let winner;
     if (car1.x >= finishLine && car2.x >= finishLine) {
-        winner = (car1.x > car2.x) ? 'Araba 1' : 'Araba 2';
+        winner = (car1.x > car2.x) ? '1' : '2';
     } else if (car1.x >= finishLine) {
-        winner = 'Araba 1';
+        winner = '1';
     } else {
-        winner = 'Araba 2';
+        winner = '2';
     }
 
-    if (winner === 'Araba 1') {
+    if (winner === selectedCar.toString()) {
         balance += betAmount * 3; // Kullanıcı kazandıysa bahis miktarının 3 katı kazansın
     }
 
-    resultDiv.innerText = `${winner} kazandı! Güncel bakiye: $${balance}`;
+    resultDiv.innerText = `Araba ${winner} kazandı! Güncel bakiye: $${balance}`;
 }
 
 // Pop-up gösterme fonksiyonu
