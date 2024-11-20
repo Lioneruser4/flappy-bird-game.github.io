@@ -14,47 +14,47 @@ body {
     text-align: center;
 }
 
-.hidden {
-    display: none;
-}
-
-#gameContainer, #inoContainer {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #34495e;
-    border-radius: 10px;
-}
-
-#balanceContainer {
+#betContainer {
     margin-bottom: 20px;
 }
 
-#chatContainer {
-    border: 2px solid #ecf0f1;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-#messages {
-    height: 200px;
-    overflow-y: scroll;
-    background-color: white;
-    color: black;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-#rooms {
-    margin-top: 20px;
+#gameContainer {
+    width: 100%;
+    height: 400px;
 }
 
 #gameCanvas {
     width: 100%;
-    height: 400px;
+    height: 100%;
     background-color: #ecf0f1;
-    border-radius: 10px;
     border: 2px solid #34495e;
+}
+
+#result {
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+#betPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    color: black;
+    padding: 20px;
+    border: 2px solid #34495e;
+    border-radius: 10px;
+    z-index: 1000;
+}
+
+.popup-content {
+    text-align: center;
+}
+
+#betPopup input, #betPopup button {
+    margin: 10px;
 }
