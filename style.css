@@ -55,6 +55,6 @@ body {
     text-align: center;
 }
 
-#betPopup input, #betPopup button {
+#betPopup input, #betPopup select, #betPopup button {
     margin: 10px;
 }
