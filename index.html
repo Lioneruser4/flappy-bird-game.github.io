@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Weather and AdSense Site</title>
+    <title>My Video Ad Site</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
+    <!-- PropellerAds Site Verification -->
+    <meta name="propeller" content="c54737d1b37b0e2d86e2993b070d67c9">
     <!-- Google AdSense AMP Otomatik Reklamlar -->
     <script async custom-element="amp-auto-ads"
             src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
-    <!-- Yeni Google AdSense Kodu -->
+    <!-- Google AdSense Reklam Kodu -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
          crossorigin="anonymous"></script>
     <script>
@@ -21,17 +23,28 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to My Weather Site</h1>
+        <h1>Welcome to My Video Ad Site</h1>
     </header>
     <main>
-        <div id="weather"></div>
-        <!-- Google AdSense Ad -->
-        <amp-auto-ads type="adsense"
-                      data-ad-client="ca-pub-1779293358827927"></amp-auto-ads>
+        <div id="adsense-ad">
+            <!-- Google AdSense Reklam -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-1779293358827927"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        <div id="video-ad">
+            <!-- PropellerAds Video Ad -->
+            <script async src="https://s.propelmedia.com/video.js?client=YOUR_CLIENT_ID"></script>
+            <div id="propeller-ad"></div>
+        </div>
     </main>
     <footer>
-        <p>&copy; 2024 My Weather Site</p>
+        <p>&copy; 2024 My Video Ad Site</p>
     </footer>
 </body>
-    site-verification: c54737d1b37b0e2d86e2993b070d67c9
 </html>
