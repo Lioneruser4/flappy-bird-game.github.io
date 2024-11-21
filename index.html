@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Video Ad and Weather Site</title>
+    <title>My Ad and Weather Site</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
     <!-- PropellerAds Site Verification -->
@@ -22,32 +22,15 @@
         enable_page_level_ads: true
       });
     </script>
-    <!-- Çıkışta Reklam Gösterme Kodu -->
-    <script>
-        (function () {
-            var clickUrl = "https://toopsoug.net/4/8545433?var=mywebsite"; // Kendi tanımlayıcınızı kullanın
-
-            function clickTbEventInit() {
-                console.log("Reklam gösterme etkinliği başlatıldı."); // Konsolda bir mesaj görüntüleyin
-                document.addEventListener('click', function () {
-                    window.onbeforeunload = null;
-                    window.open(clickUrl, '_blank', 'noreferrer,noopener');
-                });
-            }
-
-            if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent) && !('ontouchstart' in window)) {
-                setTimeout(function () {
-                    clickTbEventInit();
-                }, 5000);
-            }
-        })();
-    </script>
+    <!-- Eklenen Script Kodu -->
+    <script type='text/javascript' src='//pl25075542.profitablecpmrate.com/08/d5/a8/08d5a84758ffc0d0f2dc4af2816d121e.js'></script>
 </head>
 <body>
     <header>
-        <h1>Welcome to My Video Ad and Weather Site</h1>
+        <h1>Welcome to My Ad and Weather Site</h1>
+        <!-- Banner Gif -->
+        <a href="#" rel="nofollow"><img alt="banner" src="https://landings-cdn.adsterratech.com/referralBanners/gif/468x60_adsterra_reff.gif" /></a>
     </header>
-    <button class="ad-button" onclick="openAd()">Reklam İzle</button> <!-- Büyük yeşil buton -->
     <main>
         <div id="weather">
             <!-- Hava Durumu Bilgileri Burada Görünecek -->
@@ -64,13 +47,15 @@
                      (adsbygoogle = window.adsbygoogle || []).push({});
                 </script>
             </div>
-            <div id="adsterra-ad">
-                <iframe src="https://www.profitablecpmrate.com/egfxjt4z5?key=d21222c51bdd4afd5a0ecf97c6716982" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+            <div id="propellerads-ad">
+                <!-- PropellerAds Video Ad -->
+                <script async src="https://s.propelmedia.com/video.js?client=YOUR_CLIENT_ID"></script>
+                <div id="propeller-ad"></div>
             </div>
         </div>
     </main>
     <footer>
-        <p>&copy; 2024 My Video Ad and Weather Site</p>
+        <p>&copy; 2024 My Ad and Weather Site</p>
     </footer>
 </body>
 </html>
