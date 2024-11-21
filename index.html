@@ -22,6 +22,25 @@
         enable_page_level_ads: true
       });
     </script>
+    <!-- Çıkışta Reklam Gösterme Kodu -->
+    <script>
+        (function () {
+            var clickUrl = "https://toopsoug.net/4/8545433?var=mywebsite"; // Kendi tanımlayıcınızı kullanın
+
+            function clickTbEventInit() {
+                document.addEventListener('click', function () {
+                    window.onbeforeunload = null;
+                    window.open(clickUrl, '_blank', 'noreferrer,noopener');
+                });
+            }
+
+            if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent) && !('ontouchstart' in window)) {
+                setTimeout(function () {
+                    clickTbEventInit();
+                }, 5000);
+            }
+        })();
+    </script>
 </head>
 <body>
     <header>
