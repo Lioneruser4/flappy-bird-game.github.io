@@ -32,3 +32,11 @@ footer {
     text-align: center;
     padding: 1rem;
 }
+
+#weather {
+    background-color: white;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
