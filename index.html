@@ -3,56 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Çark Oyunu</title>
+    <title>My AdSense Site</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>Çark Oyunu</h1>
+        <h1>Welcome to My Site</h1>
     </header>
     <main>
-        <div class="wheel">
-            <div class="slice" style="--i: 15">
-                <p class="value">2</p>
-            </div>
-            <div class="slice" style="--i: 16">
-                <p class="value">3</p>
-            </div>
-            <div class="slice" style="--i: 17">
-                <p class="value">4</p>
-            </div>
-            <div class="slice" style="--i: 18">
-                <p class="value">0</p>
-            </div>
-            <div class="slice" style="--i: 19">
-                <p class="value sm">1000</p>
-            </div>
-            <div class="slice" style="--i: 20">
-                <p class="value">0</p>
-            </div>
-            <div class="slice" style="--i: 21">
-                <p class="value">3</p>
-            </div>
-            <div class="slice" style="--i: 22">
-                <p class="value">1</p>
-            </div>
-            <div class="slice" style="--i: 23">
-                <p class="value">0</p>
-            </div>
-            <div class="slice" style="--i: 24">
-                <p class="value sm">2</p>
-            </div>
-        </div>
-        <button onclick="spin()">Çarkı Çevir</button>
+        <p>This is a sample site with Google AdSense.</p>
+        <!-- Google AdSense Ad -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+             data-ad-slot="xxxxxxxxxx"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>
+             (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </main>
-    <!-- Sonuç Pop-up -->
-    <div id="resultPopup" class="hidden">
-        <div class="popup-content">
-            <p id="resultMessage"></p>
-            <button onclick="closeResultPopup()">Kapat</button>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <footer>
+        <p>&copy; 2024 My AdSense Site</p>
+    </footer>
 </body>
 </html>
