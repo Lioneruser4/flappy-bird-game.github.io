@@ -11,6 +11,8 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    justify-content: center; /* Site ortasına yerleştirmek için ekleyin */
+    align-items: center; /* Site ortasına yerleştirmek için ekleyin */
 }
 
 header {
@@ -18,12 +20,17 @@ header {
     color: white;
     padding: 1rem;
     text-align: center;
+    width: 100%; /* Genişliği tam sayfa yapmak için ekleyin */
 }
 
 main {
     flex: 1;
     padding: 2rem;
     text-align: center;
+    width: 100%; /* Genişliği tam sayfa yapmak için ekleyin */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Ortaya hizalamak için ekleyin */
 }
 
 footer {
@@ -31,6 +38,7 @@ footer {
     color: white;
     text-align: center;
     padding: 1rem;
+    width: 100%; /* Genişliği tam sayfa yapmak için ekleyin */
 }
 
 #weather {
@@ -39,4 +47,16 @@ footer {
     margin: 1rem 0;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ad-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#adsense-ad, #video-ad {
+    margin: 2rem 0;
+    width: 100%; /* Reklamların genişliğini ayarlamak için ekleyin */
 }
