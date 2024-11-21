@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My AdSense Site</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Google AdSense AMP Otomatik Reklamlar -->
+    <script async custom-element="amp-auto-ads"
+            src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
+         crossorigin="anonymous"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-1779293358827927",
+        enable_page_level_ads: true
+      });
+    </script>
 </head>
 <body>
     <header>
@@ -13,21 +24,11 @@
     <main>
         <p>This is a sample site with Google AdSense.</p>
         <!-- Google AdSense Ad -->
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927" crossorigin="anonymous"></script>
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-pub-1779293358827927"
-             data-ad-slot="xxxxxx"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>
-             (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
+        <amp-auto-ads type="adsense"
+                      data-ad-client="ca-pub-1779293358827927"></amp-auto-ads>
     </main>
     <footer>
         <p>&copy; 2024 My AdSense Site</p>
     </footer>
 </body>
 </html>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
-     crossorigin="anonymous"></script>
