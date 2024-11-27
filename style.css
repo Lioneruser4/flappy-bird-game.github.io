@@ -1,62 +1,103 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #282c34;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #61dafb;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    justify-content: center; /* Site ortasına yerleştirmek için ekleyin */
-    align-items: center; /* Site ortasına yerleştirmek için ekleyin */
+#main-container {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  background-color: #1c1f26;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    width: 100%; /* Genişliği tam sayfa yapmak için ekleyin */
+  margin-bottom: 20px;
 }
 
-main {
-    flex: 1;
-    padding: 2rem;
-    text-align: center;
-    width: 100%; /* Genişliği tam sayfa yapmak için ekleyin */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Ortaya hizalamak için ekleyin */
+header h1 {
+  font-size: 2.5em;
+}
+
+#auth {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+#register, #login {
+  width: 45%;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#slot-game {
+  display: none; /* Başlangıçta gizli */
+  margin-top: 20px;
+}
+
+#slot-game h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+#reels {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.reel {
+  width: 70px;
+  height: 100px;
+  margin: 0 10px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5em;
+  transition: transform 0.5s;
+}
+
+#spin-button {
+  padding: 15px 30px;
+  background-color: #61dafb;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+  margin-top: 10px;
 }
 
 footer {
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    width: 100%; /* Genişliği tam sayfa yapmak için ekleyin */
+  margin-top: 20px;
 }
 
-#weather {
-    background-color: white;
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+footer p {
+  font-size: 0.8em;
 }
 
-.ad-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
+@media (max-width: 600px) {
+  #main-container {
+    width: 90%;
+  }
 
-#adsense-ad, #video-ad {
-    margin: 2rem 0;
-    width: 100%; /* Reklamların genişliğini ayarlamak için ekleyin */
+  #reels .reel {
+    width: 50px;
+    height: 80px;
+    font-size: 2em;
+  }
+
+  #spin-button {
+    font-size: 1.2em;
+  }
 }
