@@ -1,92 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Linklər </title>
-    <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
-    <!-- Google AdSense AMP Otomatik Reklamlar -->
-    <script async custom-element="amp-auto-ads"
-            src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
-    <!-- Google AdSense Reklam Kodu -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
-         crossorigin="anonymous"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-1779293358827927",
-        enable_page_level_ads: true
-      });
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slot Game</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="main-container">
     <header>
-        <h1> Linklər Site</h1>
+      <h1>Slot Game</h1>
     </header>
-    <main>
-        <div id="useful-links">
-            <button onclick="window.open('https://t.me/xaliqq', '_blank')">Telegram ve Whatsapp Stickerləri</button>
-            <button onclick="window.open('https://t.me/btmusiqi', '_blank')">Hər Zövqə Uyğun Musiqilər</button>
-            <button onclick="window.open('https://t.me/allsvbot', '_blank')">TikTokda Logosuz Video Yüklə</button>
-            <button onclick="window.open('https://t.me/xaliqq', '_blank')">Crypto Airdropları</button>
-            <button onclick="window.open('https://t.me/bekartimes', '_blank')">Söhbət və əyləncə qrupu</button>
-            <button onclick="window.open('https://instagram.com/bekartimes', '_blank')">İnstagram Əyləncə Səhifəmiz</button>
-            <button onclick="window.open('https://t.me/btbots', '_blank')">Telegram Botları</button>
-        </div>
-        <div id="additional-ad" style="margin-top: 20px;">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : 'd8c6bc97079210ffad1026e53cc1cfb1',
-                    'format' : 'iframe',
-                    'height' : 50,
-                    'width' : 320,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/d8c6bc97079210ffad1026e53cc1cfb1/invoke.js"></script>
-        </div>
-        <div id="google-adsense" style="margin-top: 20px;">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
-                crossorigin="anonymous"></script>
-            <ins class="adsbygoogle"
-                style="display:block"
-                data-ad-client="ca-pub-1779293358827927"
-                data-ad-slot="8366616811"
-                data-ad-format="auto"
-                data-full-width-responsive="true"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-        <div id="google-adsense-relaxed" style="margin-top: 20px;">
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
-                crossorigin="anonymous"></script>
-            <ins class="adsbygoogle"
-                style="display:block"
-                data-ad-format="autorelaxed"
-                data-ad-client="ca-pub-1779293358827927"
-                data-ad-slot="9581567507"></ins>
-            <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-        <div id="additional-ad-2" style="margin-top: 20px;">
-            <script type="text/javascript">
-                atOptions = {
-                    'key' : '81ec3b214b26464352c7fc73b372b7fe',
-                    'format' : 'iframe',
-                    'height' : 300,
-                    'width' : 160,
-                    'params' : {}
-                };
-            </script>
-            <script type="text/javascript" src="//www.highperformanceformat.com/81ec3b214b26464352c7fc73b372b7fe/invoke.js"></script>
-        </div>
-    </main>
-    <footer>
-        <a href="https://www.profitablecpmrate.com/egfxjt4z5?key=d21222c51bdd4afd5a0ecf97c6716982" target="_blank">
-            <img src="images/reklam.png" alt="Reklam">
-        </a>
-    </footer>
+    <section id="auth">
+      <div id="register">
+        <h2>Register</h2>
+        <input type="text" id="register-username" placeholder="Username">
+        <input type="password" id="register-password" placeholder="Password">
+        <button id="register-button">Register</button>
+      </div>
+      <div id="login">
+        <h2>Login</h2>
+        <input type="text" id="login-username" placeholder="Username">
+        <input type="password" id="login-password" placeholder="Password">
+        <button id="login-button">Login</button>
+      </div>
+    </section>
+    <section id="slot-game">
+      <h2>Balance: $<span id="balance">0.00</span></h2>
+      <button id="spin-button">Spin</button>
+      <div id="reels">
+        <div class="reel" id="reel1"></div>
+        <div class="reel" id="reel2"></div>
+        <div class="reel" id="reel3"></div>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <p>&copy; 2024 Slot Game. All rights reserved.</p>
+  </footer>
+  <script src="script.js"></script>
 </body>
 </html>
