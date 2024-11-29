@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slot Game</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roulette Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="main-container">
-    <header>
-      <h1>Slot Game</h1>
-    </header>
-    <section id="auth">
-      <div id="register">
-        <h2>Register</h2>
-        <input type="text" id="register-username" placeholder="Username">
-        <input type="password" id="register-password" placeholder="Password">
-        <button id="register-button">Register</button>
-      </div>
-      <div id="login">
-        <h2>Login</h2>
-        <input type="text" id="login-username" placeholder="Username">
-        <input type="password" id="login-password" placeholder="Password">
-        <button id="login-button">Login</button>
-      </div>
-    </section>
-    <section id="slot-game">
-      <h2>Balance: $<span id="balance">0.00</span></h2>
-      <button id="spin-button">Spin</button>
-      <div id="reels">
-        <div class="reel" id="reel1"></div>
-        <div class="reel" id="reel2"></div>
-        <div class="reel" id="reel3"></div>
-      </div>
-    </section>
-  </div>
-  <footer>
-    <p>&copy; 2024 Slot Game. All rights reserved.</p>
-  </footer>
-  <script src="script.js"></script>
+    <div id="main-container">
+        <header>
+            <h1>Roulette Game</h1>
+        </header>
+        <section id="auth">
+            <div id="register">
+                <h2>Register</h2>
+                <input type="text" id="register-username" placeholder="Username">
+                <input type="password" id="register-password" placeholder="Password">
+                <input type="number" id="register-balance" placeholder="Initial Balance">
+                <button id="register-button">Register</button>
+            </div>
+            <div id="login">
+                <h2>Login</h2>
+                <input type="text" id="login-username" placeholder="Username">
+                <input type="password" id="login-password" placeholder="Password">
+                <button id="login-button">Login</button>
+            </div>
+        </section>
+        <section id="demo-play">
+            <h2>Play Demo</h2>
+            <button id="play-demo-button">Play Demo</button>
+        </section>
+        <section id="roulette-game" style="display: none;">
+            <h2>Balance: $<span id="balance">0.00</span></h2>
+            <button id="spin-button">Spin</button>
+            <!-- Roulette game specific elements go here -->
+        </section>
+        <section id="admin-panel" style="display: none;">
+            <h2>Admin Panel</h2>
+            <div id="user-list"></div>
+            <div id="coupon-generator">
+                <input type="number" id="coupon-amount" placeholder="Coupon Amount">
+                <button id="generate-coupon-button">Generate Coupon</button>
+                <div id="coupon-code"></div>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2024 Roulette Game. All rights reserved.</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
