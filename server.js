@@ -2,10 +2,18 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const app = express();
+const fs = require('fs');
 const PORT = process.env.PORT || 3000;
 
+// Kullanıcı verilerini saklamak için basit bir JSON dosyası kullanıyoruz
+const usersFile = 'users.json';
 let users = {}; // Kullanıcı veritabanı
 let coupons = {}; // Kupon kodları
+
+if (fs.existsSync(usersFile)) {
+  const data = fs.readFileSync(usersFile, 'utf8');
+  users = JSON.parse(data);
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,11 +25,12 @@ app.use(session({
 
 // Kayıt olma endpoint'i
 app.post('/register', (req, res) => {
-  const { username, password, balance } = req.body;
+  const { username, password } = req.body;
   if (users[username]) {
     return res.status(400).send('Kullanıcı zaten var.');
   }
-  users[username] = { password: password, balance: parseFloat(balance) };
+  users[username] = { password: password, balance: 100 }; // Yeni kullanıcıya 100$ bakiye veriyoruz
+  fs.writeFileSync(usersFile, JSON.stringify(users, null, 2)); // Kullanıcı verilerini dosyaya kaydediyoruz
   res.send('Kayıt başarılı!');
 });
 
@@ -31,7 +40,7 @@ app.post('/login', (req, res) => {
   const user = users[username];
   if (user && user.password === password) {
     req.session.user = user;
-    res.send('Giriş başarılı!');
+    res.send({ message: 'Giriş başarılı!', balance: user.balance });
   } else {
     res.status(400).send('Geçersiz kullanıcı adı veya şifre.');
   }
