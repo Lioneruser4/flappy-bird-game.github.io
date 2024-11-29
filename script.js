@@ -59,56 +59,72 @@ document.getElementById('login-submit').addEventListener('click', () => {
 document.getElementById('spin-button').addEventListener('click', spinReels);
 
 function spinReels() {
+    if (!currentUser) {
+        alert('Please login to play.');
+        return;
+    }
+
+    const betAmount = parseFloat(document.getElementById('bet-amount').value);
+    if (currentUser.balance < betAmount) {
+        alert('Insufficient balance.');
+        return;
+    }
+
     const symbols = ['🍒', '🍋', '🍊', '🍉', '⭐', '🔔', '🎁', '🎰'];
     const reel1 = document.getElementById('reel1');
     const reel2 = document.getElementById('reel2');
     const reel3 = document.getElementById('reel3');
 
-    reel1.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-    reel2.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-    reel3.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-    
-    reel1.style.transform = `translateY(${Math.random() * 1000}px)`;
-    reel2.style.transform = `translateY(${Math.random() * 1000}px)`;
-    reel3.style.transform = `translateY(${Math.random() * 1000}px)`;
+    let spin1 = Math.floor(Math.random() * symbols.length);
+    let spin2 = Math.floor(Math.random() * symbols.length);
+    let spin3 = Math.floor(Math.random() * symbols.length);
+
+    reel1.innerHTML = symbols[spin1];
+    reel2.innerHTML = symbols[spin2];
+    reel3.innerHTML = symbols[spin3];
+
+    reel1.style.transition = 'transform 3s';
+    reel2.style.transition = 'transform 3s';
+    reel3.style.transition = 'transform 3s';
+
+    reel1.style.transform = `translateY(${spin1 * 100}%)`;
+    reel2.style.transform = `translateY(${spin2 * 100}%)`;
+    reel3.style.transform = `translateY(${spin3 * 100}%)`;
 
     setTimeout(() => {
-        const result1 = symbols[Math.floor(Math.random() * symbols.length)];
-        const result2 = symbols[Math.floor(Math.random() * symbols.length)];
-        const result3 = symbols[Math.floor(Math.random() * symbols.length)];
+        const result1 = symbols[spin1];
+        const result2 = symbols[spin2];
+        const result3 = symbols[spin3];
 
-        reel1.innerHTML = result1;
-        reel2.innerHTML = result2;
-        reel3.innerHTML = result3;
-
-        checkWin(result1, result2, result3);
+        checkWin(result1, result2, result3, betAmount);
     }, 3000);
 }
 
-function checkWin(result1, result2, result3) {
+function checkWin(result1, result2, result3, betAmount) {
     let winAmount = 0;
     let freeSpins = 0;
 
     if (result1 === result2 && result2 === result3) {
         if (result1 === '🍒') {
-            winAmount = currentUser.balance * 10;
+            winAmount = betAmount * 10;
         } else if (result1 === '🎁') {
             freeSpins = 10;
         } else if (result1 === '🎰') {
-            winAmount = currentUser.balance * 50;
+            winAmount = betAmount * 50;
         }
     }
+
+    currentUser.balance -= betAmount;
 
     if (winAmount > 0) {
         alert(`You win $${winAmount.toFixed(2)}!`);
         currentUser.balance += winAmount;
+        document.getElementById('balance').innerText = currentUser.balance.toFixed(2);
     } else if (freeSpins > 0) {
         alert(`You win ${freeSpins} free spins!`);
     } else {
         alert('No win this time. Try again!');
     }
-
-    document.getElementById('balance').innerText = currentUser.balance.toFixed(2);
 }
 
 function showAdminPanel() {
