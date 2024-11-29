@@ -135,4 +135,17 @@ document.getElementById('generate-coupon-button').addEventListener('click', () =
     }
     const couponCode = Math.random().toString(36).substring(2, 15);
     coupons[couponCode] = amount;
-    document.getElementById('coupon-code').innerText = `Coupon Code[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/bgoonz/web-dev-utils-package/tree/65a7b21c0444f4cbeb3c313a750fb43560047e77/personal-utilities%2Fcopy-2-clip%2FREADME.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/daniel-hocking/18s2-comp2041-ass2/tree/bb1315b8f37f6a4a5bdc3aa151fb0d53d8aa38cf/frontend%2Fsrc%2Fuser.js?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "2")
+    document.getElementById('coupon-code').innerText = `Coupon Code: ${couponCode}`;
+});
+
+document.getElementById('apply-coupon-button').addEventListener('click', () => {
+    const couponCode = document.getElementById('coupon-code-input').value;
+    if (coupons[couponCode]) {
+        currentUser.balance += coupons[couponCode];
+        document.getElementById('balance').innerText = currentUser.balance.toFixed(2);
+        delete coupons[couponCode];
+        alert('Coupon applied successfully!');
+    } else {
+        alert('Invalid or expired coupon code.');
+    }
+});
