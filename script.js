@@ -44,15 +44,57 @@ document.getElementById('spin-button').addEventListener('click', spinReels);
 function spinReels() {
   if (!currentUser) return;
   
-  // Rulet oyunu için dönen makaraların kodlarını buraya ekleyin
+  const symbols = ['🍒', '🍋', '🍊', '🍉', '⭐', '🔔', '🎁', '🎰'];
+  const reel1 = document.getElementById('reel1');
+  const reel2 = document.getElementById('reel2');
+  const reel3 = document.getElementById('reel3');
+
+  reel1.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+  reel2.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+  reel3.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
   
-  // Kazanma kontrolü
-  checkWin();
+  // Makaralar dönme animasyonu
+  reel1.style.transform = `translateY(${Math.random() * 1000}px)`;
+  reel2.style.transform = `translateY(${Math.random() * 1000}px)`;
+  reel3.style.transform = `translateY(${Math.random() * 1000}px)`;
+
+  setTimeout(() => {
+    const result1 = symbols[Math.floor(Math.random() * symbols.length)];
+    const result2 = symbols[Math.floor(Math.random() * symbols.length)];
+    const result3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+    reel1.innerHTML = result1;
+    reel2.innerHTML = result2;
+    reel3.innerHTML = result3;
+
+    checkWin(result1, result2, result3);
+  }, 3000);
 }
 
-function checkWin() {
+function checkWin(result1, result2, result3) {
   if (!currentUser) return;
-  // Kazanma durumunu kontrol edin ve bakiye güncelleyin
+  let winAmount = 0;
+  let freeSpins = 0;
+
+  if (result1 === result2 && result2 === result3) {
+    if (result1 === '🍒') {
+      winAmount = currentUser.balance * 10;
+    } else if (result1 === '🎁') {
+      freeSpins = 10;
+    } else if (result1 === '🎰') {
+      winAmount = currentUser.balance * 50;
+    }
+  }
+
+  if (winAmount > 0) {
+    alert(`You win $${winAmount.toFixed(2)}!`);
+    currentUser.balance += winAmount;
+  } else if (freeSpins > 0) {
+    alert(`You win ${freeSpins} free spins!`);
+  } else {
+    alert('No win this time. Try again!');
+  }
+
   document.getElementById('balance').innerText = currentUser.balance.toFixed(2);
 }
 
