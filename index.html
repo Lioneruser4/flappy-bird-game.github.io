@@ -10,30 +10,35 @@
     <div id="main-container">
         <header>
             <h1>Roulette Game</h1>
+            <div id="auth-buttons">
+                <button id="login-button">Login</button>
+                <button id="register-button">Register</button>
+            </div>
         </header>
-        <section id="auth">
-            <div id="register">
+        <section id="auth" style="display: none;">
+            <div id="register" style="display: none;">
                 <h2>Register</h2>
                 <input type="text" id="register-username" placeholder="Username">
                 <input type="password" id="register-password" placeholder="Password">
-                <input type="number" id="register-balance" placeholder="Initial Balance">
-                <button id="register-button">Register</button>
+                <button id="register-submit">Register</button>
+                <button id="register-cancel">Cancel</button>
             </div>
-            <div id="login">
+            <div id="login" style="display: none;">
                 <h2>Login</h2>
                 <input type="text" id="login-username" placeholder="Username">
                 <input type="password" id="login-password" placeholder="Password">
-                <button id="login-button">Login</button>
+                <button id="login-submit">Login</button>
+                <button id="login-cancel">Cancel</button>
             </div>
         </section>
-        <section id="demo-play">
-            <h2>Play Demo</h2>
-            <button id="play-demo-button">Play Demo</button>
-        </section>
-        <section id="roulette-game" style="display: none;">
+        <section id="roulette-game">
             <h2>Balance: $<span id="balance">0.00</span></h2>
             <button id="spin-button">Spin</button>
-            <!-- Roulette game specific elements go here -->
+            <div id="reels">
+                <div class="reel" id="reel1"></div>
+                <div class="reel" id="reel2"></div>
+                <div class="reel" id="reel3"></div>
+            </div>
         </section>
         <section id="admin-panel" style="display: none;">
             <h2>Admin Panel</h2>
