@@ -1,7 +1,16 @@
 const express = require('express');
 const ytdl = require('ytdl-core');
+const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Statik dosyaları sun (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Kök dizin için route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // İndirme endpoint'i
 app.get('/download', async (req, res) => {
@@ -19,9 +28,6 @@ app.get('/download', async (req, res) => {
         res.status(500).json({ success: false, message: 'İndirme işlemi başarısız oldu.' });
     }
 });
-
-// Statik dosyalar (HTML, CSS, JS)
-app.use(express.static('public'));
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
