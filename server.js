@@ -5,11 +5,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Statik dosyaları sun (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // Kök dizin için route
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // İndirme endpoint'i
