@@ -1,10 +1,9 @@
 body {
     margin: 0;
     overflow: hidden;
-    background: url('back.png');  /* Arka plan resmi */
-    background-size: cover;
+    background: #f7f7f7;  /* Basit bir arka plan */
     font-family: Arial, sans-serif;
-    color: white;
+    color: black;
 }
 
 #game {
@@ -13,13 +12,13 @@ body {
     height: 100vh;
 }
 
-#bird {
+#dino {
     position: absolute;
     width: 50px;
     height: 50px;
-    background: url('flappy.png');  /* Kuş resmi */
+    background: url('dino.png');  /* Dino resmi */
     background-size: cover;
-    top: 50%;
+    bottom: 0;
     left: 50px;
 }
 
@@ -28,7 +27,7 @@ body {
     top: 20px;
     left: 20px;
     font-size: 24px;
-    color: white;
+    color: black;
 }
 
 #show-leaderboard {
@@ -76,7 +75,9 @@ body {
 
 .obstacle {
     position: absolute;
-    width: 60px;
+    width: 40px;
+    height: 40px;
     background: url('bar.png');  /* Bariyer resmi */
     background-size: cover;
+    bottom: 0;
 }
