@@ -3,23 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dino Oyunu</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Flappy Music Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        h1 {
+            color: #007bff;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: white;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 300px;
+            text-align: center;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <div id="game">
-        <div id="dino"></div>
-        <div id="score">Skor: 0</div>
-        <div id="obstacles"></div>
-    </div>
-    <button id="show-leaderboard">Skor Tablosu</button>
-    <div id="leaderboard-popup">
-        <div id="leaderboard-content">
-            <h2>Skor Tablosu</h2>
-            <ol id="scores-list"></ol>
-            <button id="close-leaderboard">Kapat</button>
-        </div>
-    </div>
-    <script src="script.js"></script>
+    <h1>Flappy Music Downloader</h1>
+    <form id="searchForm">
+        <input type="text" id="query" placeholder="Müzik adı veya sanatçı...">
+        <button type="submit">Ara</button>
+    </form>
+    <ul id="results"></ul>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const query = document.getElementById('query').value;
+            fetch('/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `query=${encodeURIComponent(query)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                const results = document.getElementById('results');
+                results.innerHTML = '';
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="#" onclick="download('${item.url}')">${item.title}</a>`;
+                    results.appendChild(li);
+                });
+            });
+        });
+
+        function download(url) {
+            const chatId = new URLSearchParams(window.location.search).get('chat_id');
+            fetch('/download', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `url=${encodeURIComponent(url)}&chat_id=${chatId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Müzik Telegram\'a gönderildi!');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
