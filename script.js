@@ -1,11 +1,15 @@
 const bird = document.getElementById('bird');
 const game = document.getElementById('game');
 const scoreDisplay = document.getElementById('score');
+const scoresList = document.getElementById('scores-list');
 let birdY = 200;
 let gravity = 1.5;
 let score = 0;
 let gameInterval;
 let obstacleInterval;
+
+// Skorları localStorage'dan yükle
+let scores = JSON.parse(localStorage.getItem('flappyBirdScores')) || [];
 
 function startGame() {
     birdY = 200;
@@ -73,12 +77,26 @@ function endGame() {
 }
 
 function saveScore(score) {
-    const userId = new URLSearchParams(window.location.search).get('user_id');
-    fetch(`https://your-server.com/save_score?user_id=${userId}&score=${score}`);
+    const userId = new URLSearchParams(window.location.search).get('user_id') || 'Anonim';
+    scores.push({ user: userId, score: score });
+    scores.sort((a, b) => b.score - a.score); // Skorları sırala
+    localStorage.setItem('flappyBirdScores', JSON.stringify(scores));
+    updateLeaderboard();
+}
+
+function updateLeaderboard() {
+    scoresList.innerHTML = '';
+    scores.slice(0, 10).forEach((entry, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${entry.user}: ${entry.score} puan`;
+        scoresList.appendChild(li);
+    });
 }
 
 document.addEventListener('keydown', () => {
     birdY -= 40;
 });
 
+// Sayfa yüklendiğinde skor tablosunu güncelle
+updateLeaderboard();
 startGame();
