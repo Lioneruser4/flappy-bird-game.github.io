@@ -2,6 +2,9 @@ const bird = document.getElementById('bird');
 const game = document.getElementById('game');
 const scoreDisplay = document.getElementById('score');
 const obstaclesContainer = document.getElementById('obstacles');
+const showLeaderboardButton = document.getElementById('show-leaderboard');
+const leaderboardPopup = document.getElementById('leaderboard-popup');
+const closeLeaderboardButton = document.getElementById('close-leaderboard');
 const scoresList = document.getElementById('scores-list');
 let birdY = 200;
 let gravity = 1.5;
@@ -133,6 +136,16 @@ document.addEventListener('keydown', () => {
     if (!isGameOver) {
         birdY += jumpStrength;
     }
+});
+
+// Skor tablosunu göster
+showLeaderboardButton.addEventListener('click', () => {
+    leaderboardPopup.style.display = 'flex';
+});
+
+// Skor tablosunu kapat
+closeLeaderboardButton.addEventListener('click', () => {
+    leaderboardPopup.style.display = 'none';
 });
 
 // Sayfa yüklendiğinde skor tablosunu güncelle
