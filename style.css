@@ -1,9 +1,10 @@
 body {
     margin: 0;
     overflow: hidden;
-    background: url('back.png');
+    background: url('back.png');  /* Arka plan resmi */
     background-size: cover;
     font-family: Arial, sans-serif;
+    color: white;
 }
 
 #game {
@@ -16,7 +17,7 @@ body {
     position: absolute;
     width: 50px;
     height: 50px;
-    background: url('flappy.png');
+    background: url('flappy.png');  /* Kuş resmi */
     background-size: cover;
     top: 50%;
     left: 50px;
@@ -28,4 +29,24 @@ body {
     left: 20px;
     font-size: 24px;
     color: white;
+}
+
+#leaderboard {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+#scores-list {
+    list-style-type: decimal;
+    padding-left: 20px;
+}
+
+.obstacle {
+    position: absolute;
+    width: 60px;
+    background: green;
 }
