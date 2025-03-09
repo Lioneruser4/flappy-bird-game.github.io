@@ -1,16 +1,26 @@
-<meta name="viewport" content="width=device-width,user-scalable=no">
-
-<div id="container">
-	<div id="Oyun"></div>
-	<div id="Skor">0</div>
-	<div id="instructions">Click (or press the spacebar) to place the block</div>
-	<div class="Oyun Bitdi">
-		<h2>Game Over</h2>
-		<p>You did great, you're the best.</p>
-		<p>Click or spacebar to start again</p>
-	</div>
-	<div class="Oyuna Başla">
-		<div id="start-button">Start</div>
-		<div></div>
-	</div>
-</div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Müzik İndirme</title>
+    <script>
+        function sendToBot() {
+            var youtubeLink = document.getElementById("youtube-link").value;
+            if (youtubeLink !== "") {
+                // Telegram botuna yönlendirecek link (burada kullanıcıyı bot ile iletişime geçireceğiz)
+                var botLink = "https://t.me/YOUR_BOT_USERNAME?start=" + encodeURIComponent(youtubeLink);
+                window.open(botLink, "_blank");  // Telegram botu sayfasını açacak
+            } else {
+                alert("Lütfen geçerli bir YouTube linki girin.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>YouTube Müzik İndirme</h1>
+    <label for="youtube-link">YouTube Linki:</label>
+    <input type="text" id="youtube-link" placeholder="YouTube Linkini Girin">
+    <button onclick="sendToBot()">Müzik İndir</button>
+</body>
+</html>
