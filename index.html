@@ -9,7 +9,7 @@
             var youtubeLink = document.getElementById("youtube-link").value;
             if (youtubeLink !== "") {
                 // Telegram botuna yönlendirecek link (burada kullanıcıyı bot ile iletişime geçireceğiz)
-                var botLink = "https://t.me/YOUR_BOT_USERNAME?start=" + encodeURIComponent(youtubeLink);
+                var botLink = "https://t.me/hidepbot?start=" + encodeURIComponent(youtubeLink);
                 window.open(botLink, "_blank");  // Telegram botu sayfasını açacak
             } else {
                 alert("Lütfen geçerli bir YouTube linki girin.");
