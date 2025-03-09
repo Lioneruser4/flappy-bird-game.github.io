@@ -3,30 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Müzik İndir</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Yılan Oyunu</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <header>
-        <h1>Müzik İndir</h1>
-    </header>
-
-    <main>
-        <div class="search-container">
-            <input type="text" id="searchQuery" placeholder="Müzik Arayın...">
-            <button onclick="searchMusic()">Ara</button>
-        </div>
-
-        <div id="searchResults" class="results-container">
-            <!-- Müzik arama sonuçları buraya eklenecek -->
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Müzik İndir</p>
-    </footer>
-
+    <div id="game-container">
+        <h1>Yılan Oyunu</h1>
+        <p id="score">Skor: 0</p>
+        <canvas id="game-board"></canvas>
+        <p id="game-over-message" class="hidden">Oyun Bitti! Yeniden başlamak için bir tuşa basın.</p>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
