@@ -7,7 +7,7 @@ const TelegramBot = require("node-telegram-bot-api");
 const app = express();
 app.use(express.json());
 
-const TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN";
+const TELEGRAM_BOT_TOKEN = "8043039788:AAHKz9BK7te9OfSeMUFcgh9GmykwRpm106s";
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: false });
 
 // YouTube'dan müzik indir
