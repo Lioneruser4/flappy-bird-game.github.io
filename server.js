@@ -1,34 +1,55 @@
-const express = require('express');
-const ytdl = require('ytdl-core');
-const path = require('path');
+const express = require("express");
+const axios = require("axios");
+const fs = require("fs");
+const ffmpeg = require("fluent-ffmpeg");
+const TelegramBot = require("node-telegram-bot-api");
+
 const app = express();
-const port = process.env.PORT || 3000;
+app.use(express.json());
 
-// Statik dosyaları sun (HTML, CSS, JS)
-app.use(express.static(__dirname));
+const TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN";
+const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: false });
 
-// Kök dizin için route
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// İndirme endpoint'i
-app.get('/download', async (req, res) => {
-    const url = req.query.url;
-
-    if (!ytdl.validateURL(url)) {
-        return res.status(400).json({ success: false, message: 'Geçersiz YouTube linki.' });
-    }
+// YouTube'dan müzik indir
+app.post("/download", async (req, res) => {
+    const { youtubeUrl } = req.body;
 
     try {
-        const info = await ytdl.getInfo(url);
-        const format = ytdl.chooseFormat(info.formats, { quality: 'highest' });
-        res.json({ success: true, downloadLink: format.url });
+        // YouTube'dan sesi indir
+        const audioPath = await downloadAudio(youtubeUrl);
+
+        // Telegram'a gönder
+        await sendAudioToTelegram(audioPath);
+
+        // Dosyayı sil
+        fs.unlinkSync(audioPath);
+
+        res.json({ success: true, message: "Müzik başarıyla indirildi ve gönderildi." });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'İndirme işlemi başarısız oldu.' });
+        res.json({ success: false, message: error.message });
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+// YouTube'dan ses indirme
+async function downloadAudio(url) {
+    return new Promise((resolve, reject) => {
+        const outputPath = `audio_${Date.now()}.mp3`;
+        ffmpeg(url)
+            .audioBitrate(128)
+            .save(outputPath)
+            .on("end", () => resolve(outputPath))
+            .on("error", (err) => reject(err));
+    });
+}
+
+// Telegram'a ses gönderme
+async function sendAudioToTelegram(audioPath) {
+    const chatId = "USER_CHAT_ID"; // Kullanıcının chat ID'si
+    const audio = fs.createReadStream(audioPath);
+    await bot.sendAudio(chatId, audio);
+}
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
