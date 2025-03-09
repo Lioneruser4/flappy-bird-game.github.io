@@ -1,49 +1,121 @@
-// Müzik arama fonksiyonu
-async function searchMusic() {
-    const query = document.getElementById("searchQuery").value;
+const canvas = document.getElementById("game-board");
+const ctx = canvas.getContext("2d");
+const scoreDisplay = document.getElementById("score");
+const gameOverMessage = document.getElementById("game-over-message");
 
-    if (query.trim() === "") {
-        alert("Lütfen bir müzik adı girin.");
+const gridSize = 20; // Kare boyutu
+let tileCount = 20; // Başlangıçta kare sayısı
+let snake = [{ x: 10, y: 10 }]; // Yılanın başlangıç pozisyonu
+let food = { x: 5, y: 5 }; // Yem pozisyonu
+let direction = { x: 0, y: 0 }; // Yılanın hareket yönü
+let score = 0;
+let speed = 5; // Yılanın hızı
+let gameOver = false;
+
+// Oyun alanını çiz
+function drawGame() {
+    if (gameOver) {
+        gameOverMessage.classList.remove("hidden");
         return;
     }
 
-    // API'ye istek gönder
-    const response = await fetch(`/search?query=${query}`);
-    const data = await response.json();
+    // Oyun alanını temizle
+    ctx.fillStyle = "#222";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    if (data.results && data.results.length > 0) {
-        displayResults(data.results);
-    } else {
-        alert("Sonuç bulunamadı.");
-    }
-}
-
-// Arama sonuçlarını görüntüle
-function displayResults(results) {
-    const resultsContainer = document.getElementById("searchResults");
-    resultsContainer.innerHTML = ""; // Önceki sonuçları temizle
-
-    results.forEach(result => {
-        const resultDiv = document.createElement("div");
-        resultDiv.classList.add("result-item");
-
-        resultDiv.innerHTML = `
-            <h3>${result.title}</h3>
-            <button class="download-btn" onclick="downloadMusic('${result.id}')">İndir</button>
-        `;
-
-        resultsContainer.appendChild(resultDiv);
+    // Yılanı çiz
+    ctx.fillStyle = "lime";
+    snake.forEach(segment => {
+        ctx.fillRect(segment.x * gridSize, segment.y * gridSize, gridSize, gridSize);
     });
+
+    // Yemi çiz
+    ctx.fillStyle = "red";
+    ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
+
+    // Skoru güncelle
+    scoreDisplay.textContent = `Skor: ${score}`;
 }
 
-// Müzik indirme fonksiyonu
-async function downloadMusic(videoId) {
-    const response = await fetch(`/download?id=${videoId}`);
-    const data = await response.json();
+// Yılanı hareket ettir
+function moveSnake() {
+    const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
 
-    if (data.message) {
-        alert(data.message); // Başarılı indirme mesajı
+    // Yılan kendi kuyruğuna çarparsa oyun biter
+    if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+        gameOver = true;
+        return;
+    }
+
+    // Yılan yemi yerse
+    if (head.x === food.x && head.y === food.y) {
+        score++;
+        speed += 0.5; // Hızı artır
+        tileCount++; // Oyun alanını büyüt
+        canvas.width = tileCount * gridSize;
+        canvas.height = tileCount * gridSize;
+        placeFood();
     } else {
-        alert("Bir hata oluştu.");
+        snake.pop(); // Kuyruğu kısalt
+    }
+
+    snake.unshift(head); // Yeni başı ekle
+}
+
+// Yemi rastgele yerleştir
+function placeFood() {
+    food.x = Math.floor(Math.random() * tileCount);
+    food.y = Math.floor(Math.random() * tileCount);
+
+    // Yem yılanın üzerine gelirse yeniden yerleştir
+    if (snake.some(segment => segment.x === food.x && segment.y === food.y)) {
+        placeFood();
     }
 }
+
+// Klavye kontrolleri
+window.addEventListener("keydown", e => {
+    if (gameOver) {
+        // Oyun bittiyse yeniden başlat
+        snake = [{ x: 10, y: 10 }];
+        direction = { x: 0, y: 0 };
+        score = 0;
+        speed = 5;
+        tileCount = 20;
+        canvas.width = tileCount * gridSize;
+        canvas.height = tileCount * gridSize;
+        gameOver = false;
+        gameOverMessage.classList.add("hidden");
+        placeFood();
+    }
+
+    switch (e.key) {
+        case "ArrowUp":
+            if (direction.y === 0) direction = { x: 0, y: -1 };
+            break;
+        case "ArrowDown":
+            if (direction.y === 0) direction = { x: 0, y: 1 };
+            break;
+        case "ArrowLeft":
+            if (direction.x === 0) direction = { x: -1, y: 0 };
+            break;
+        case "ArrowRight":
+            if (direction.x === 0) direction = { x: 1, y: 0 };
+            break;
+    }
+});
+
+// Oyun döngüsü
+function gameLoop() {
+    if (!gameOver) {
+        moveSnake();
+        drawGame();
+        setTimeout(gameLoop, 1000 / speed); // Hızı ayarla
+    }
+}
+
+// Oyunu başlat
+canvas.width = tileCount * gridSize;
+canvas.height = tileCount * gridSize;
+placeFood();
+gameLoop();
