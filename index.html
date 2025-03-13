@@ -3,24 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Müzik İndirme</title>
-    <script>
-        function sendToBot() {
-            var youtubeLink = document.getElementById("youtube-link").value;
-            if (youtubeLink !== "") {
-                // Telegram botuna yönlendirecek link (burada kullanıcıyı bot ile iletişime geçireceğiz)
-                var botLink = "https://t.me/hidepbot?start=" + encodeURIComponent(youtubeLink);
-                window.open(botLink, "_blank");  // Telegram botu sayfasını açacak
-            } else {
-                alert("Lütfen geçerli bir YouTube linki girin.");
-            }
-        }
-    </script>
+    <title>Pac-Man Tarzı Oyun</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>YouTube Müzik İndirme</h1>
-    <label for="youtube-link">YouTube Linki:</label>
-    <input type="text" id="youtube-link" placeholder="YouTube Linkini Girin">
-    <button onclick="sendToBot()">Müzik İndir</button>
+    <div id="game-container">
+        <h1>Pac-Man Tarzı Oyun</h1>
+        <canvas id="gameCanvas"></canvas>
+        <div id="game-info">
+            <p>Puan: <span id="score">0</span></p>
+            <button id="start-button">Başla</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
 </body>
 </html>
