@@ -1,4 +1,4 @@
- const express = require("express");
+const express = require("express");
 const axios = require("axios");
 const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
@@ -56,7 +56,7 @@ bot.on("message", (msg) => {
         bot.sendMessage(chatId, "Müzik indirmek için butona tıklayın:", {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "Müzik İndir", web_app: { url: `https://lioneruser4.github.io/flappy-bird-game.github.io/?chat_id=${chatId}` } }]
+                    [{ text: "Müzik İndir", web_app: { url: "https://lioneruser4.github.io/flappy-bird-game.github.io/" } }]
                 ]
             }
         });
