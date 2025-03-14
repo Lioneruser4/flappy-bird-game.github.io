@@ -74,7 +74,7 @@ bot.on("message", async (msg) => {
         bot.sendMessage(chatId, "Müzik indirmek için butona tıklayın:", {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "Müzik İndir", web_app: { url: "https://lioneruser4.github.io/flappy-bird-game.github.io/" } }]
+                    [{ text: "Müzik İndir", web_app: { url: `https://lioneruser4.github.io/flappy-bird-game.github.io/?chat_id=${chatId}` } }]
                 ]
             }
         });
