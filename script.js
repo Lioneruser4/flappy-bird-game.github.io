@@ -27,7 +27,7 @@ if (downloadButton) {
 
         try {
             // Backend'e istek gönder
-            const response = await fetch("https://ytsaytdayukleyen-c19e69bcb937.herokuapp.com/download", {
+            const response = await fetch("https://ytsaytdayukleyen-c19e69bcb937.herokuapp.com", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
