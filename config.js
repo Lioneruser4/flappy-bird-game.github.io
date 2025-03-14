@@ -1,4 +1,4 @@
    module.exports = {
-     ADMIN_ID: "YOUR_ADMIN_ID", // Admin ID'nizi buraya ekleyin
-     token: "YOUR_BOT_TOKEN" // Bot token'ınızı buraya ekleyin
+     ADMIN_ID: "976640409", // Admin ID'nizi buraya ekleyin
+     token: "5741055163:AAHjaluUJsYOKy7sDdMlVnGabFFMtBAF_UQ" // Bot token'ınızı buraya ekleyin
    };
