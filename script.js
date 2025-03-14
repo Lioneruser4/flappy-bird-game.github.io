@@ -1,3 +1,11 @@
+// URL'den chat ID'yi al
+const urlParams = new URLSearchParams(window.location.search);
+const chatId = urlParams.get("chat_id");
+
+if (!chatId) {
+    alert("Chat ID bulunamadı. Lütfen Telegram üzerinden giriş yapın.");
+}
+
 document.getElementById("download-btn").addEventListener("click", async () => {
     const youtubeUrl = document.getElementById("youtube-url").value;
     const status = document.getElementById("status");
@@ -16,7 +24,7 @@ document.getElementById("download-btn").addEventListener("click", async () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ youtubeUrl, chatId: "USER_CHAT_ID" }), // Chat ID'yi dinamik olarak alın
+            body: JSON.stringify({ youtubeUrl, chatId }), // Chat ID'yi gönder
         });
 
         const data = await response.json();
