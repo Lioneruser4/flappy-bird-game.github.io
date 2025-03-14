@@ -7,39 +7,52 @@ const TelegramBot = require("node-telegram-bot-api");
 const app = express();
 
 // CORS ayarları
-app.use(cors({
-    origin: "https://lioneruser4.github.io", // Frontend'in GitHub Pages URL'si
-    methods: ["GET", "POST", "OPTIONS"], // İzin verilen HTTP metodları
-    allowedHeaders: ["Content-Type"], // İzin verilen başlıklar
-}));
+app.use(cors());
 
 app.use(express.json());
 
-// Telegram bot token'ı (Token'ınızı buraya ekleyin)
+// Telegram bot token'ı
 const TELEGRAM_BOT_TOKEN = "5741055163:AAHjaluUJsYOKy7sDdMlVnGabFFMtBAF_UQ";
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
+
+// Web app URL'si
+const WEB_APP_URL = "https://lioneruser4.github.io/flappy-bird-game.github.io";
 
 // /download endpoint'i
 app.post("/download", async (req, res) => {
     const { youtubeUrl, chatId } = req.body;
+    console.log("Download isteği alındı:", { youtubeUrl, chatId });
 
     if (!youtubeUrl || !chatId) {
-        return res.status(400).json({ success: false, message: "YouTube URL ve chat ID gereklidir." });
+        console.error("Eksik parametreler:", { youtubeUrl, chatId });
+        return res.status(400).json({ 
+            success: false, 
+            message: "YouTube URL ve chat ID gereklidir." 
+        });
     }
 
     try {
-        // YouTube'dan sesi indir
+        console.log("Müzik indiriliyor...");
         const audioPath = await downloadAudio(youtubeUrl);
+        console.log("Müzik indirildi:", audioPath);
 
-        // Telegram'a gönder
+        console.log("Telegram'a gönderiliyor...");
         await bot.sendAudio(chatId, fs.createReadStream(audioPath));
+        console.log("Telegram'a gönderildi");
 
-        // Dosyayı sil
         fs.unlinkSync(audioPath);
+        console.log("Geçici dosya silindi");
 
-        res.json({ success: true, message: "Müzik başarıyla indirildi ve gönderildi." });
+        res.json({ 
+            success: true, 
+            message: "Müzik başarıyla indirildi ve gönderildi." 
+        });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        console.error("Hata oluştu:", error);
+        res.status(500).json({ 
+            success: false, 
+            message: error.message 
+        });
     }
 });
 
@@ -58,8 +71,7 @@ async function downloadAudio(url) {
 // YouTube'da müzik arama
 async function searchYouTube(query) {
     // Burada YouTube API veya başka bir müzik arama servisi kullanılabilir
-    // Örnek bir URL döndürülüyor
-    return `https://www.youtube.com/watch?v=dQw4w9WgXcQ`;
+    return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
 }
 
 // Telegram botu dinleme
@@ -67,48 +79,45 @@ bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
 
-    console.log(`Gelen mesaj: ${text}`); // Gelen mesajı logla
+    console.log("Yeni mesaj alındı:", { chatId, text });
 
-    if (text.startsWith("/start")) {
-        // Kullanıcıya webview butonu göster
-        bot.sendMessage(chatId, "Müzik indirmek için butona tıklayın:", {
+    if (text === "/start") {
+        const webAppUrl = `${WEB_APP_URL}?chat_id=${chatId}`;
+        console.log("Web app URL oluşturuldu:", webAppUrl);
+
+        bot.sendMessage(chatId, "Müzik indirmek için aşağıdaki butona tıklayın:", {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: "Müzik İndir", web_app: { url: `https://lioneruser4.github.io/flappy-bird-game.github.io/?chat_id=${chatId}` } }]
+                    [{
+                        text: "🎵 Müzik İndir",
+                        web_app: { url: webAppUrl }
+                    }]
                 ]
             }
         });
-    } else {
+        console.log("Buton gönderildi");
+    } else if (text.includes("youtube.com") || text.includes("youtu.be")) {
         try {
-            let youtubeUrl = null;
+            console.log("YouTube linki algılandı, indirme başlıyor...");
+            const audioPath = await downloadAudio(text);
+            console.log("Müzik indirildi:", audioPath);
 
-            if (text.includes("youtube.com") || text.includes("youtu.be")) {
-                youtubeUrl = text;
-            } else {
-                // Müzik ismi ile arama yap
-                youtubeUrl = await searchYouTube(text);
-            }
+            await bot.sendAudio(chatId, fs.createReadStream(audioPath));
+            console.log("Müzik gönderildi");
 
-            if (youtubeUrl) {
-                // YouTube'dan sesi indir
-                const audioPath = await downloadAudio(youtubeUrl);
-
-                // Telegram'a gönder
-                await bot.sendAudio(chatId, fs.createReadStream(audioPath));
-
-                // Dosyayı sil
-                fs.unlinkSync(audioPath);
-            } else {
-                bot.sendMessage(chatId, "Müzik bulunamadı.");
-            }
+            fs.unlinkSync(audioPath);
+            console.log("Geçici dosya silindi");
         } catch (error) {
-            console.error(`Hata oluştu: ${error.message}`);
+            console.error("Hata oluştu:", error);
             bot.sendMessage(chatId, `Hata oluştu: ${error.message}`);
         }
+    } else {
+        bot.sendMessage(chatId, "Lütfen /start komutunu kullanın veya geçerli bir YouTube linki gönderin.");
     }
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server ${PORT} portunda çalışıyor`);
+    console.log(`Web app URL: ${WEB_APP_URL}`);
 });
