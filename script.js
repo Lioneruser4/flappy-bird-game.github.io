@@ -19,7 +19,7 @@ document.getElementById("download-btn").addEventListener("click", async () => {
         }
 
         // Backend'e istek gönder
-        const response = await fetch("https://your-heroku-app-url/download", {
+        const response = await fetch("https://ytsaytdayukleyen-c19e69bcb937.herokuapp.com/download", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
