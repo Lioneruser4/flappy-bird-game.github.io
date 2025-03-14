@@ -7,7 +7,7 @@ const TelegramBot = require("node-telegram-bot-api");
 const app = express();
 app.use(express.json());
 
-const TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"; // BotFather'dan aldığınız token
+const TELEGRAM_BOT_TOKEN = "5741055163:AAGx8wl4AjHDnb_84K85NAvKKvVrk6ZmAGw"; // BotFather'dan aldığınız token
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
 
 // YouTube'dan müzik indir ve Telegram'a gönder
