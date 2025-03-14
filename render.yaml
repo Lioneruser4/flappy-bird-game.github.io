@@ -1,1 +1,9 @@
-
+services:
+  - type: web
+    name: my-bot
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: YOUR_ENV_VAR_NAME
+        value: your_env_var_value
