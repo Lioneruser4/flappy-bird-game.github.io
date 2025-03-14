@@ -10,21 +10,13 @@ document.getElementById("download-btn").addEventListener("click", async () => {
     status.textContent = "Müzik indiriliyor...";
 
     try {
-        // Telegram botunun chat ID'sini al
-        const chatId = new URLSearchParams(window.location.search).get("chat_id");
-
-        if (!chatId) {
-            status.textContent = "Chat ID bulunamadı. Lütfen Telegram üzerinden giriş yapın.";
-            return;
-        }
-
         // Backend'e istek gönder
         const response = await fetch("https://ytsaytdayukleyen-c19e69bcb937.herokuapp.com/download", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ youtubeUrl, chatId }),
+            body: JSON.stringify({ youtubeUrl, chatId: "USER_CHAT_ID" }), // Chat ID'yi dinamik olarak alın
         });
 
         const data = await response.json();
