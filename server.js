@@ -55,8 +55,15 @@ async function downloadAudio(url) {
     });
 }
 
+// YouTube'da müzik arama
+async function searchYouTube(query) {
+    // Burada YouTube API veya başka bir müzik arama servisi kullanılabilir
+    // Örnek bir URL döndürülüyor
+    return `https://www.youtube.com/watch?v=dQw4w9WgXcQ`;
+}
+
 // Telegram botu dinleme
-bot.on("message", (msg) => {
+bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
 
@@ -69,6 +76,32 @@ bot.on("message", (msg) => {
                 ]
             }
         });
+    } else {
+        try {
+            let youtubeUrl = null;
+
+            if (text.includes("youtube.com") || text.includes("youtu.be")) {
+                youtubeUrl = text;
+            } else {
+                // Müzik ismi ile arama yap
+                youtubeUrl = await searchYouTube(text);
+            }
+
+            if (youtubeUrl) {
+                // YouTube'dan sesi indir
+                const audioPath = await downloadAudio(youtubeUrl);
+
+                // Telegram'a gönder
+                await bot.sendAudio(chatId, fs.createReadStream(audioPath));
+
+                // Dosyayı sil
+                fs.unlinkSync(audioPath);
+            } else {
+                bot.sendMessage(chatId, "Müzik bulunamadı.");
+            }
+        } catch (error) {
+            bot.sendMessage(chatId, `Hata oluştu: ${error.message}`);
+        }
     }
 });
 
