@@ -67,6 +67,8 @@ bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const text = msg.text;
 
+    console.log(`Gelen mesaj: ${text}`); // Gelen mesajı logla
+
     if (text.startsWith("/start")) {
         // Kullanıcıya webview butonu göster
         bot.sendMessage(chatId, "Müzik indirmek için butona tıklayın:", {
@@ -100,6 +102,7 @@ bot.on("message", async (msg) => {
                 bot.sendMessage(chatId, "Müzik bulunamadı.");
             }
         } catch (error) {
+            console.error(`Hata oluştu: ${error.message}`);
             bot.sendMessage(chatId, `Hata oluştu: ${error.message}`);
         }
     }
