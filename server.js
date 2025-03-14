@@ -2,6 +2,7 @@
 const cors = require("cors");
 const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
+ffmpeg.setFfmpegPath('/app/bin/ffmpeg');
 const TelegramBot = require("node-telegram-bot-api");
 
 const app = express();
