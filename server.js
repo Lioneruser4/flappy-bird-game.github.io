@@ -1,16 +1,25 @@
 const express = require("express");
+const cors = require("cors"); // CORS paketini ekleyin
 const axios = require("axios");
 const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
 const TelegramBot = require("node-telegram-bot-api");
 
 const app = express();
+
+// CORS ayarlarını ekleyin
+app.use(cors({
+    origin: "https://lioneruser4.github.io", // Frontend'in GitHub Pages URL'si
+    methods: ["GET", "POST", "OPTIONS"], // İzin verilen HTTP metodları
+    allowedHeaders: ["Content-Type"], // İzin verilen başlıklar
+}));
+
 app.use(express.json());
 
 const TELEGRAM_BOT_TOKEN = "5741055163:AAHjaluUJsYOKy7sDdMlVnGabFFMtBAF_UQ"; // BotFather'dan aldığınız token
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
 
-// YouTube'dan müzik indir ve Telegram'a gönder
+// /download endpoint'i
 app.post("/download", async (req, res) => {
     const { youtubeUrl, chatId } = req.body;
 
@@ -67,3 +76,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
