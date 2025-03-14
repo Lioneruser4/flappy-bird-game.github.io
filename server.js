@@ -8,14 +8,15 @@ const app = express();
 
 // CORS ayarları
 app.use(cors({
-    origin: "https://lioneruser4.github.io",
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
+    origin: "https://lioneruser4.github.io", // Frontend'in GitHub Pages URL'si
+    methods: ["GET", "POST", "OPTIONS"], // İzin verilen HTTP metodları
+    allowedHeaders: ["Content-Type"], // İzin verilen başlıklar
 }));
 
 app.use(express.json());
 
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN; // Environment variable'dan al
+// Telegram bot token'ı (Token'ınızı buraya ekleyin)
+const TELEGRAM_BOT_TOKEN = "5741055163:AAHjaluUJsYOKy7sDdMlVnGabFFMtBAF_UQ";
 const bot = new TelegramBot(TELEGRAM_BOT_TOKEN, { polling: true });
 
 // /download endpoint'i
@@ -27,9 +28,15 @@ app.post("/download", async (req, res) => {
     }
 
     try {
+        // YouTube'dan sesi indir
         const audioPath = await downloadAudio(youtubeUrl);
+
+        // Telegram'a gönder
         await bot.sendAudio(chatId, fs.createReadStream(audioPath));
+
+        // Dosyayı sil
         fs.unlinkSync(audioPath);
+
         res.json({ success: true, message: "Müzik başarıyla indirildi ve gönderildi." });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -54,6 +61,7 @@ bot.on("message", (msg) => {
     const text = msg.text;
 
     if (text.startsWith("/start")) {
+        // Kullanıcıya webview butonu göster
         bot.sendMessage(chatId, "Müzik indirmek için butona tıklayın:", {
             reply_markup: {
                 inline_keyboard: [
