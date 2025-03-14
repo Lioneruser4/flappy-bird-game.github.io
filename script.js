@@ -5,10 +5,14 @@ const chatId = urlParams.get("chat_id");
 if (!chatId) {
     alert("Chat ID bulunamadı. Lütfen Telegram üzerinden giriş yapın.");
     console.error("Chat ID bulunamadı. Lütfen Telegram üzerinden giriş yapın.");
+    console.log("Chat ID kontrolü başarısız.");
+} else {
+    console.log("Chat ID başarıyla alındı.");
 }
 
 const downloadButton = document.getElementById("download-btn");
 if (downloadButton) {
+    console.log("Download butonu bulundu.");
     downloadButton.addEventListener("click", async () => {
         const youtubeUrl = document.getElementById("youtube-url").value;
         const status = document.getElementById("status");
@@ -35,6 +39,7 @@ if (downloadButton) {
 
             if (data.success) {
                 status.textContent = "Müzik başarıyla indirildi! Telegram botundan dosyayı alabilirsiniz.";
+                console.log("Müzik indirme başarılı.");
             } else {
                 status.textContent = "Bir hata oluştu: " + data.message;
                 console.error("Backend hatası: " + data.message);
@@ -46,4 +51,5 @@ if (downloadButton) {
     });
 } else {
     console.error("Download butonu bulunamadı.");
+    console.log("Download butonu bulunamadı.");
 }
