@@ -10,3 +10,4 @@ oauthlib==3.2.2
 youtube-search==2.1.0
 pymongo
 Flask==2.3.2
+youtube_dl
