@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 
 # Telegram bot token
-TELEGRAM_BOT_TOKEN = '8043039788:AAErHUrZZYpOSwoJMPmSrRs199tfikUjRTs'
+TELEGRAM_BOT_TOKEN = '80'
 TELEGRAM_API_URL = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendAudio'
 
 # İndirilen müzikleri saklamak için klasör
