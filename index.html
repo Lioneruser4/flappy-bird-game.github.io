@@ -1,20 +1,322 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Müzik İndir</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<title>Telegram Girişli Puzzle Oyunu</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; text-align:center; }
+  #login-area, #game-area { margin-top: 30px; }
+  #game-area { display: none; }
+  #puzzle-container {
+    margin: 20px auto;
+    position: relative;
+    width: 600px;
+    height: 600px;
+    border: 2px solid #333;
+    touch-action: none;
+  }
+  canvas { background: #eee; display: block; margin: 0 auto; }
+  #controls { margin-top: 20px; }
+  select, input[type=file] {
+    font-size: 16px;
+    margin: 10px;
+  }
+  button {
+    font-size: 16px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  #message {
+    margin-top: 15px;
+    font-weight: bold;
+    color: green;
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Müzik İndir</h1>
-        <form id="downloadForm">
-            <input type="text" id="url" placeholder="YouTube linki girin" required>
-            <button type="submit">İndir</button>
-        </form>
-        <div id="result"></div>
-    </div>
-    <script src="script.js"></script>
+
+<h1>Telegram ile Giriş Yap ve Puzzle Oyna</h1>
+
+<div id="login-area">
+  <!-- Telegram Login Widget -->
+  <script async src="https://telegram.org/js/telegram-widget.js?15"
+    data-telegram-login="YOUR_BOT_USERNAME"
+    data-size="large"
+    data-userpic="false"
+    data-auth-url=""
+    data-onauth="onTelegramAuth(user)"
+  ></script>
+</div>
+
+<div id="game-area">
+  <h2>Hoşgeldin, <span id="username"></span>!</h2>
+  <p>Bir fotoğraf seç veya kendi fotoğrafını yükle:</p>
+  <input type="file" id="upload-photo" accept="image/*" />
+  <br/>
+  <label for="preset-photos">Veya hazır fotoğraf seç:</label>
+  <select id="preset-photos">
+    <option value="">Seçiniz</option>
+    <option value="https://i.imgur.com/5rXg2sn.jpg">Doğa</option>
+    <option value="https://i.imgur.com/I1fv7Ef.jpg">Şehir</option>
+    <option value="https://i.imgur.com/OaGr7Za.jpg">Deniz</option>
+  </select>
+
+  <br/>
+
+  <label for="pieces-count">Puzzle parça sayısı:</label>
+  <select id="pieces-count">
+    <option value="8">8</option>
+    <option value="12">12</option>
+    <option value="16" selected>16</option>
+    <option value="25">25</option>
+    <option value="36">36</option>
+    <option value="49">49</option>
+    <option value="64">64</option>
+    <option value="81">81</option>
+    <option value="100">100</option>
+  </select>
+
+  <br/>
+  <button id="start-btn">Oyunu Başlat</button>
+  <div id="message"></div>
+
+  <div id="puzzle-container"></div>
+</div>
+
+<script>
+  let telegramUser = null;
+  let usernameSpan = null;
+
+  function onTelegramAuth(user) {
+    telegramUser = user;
+    usernameSpan = document.getElementById('username');
+    usernameSpan.textContent = user.username || user.first_name || 'Telegram Kullanıcısı';
+    document.getElementById('login-area').style.display = 'none';
+    document.getElementById('game-area').style.display = 'block';
+  }
+
+  // Puzzle değişkenleri
+  const puzzleContainer = document.getElementById('puzzle-container');
+  const startBtn = document.getElementById('start-btn');
+  const uploadPhotoInput = document.getElementById('upload-photo');
+  const presetSelect = document.getElementById('preset-photos');
+  const piecesCountSelect = document.getElementById('pieces-count');
+  const messageDiv = document.getElementById('message');
+
+  // Oyun ayarları
+  let piecesCount = 16;
+  let img = new Image();
+  let pieces = [];
+  let pieceWidth, pieceHeight;
+  let puzzleWidth = 600;
+  let puzzleHeight = 600;
+
+  // Sürükleme için
+  let draggingPiece = null;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+
+  // Mıknatıs yapışma toleransı (px)
+  const snapTolerance = 30;
+
+  // Puzzle parçası sınıfı
+  class PuzzlePiece {
+    constructor(img, sx, sy, sw, sh, x, y, correctX, correctY) {
+      this.img = img;
+      this.sx = sx;  // kaynaktan kesim x
+      this.sy = sy;  // kaynaktan kesim y
+      this.sw = sw;  // kesim genişliği
+      this.sh = sh;  // kesim yüksekliği
+      this.x = x;    // parça pozisyon x
+      this.y = y;    // parça pozisyon y
+      this.correctX = correctX;  // doğru konum x
+      this.correctY = correctY;  // doğru konum y
+      this.width = sw;
+      this.height = sh;
+      this.placed = false;
+      this.element = null;
+    }
+    createElement() {
+      const canvas = document.createElement('canvas');
+      canvas.width = this.width;
+      canvas.height = this.height;
+      canvas.style.position = 'absolute';
+      canvas.style.left = this.x + 'px';
+      canvas.style.top = this.y + 'px';
+      canvas.style.cursor = 'grab';
+      canvas.style.userSelect = 'none';
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(this.img, this.sx, this.sy, this.sw, this.sh, 0, 0, this.width, this.height);
+
+      this.element = canvas;
+
+      // Fare ve dokunmatik olayları
+      canvas.addEventListener('mousedown', this.onDragStart.bind(this));
+      canvas.addEventListener('touchstart', this.onDragStart.bind(this), {passive:false});
+
+      return canvas;
+    }
+
+    onDragStart(e) {
+      if (this.placed) return; // yerleşmişse hareket etmesin
+      e.preventDefault();
+      draggingPiece = this;
+
+      const evt = e.touches ? e.touches[0] : e;
+      dragOffsetX = evt.clientX - this.element.getBoundingClientRect().left;
+      dragOffsetY = evt.clientY - this.element.getBoundingClientRect().top;
+
+      this.element.style.cursor = 'grabbing';
+
+      document.addEventListener('mousemove', onDragMove);
+      document.addEventListener('touchmove', onDragMove, {passive:false});
+      document.addEventListener('mouseup', onDragEnd);
+      document.addEventListener('touchend', onDragEnd);
+    }
+
+    onDragMove(e) {
+      if (!draggingPiece) return;
+      e.preventDefault();
+      const evt = e.touches ? e.touches[0] : e;
+      let newX = evt.clientX - dragOffsetX - puzzleContainer.getBoundingClientRect().left;
+      let newY = evt.clientY - dragOffsetY - puzzleContainer.getBoundingClientRect().top;
+
+      // Kutu dışına çıkmasın
+      newX = Math.max(0, Math.min(newX, puzzleWidth - this.width));
+      newY = Math.max(0, Math.min(newY, puzzleHeight - this.height));
+
+      draggingPiece.x = newX;
+      draggingPiece.y = newY;
+      draggingPiece.element.style.left = newX + 'px';
+      draggingPiece.element.style.top = newY + 'px';
+    }
+
+    onDragEnd(e) {
+      if (!draggingPiece) return;
+      e.preventDefault();
+
+      // Eğer parça doğru yerine yakınsa mıknatıs yapışması
+      if (Math.abs(draggingPiece.x - draggingPiece.correctX) < snapTolerance &&
+          Math.abs(draggingPiece.y - draggingPiece.correctY) < snapTolerance) {
+        draggingPiece.x = draggingPiece.correctX;
+        draggingPiece.y = draggingPiece.correctY;
+        draggingPiece.element.style.left = draggingPiece.correctX + 'px';
+        draggingPiece.element.style.top = draggingPiece.correctY + 'px';
+        draggingPiece.placed = true;
+        draggingPiece.element.style.cursor = 'default';
+        checkIfComplete();
+      } else {
+        draggingPiece.element.style.cursor = 'grab';
+      }
+
+      // Event listener'ları temizle
+      document.removeEventListener('mousemove', onDragMove);
+      document.removeEventListener('touchmove', onDragMove);
+      document.removeEventListener('mouseup', onDragEnd);
+      document.removeEventListener('touchend', onDragEnd);
+      draggingPiece = null;
+    }
+  }
+
+  function onDragMove(e) {
+    if (draggingPiece) draggingPiece.onDragMove(e);
+  }
+
+  function onDragEnd(e) {
+    if (draggingPiece) draggingPiece.onDragEnd(e);
+  }
+
+  function startPuzzle() {
+    messageDiv.textContent = '';
+    puzzleContainer.innerHTML = '';
+
+    piecesCount = parseInt(piecesCountSelect.value);
+
+    // Puzzle için satır ve sütun sayısı
+    const cols = Math.round(Math.sqrt(piecesCount));
+    const rows = Math.ceil(piecesCount / cols);
+
+    pieceWidth = puzzleWidth / cols;
+    pieceHeight = puzzleHeight / rows;
+
+    pieces = [];
+
+    // Puzzle resmi hazır mı kontrol et
+    if (!img.complete) {
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = 'Lütfen önce fotoğrafın yüklenmesini bekleyin.';
+      return;
+    }
+
+    // Parçaları oluştur
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        if (pieces.length >= piecesCount) break;
+        const sx = (img.naturalWidth / cols) * x;
+        const sy = (img.naturalHeight / rows) * y;
+        const sw = img.naturalWidth / cols;
+        const sh = img.naturalHeight / rows;
+
+        // Doğru pozisyon (pixel cinsinden puzzle alanında)
+        const correctX = pieceWidth * x;
+        const correctY = pieceHeight * y;
+
+        // Rastgele konumda başlangıç için (kutunun içinde)
+        const startX = Math.random() * (puzzleWidth - pieceWidth);
+        const startY = Math.random() * (puzzleHeight - pieceHeight);
+
+        const piece = new PuzzlePiece(img, sx, sy, sw, sh, startX, startY, correctX, correctY);
+        const el = piece.createElement();
+        puzzleContainer.appendChild(el);
+
+        pieces.push(piece);
+      }
+    }
+  }
+
+  function checkIfComplete() {
+    for (const p of pieces) {
+      if (!p.placed) return;
+    }
+    messageDiv.style.color = 'green';
+    messageDiv.textContent = 'Tebrikler! Puzzle tamamlandı 🎉';
+  }
+
+  // Fotoğraf seçimi ve yükleme
+
+  // Dosya yüklendiğinde img.src olarak ata
+  uploadPhotoInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+    // Seçili hazır fotoğrafı sıfırla
+    presetSelect.value = '';
+  });
+
+  // Hazır fotoğraf seçilince img.src ata
+  presetSelect.addEventListener('change', (e) => {
+    const url = e.target.value;
+    if (url) {
+      img.src = url;
+      uploadPhotoInput.value = ''; // dosya inputunu sıfırla
+    }
+  });
+
+  startBtn.addEventListener('click', () => {
+    if (!img.src) {
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = 'Lütfen önce bir fotoğraf seçin veya yükleyin.';
+      return;
+    }
+    startPuzzle();
+  });
+
+</script>
+
 </body>
 </html>
