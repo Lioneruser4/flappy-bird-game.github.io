@@ -12,7 +12,6 @@
       color: #fff;
       font-family: Arial, sans-serif;
     }
-
     .controls {
       text-align: center;
       padding: 15px;
@@ -21,14 +20,12 @@
       top: 0;
       z-index: 9999;
     }
-
     .btn {
       padding: 10px 20px;
       margin: 5px;
       font-size: 16px;
       cursor: pointer;
     }
-
     .ads-wrapper {
       display: flex;
       flex-wrap: wrap;
@@ -36,7 +33,6 @@
       gap: 20px;
       padding: 20px;
     }
-
     .ad-box {
       background: #111;
       padding: 10px;
@@ -44,14 +40,13 @@
       min-width: 160px;
       max-width: 728px;
     }
-
     iframe {
       max-width: 100%;
       border: none;
     }
   </style>
 
-  <!-- Farklı kullanıcı gibi görünmesi için no-cache -->
+  <!-- no-cache -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -72,9 +67,7 @@
           'format': 'iframe',
           'height': 90,
           'width': 728,
-          'params': {
-            'cb': Date.now()
-          }
+          'params': { 'cb': Date.now() }
         };
       </script>
       <script type="text/javascript" src="//www.highperformanceformat.com/3165bb9ead9289ac8ccf41eb2a1fe725/invoke.js"></script>
@@ -88,15 +81,13 @@
           'format': 'iframe',
           'height': 300,
           'width': 160,
-          'params': {
-            'cb': Math.random()
-          }
+          'params': { 'cb': Math.random() }
         };
       </script>
       <script type="text/javascript" src="//www.highperformanceformat.com/81ec3b214b26464352c7fc73b372b7fe/invoke.js"></script>
     </div>
 
-    <!-- Reklam 3 (iframe link) -->
+    <!-- Reklam 3 -->
     <div class="ad-box" id="ad3">
       <iframe id="iframe3" src="https://www.revenuecpmgate.com/t03q4w7k4?key=e856e7b091878b706e97b09057eb32b8" width="100%" height="300" scrolling="yes" frameborder="0"></iframe>
     </div>
@@ -119,23 +110,34 @@
           'format': 'iframe',
           'height': 50,
           'width': 320,
-          'params': {
-            'cb': Date.now()
-          }
+          'params': { 'cb': Date.now() }
         };
       </script>
       <script type="text/javascript" src="//www.highperformanceformat.com/d8c6bc97079210ffad1026e53cc1cfb1/invoke.js"></script>
     </div>
 
-    <!-- Ekstra Reklamlar (ID değiştirildi) -->
+    <!-- Reklam 7 -->
     <div class="ad-box" id="ad7">
-      <script async="async" data-cfasync="false" src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
-      <div id="container-7b01b524e51af9e0ba41771eb90430b5-1"></div>
+      <script async src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
+      <div id="container-7b01b524e51af9e0ba41771eb90430b5-7"></div>
     </div>
 
+    <!-- Reklam 8 -->
     <div class="ad-box" id="ad8">
-      <script async="async" data-cfasync="false" src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
-      <div id="container-7b01b524e51af9e0ba41771eb90430b5-2"></div>
+      <script async src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
+      <div id="container-7b01b524e51af9e0ba41771eb90430b5-8"></div>
+    </div>
+
+    <!-- Reklam 9 -->
+    <div class="ad-box" id="ad9">
+      <script async src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
+      <div id="container-7b01b524e51af9e0ba41771eb90430b5-9"></div>
+    </div>
+
+    <!-- Reklam 10 -->
+    <div class="ad-box" id="ad10">
+      <script async src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
+      <div id="container-7b01b524e51af9e0ba41771eb90430b5-10"></div>
     </div>
   </div>
 
@@ -143,23 +145,14 @@
     let reloadInterval = null;
 
     function refreshAds() {
-      // iframe'leri yenile
-      const iframe3 = document.getElementById('iframe3');
-      if (iframe3) {
-        let src = iframe3.src.split('?')[0];
-        iframe3.src = src + '?key=e856e7b091878b706e97b09057eb32b8&rand=' + Date.now();
-      }
-      // atOptions scriptleri için sayfa yenilenmesi gerekiyor, alternatif reload burada değil
+      // Tüm reklamları garanti yenilemek için sayfayı yenile
+      location.reload();
     }
 
     function startAutoReload() {
       if (reloadInterval) return;
       localStorage.setItem("autoReload", "true");
-      refreshAds();
-      reloadInterval = setInterval(() => {
-        // Sayfa komple yenilemek istersen burayı location.reload() yapabilirsin
-        refreshAds();
-      }, 3000);
+      reloadInterval = setInterval(refreshAds, 3000);
     }
 
     function stopAutoReload() {
@@ -170,14 +163,12 @@
       }
     }
 
-    // Sayfa yüklendiğinde otomatik yenilemeyi kontrol et
     window.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem("autoReload") === "true") {
         startAutoReload();
       }
     });
 
-    // Butonlara event ekle
     document.getElementById('startBtn').addEventListener('click', startAutoReload);
     document.getElementById('stopBtn').addEventListener('click', stopAutoReload);
   </script>
