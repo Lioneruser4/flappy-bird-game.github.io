@@ -47,6 +47,7 @@
 
     iframe {
       max-width: 100%;
+      border: none;
     }
   </style>
 
@@ -62,9 +63,9 @@
     <button id="stopBtn" class="btn">Durdur</button>
   </div>
 
-  <div class="ads-wrapper">
+  <div class="ads-wrapper" id="adsWrapper">
     <!-- Reklam 1 -->
-    <div class="ad-box">
+    <div class="ad-box" id="ad1">
       <script type="text/javascript">
         atOptions = {
           'key': '3165bb9ead9289ac8ccf41eb2a1fe725',
@@ -72,7 +73,7 @@
           'height': 90,
           'width': 728,
           'params': {
-            'cb': Date.now() // benzersiz kılmak için
+            'cb': Date.now()
           }
         };
       </script>
@@ -80,7 +81,7 @@
     </div>
 
     <!-- Reklam 2 -->
-    <div class="ad-box">
+    <div class="ad-box" id="ad2">
       <script type="text/javascript">
         atOptions = {
           'key': '81ec3b214b26464352c7fc73b372b7fe',
@@ -96,22 +97,22 @@
     </div>
 
     <!-- Reklam 3 (iframe link) -->
-    <div class="ad-box">
-      <iframe src="https://www.revenuecpmgate.com/t03q4w7k4?key=e856e7b091878b706e97b09057eb32b8&rand=<?=Date.now()?>" width="100%" height="300" frameborder="0" scrolling="yes"></iframe>
+    <div class="ad-box" id="ad3">
+      <iframe id="iframe3" src="https://www.revenuecpmgate.com/t03q4w7k4?key=e856e7b091878b706e97b09057eb32b8" width="100%" height="300" scrolling="yes" frameborder="0"></iframe>
     </div>
 
     <!-- Reklam 4 -->
-    <div class="ad-box">
-      <script type='text/javascript' src='//pl25075542.revenuecpmgate.com/08/d5/a8/08d5a84758ffc0d0f2dc4af2816d121e.js?cb=<?=Math.random()?>'></script>
+    <div class="ad-box" id="ad4">
+      <script type='text/javascript' src='//pl25075542.revenuecpmgate.com/08/d5/a8/08d5a84758ffc0d0f2dc4af2816d121e.js'></script>
     </div>
 
     <!-- Reklam 5 -->
-    <div class="ad-box">
-      <script type='text/javascript' src='//pl25075661.revenuecpmgate.com/b7/86/83/b78683cc54e467ade70cffb61da92366.js?cb=<?=Math.random()?>'></script>
+    <div class="ad-box" id="ad5">
+      <script type='text/javascript' src='//pl25075661.revenuecpmgate.com/b7/86/83/b78683cc54e467ade70cffb61da92366.js'></script>
     </div>
 
     <!-- Reklam 6 -->
-    <div class="ad-box">
+    <div class="ad-box" id="ad6">
       <script type="text/javascript">
         atOptions = {
           'key': 'd8c6bc97079210ffad1026e53cc1cfb1',
@@ -127,44 +128,58 @@
     </div>
 
     <!-- Ekstra Reklamlar (ID değiştirildi) -->
-    <div class="ad-box">
-      <script async="async" data-cfasync="false" src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js?cb=<?=Math.random()?>"></script>
+    <div class="ad-box" id="ad7">
+      <script async="async" data-cfasync="false" src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
       <div id="container-7b01b524e51af9e0ba41771eb90430b5-1"></div>
     </div>
 
-    <div class="ad-box">
-      <script async="async" data-cfasync="false" src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js?cb=<?=Math.random()?>"></script>
+    <div class="ad-box" id="ad8">
+      <script async="async" data-cfasync="false" src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
       <div id="container-7b01b524e51af9e0ba41771eb90430b5-2"></div>
     </div>
   </div>
 
   <script>
-    // Otomatik yenileme
-    function startAutoReload() {
-      if (!window.autoReloadStarted) {
-        window.autoReloadStarted = true;
-        localStorage.setItem("autoReload", "true");
-        setTimeout(() => {
-          location.reload(true); // true = cache bypass
-        }, 2000);
+    let reloadInterval = null;
+
+    function refreshAds() {
+      // iframe'leri yenile
+      const iframe3 = document.getElementById('iframe3');
+      if (iframe3) {
+        let src = iframe3.src.split('?')[0];
+        iframe3.src = src + '?key=e856e7b091878b706e97b09057eb32b8&rand=' + Date.now();
       }
+      // atOptions scriptleri için sayfa yenilenmesi gerekiyor, alternatif reload burada değil
+    }
+
+    function startAutoReload() {
+      if (reloadInterval) return;
+      localStorage.setItem("autoReload", "true");
+      refreshAds();
+      reloadInterval = setInterval(() => {
+        // Sayfa komple yenilemek istersen burayı location.reload() yapabilirsin
+        refreshAds();
+      }, 3000);
     }
 
     function stopAutoReload() {
       localStorage.setItem("autoReload", "false");
-      window.autoReloadStarted = false;
+      if (reloadInterval) {
+        clearInterval(reloadInterval);
+        reloadInterval = null;
+      }
     }
 
-    // Sayfa yüklenince kontrol et
-    window.addEventListener("DOMContentLoaded", () => {
+    // Sayfa yüklendiğinde otomatik yenilemeyi kontrol et
+    window.addEventListener('DOMContentLoaded', () => {
       if (localStorage.getItem("autoReload") === "true") {
         startAutoReload();
       }
     });
 
-    // Butonlar
-    document.getElementById("startBtn").addEventListener("click", startAutoReload);
-    document.getElementById("stopBtn").addEventListener("click", stopAutoReload);
+    // Butonlara event ekle
+    document.getElementById('startBtn').addEventListener('click', startAutoReload);
+    document.getElementById('stopBtn').addEventListener('click', stopAutoReload);
   </script>
 
 </body>
