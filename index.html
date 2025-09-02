@@ -29,18 +29,31 @@
       cursor: pointer;
     }
 
-    .ads-container {
+    .ads-wrapper {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-      padding: 30px 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .ad-box {
+      background: #111;
+      padding: 10px;
+      border: 1px solid #333;
+      min-width: 160px;
+      max-width: 728px;
     }
 
     iframe {
       max-width: 100%;
     }
   </style>
+
+  <!-- Farklı kullanıcı gibi görünmesi için no-cache -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 </head>
 <body>
 
@@ -49,89 +62,109 @@
     <button id="stopBtn" class="btn">Durdur</button>
   </div>
 
-  <div class="ads-container">
-    <!-- Reklam Kodları -->
-    
+  <div class="ads-wrapper">
     <!-- Reklam 1 -->
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '3165bb9ead9289ac8ccf41eb2a1fe725',
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/3165bb9ead9289ac8ccf41eb2a1fe725/invoke.js"></script>
+    <div class="ad-box">
+      <script type="text/javascript">
+        atOptions = {
+          'key': '3165bb9ead9289ac8ccf41eb2a1fe725',
+          'format': 'iframe',
+          'height': 90,
+          'width': 728,
+          'params': {
+            'cb': Date.now() // benzersiz kılmak için
+          }
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/3165bb9ead9289ac8ccf41eb2a1fe725/invoke.js"></script>
+    </div>
 
     <!-- Reklam 2 -->
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '81ec3b214b26464352c7fc73b372b7fe',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/81ec3b214b26464352c7fc73b372b7fe/invoke.js"></script>
+    <div class="ad-box">
+      <script type="text/javascript">
+        atOptions = {
+          'key': '81ec3b214b26464352c7fc73b372b7fe',
+          'format': 'iframe',
+          'height': 300,
+          'width': 160,
+          'params': {
+            'cb': Math.random()
+          }
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/81ec3b214b26464352c7fc73b372b7fe/invoke.js"></script>
+    </div>
 
-    <!-- Reklam 3 (Direkt link) -->
-    <iframe src="https://www.revenuecpmgate.com/t03q4w7k4?key=e856e7b091878b706e97b09057eb32b8" width="100%" height="600" frameborder="0" scrolling="yes"></iframe>
+    <!-- Reklam 3 (iframe link) -->
+    <div class="ad-box">
+      <iframe src="https://www.revenuecpmgate.com/t03q4w7k4?key=e856e7b091878b706e97b09057eb32b8&rand=<?=Date.now()?>" width="100%" height="300" frameborder="0" scrolling="yes"></iframe>
+    </div>
 
     <!-- Reklam 4 -->
-    <script type='text/javascript' src='//pl25075542.revenuecpmgate.com/08/d5/a8/08d5a84758ffc0d0f2dc4af2816d121e.js'></script>
+    <div class="ad-box">
+      <script type='text/javascript' src='//pl25075542.revenuecpmgate.com/08/d5/a8/08d5a84758ffc0d0f2dc4af2816d121e.js?cb=<?=Math.random()?>'></script>
+    </div>
 
     <!-- Reklam 5 -->
-    <script type='text/javascript' src='//pl25075661.revenuecpmgate.com/b7/86/83/b78683cc54e467ade70cffb61da92366.js'></script>
+    <div class="ad-box">
+      <script type='text/javascript' src='//pl25075661.revenuecpmgate.com/b7/86/83/b78683cc54e467ade70cffb61da92366.js?cb=<?=Math.random()?>'></script>
+    </div>
 
     <!-- Reklam 6 -->
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'd8c6bc97079210ffad1026e53cc1cfb1',
-        'format' : 'iframe',
-        'height' : 50,
-        'width' : 320,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/d8c6bc97079210ffad1026e53cc1cfb1/invoke.js"></script>
+    <div class="ad-box">
+      <script type="text/javascript">
+        atOptions = {
+          'key': 'd8c6bc97079210ffad1026e53cc1cfb1',
+          'format': 'iframe',
+          'height': 50,
+          'width': 320,
+          'params': {
+            'cb': Date.now()
+          }
+        };
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/d8c6bc97079210ffad1026e53cc1cfb1/invoke.js"></script>
+    </div>
 
-    <!-- Reklam 7 (Aynı kod tekrarı) -->
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'd8c6bc97079210ffad1026e53cc1cfb1',
-        'format' : 'iframe',
-        'height' : 50,
-        'width' : 320,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/d8c6bc97079210ffad1026e53cc1cfb1/invoke.js"></script>
+    <!-- Ekstra Reklamlar (ID değiştirildi) -->
+    <div class="ad-box">
+      <script async="async" data-cfasync="false" src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js?cb=<?=Math.random()?>"></script>
+      <div id="container-7b01b524e51af9e0ba41771eb90430b5-1"></div>
+    </div>
 
-    <!-- Reklam 8 -->
-    <script async="async" data-cfasync="false" src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
-    <div id="container-7b01b524e51af9e0ba41771eb90430b5"></div>
-
+    <div class="ad-box">
+      <script async="async" data-cfasync="false" src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js?cb=<?=Math.random()?>"></script>
+      <div id="container-7b01b524e51af9e0ba41771eb90430b5-2"></div>
+    </div>
   </div>
 
   <script>
-    let intervalId = null;
-
-    document.getElementById('startBtn').addEventListener('click', () => {
-      if (!intervalId) {
-        intervalId = setInterval(() => {
-          location.reload();
+    // Otomatik yenileme
+    function startAutoReload() {
+      if (!window.autoReloadStarted) {
+        window.autoReloadStarted = true;
+        localStorage.setItem("autoReload", "true");
+        setTimeout(() => {
+          location.reload(true); // true = cache bypass
         }, 3000);
       }
-    });
+    }
 
-    document.getElementById('stopBtn').addEventListener('click', () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = null;
+    function stopAutoReload() {
+      localStorage.setItem("autoReload", "false");
+      window.autoReloadStarted = false;
+    }
+
+    // Sayfa yüklenince kontrol et
+    window.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("autoReload") === "true") {
+        startAutoReload();
       }
     });
+
+    // Butonlar
+    document.getElementById("startBtn").addEventListener("click", startAutoReload);
+    document.getElementById("stopBtn").addEventListener("click", stopAutoReload);
   </script>
 
 </body>
