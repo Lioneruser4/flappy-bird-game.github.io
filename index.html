@@ -1,194 +1,74 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reklam Sayfası</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-    .controls {
-      text-align: center;
-      padding: 15px;
-      background: #222;
-      position: sticky;
-      top: 0;
-      z-index: 9999;
-    }
-    .btn {
-      padding: 10px 20px;
-      margin: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .ads-wrapper {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      padding: 20px;
-    }
-    .ad-box {
-      background: #111;
-      padding: 10px;
-      border: 1px solid #333;
-      min-width: 160px;
-      max-width: 728px;
-    }
-    iframe {
-      max-width: 100%;
-      border: none;
-    }
-  </style>
-
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
-     crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reklam Sayfası</title>
+<style>
+  body { margin:0; padding:0; background:#000; color:#fff; font-family:Arial,sans-serif; }
+  .controls { text-align:center; padding:15px; background:#222; position:sticky; top:0; z-index:9999; }
+  .btn { padding:10px 20px; margin:5px; font-size:16px; cursor:pointer; }
+  .ads-wrapper { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; padding:20px; }
+  .ad-box { background:#111; padding:10px; border:1px solid #333; min-width:160px; max-width:728px; }
+  iframe { max-width:100%; border:none; }
+</style>
 </head>
 <body>
 
-  <div class="controls">
-    <button id="startBtn" class="btn">Başlat</button>
-    <button id="stopBtn" class="btn">Durdur</button>
-  </div>
+<div class="controls">
+  <button id="startBtn" class="btn">Başlat</button>
+  <button id="stopBtn" class="btn">Durdur</button>
+</div>
 
-  <div class="ads-wrapper" id="adsWrapper">
-    <!-- Reklam 1 -->
-    <div class="ad-box" id="ad1">
-      <script type="text/javascript">
-        atOptions = {
-          'key': '3165bb9ead9289ac8ccf41eb2a1fe725',
-          'format': 'iframe',
-          'height': 90,
-          'width': 728,
-          'params': { 'cb': Date.now() }
-        };
-      </script>
-      <script type="text/javascript" src="//www.highperformanceformat.com/3165bb9ead9289ac8ccf41eb2a1fe725/invoke.js"></script>
-    </div>
-    <!-- Reklam 2 -->
-    <div class="ad-box" id="ad2">
-      <script type="text/javascript">
-        atOptions = {
-          'key': '81ec3b214b26464352c7fc73b372b7fe',
-          'format': 'iframe',
-          'height': 300,
-          'width': 160,
-          'params': { 'cb': Math.random() }
-        };
-      </script>
-      <script type="text/javascript" src="//www.highperformanceformat.com/81ec3b214b26464352c7fc73b372b7fe/invoke.js"></script>
-    </div>
-    <!-- Reklam 3 -->
-    <div class="ad-box" id="ad3">
-      <iframe src="https://www.revenuecpmgate.com/t03q4w7k4?key=e856e7b091878b706e97b09057eb32b8" width="100%" height="300"></iframe>
-    </div>
-    <!-- Reklam 4 -->
-    <div class="ad-box" id="ad4">
-      <script type='text/javascript' src='//pl25075542.revenuecpmgate.com/08/d5/a8/08d5a84758ffc0d0f2dc4af2816d121e.js'></script>
-    </div>
-    <!-- Reklam 5 -->
-    <div class="ad-box" id="ad5">
-      <script type='text/javascript' src='//pl25075661.revenuecpmgate.com/b7/86/83/b78683cc54e467ade70cffb61da92366.js'></script>
-    </div>
-    <!-- Reklam 6 -->
-    <div class="ad-box" id="ad6">
-      <script type="text/javascript">
-        atOptions = {
-          'key': 'd8c6bc97079210ffad1026e53cc1cfb1',
-          'format': 'iframe',
-          'height': 50,
-          'width': 320,
-          'params': { 'cb': Date.now() }
-        };
-      </script>
-      <script type="text/javascript" src="//www.highperformanceformat.com/d8c6bc97079210ffad1026e53cc1cfb1/invoke.js"></script>
-    </div>
-    <!-- Reklam 7 -->
-    <div class="ad-box" id="ad7">
-      <script async src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
-      <div id="container-7b01b524e51af9e0ba41771eb90430b5-7"></div>
-    </div>
-    <!-- Reklam 8 -->
-    <div class="ad-box" id="ad8">
-      <script async src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
-      <div id="container-7b01b524e51af9e0ba41771eb90430b5-8"></div>
-    </div>
-    <!-- Reklam 9 -->
-    <div class="ad-box" id="ad9">
-      <iframe src="https://www.revenuecpmgate.com/wz6qixnvj?key=86bb2cda6a6d12746475b17303b1ef88" width="300" height="250"></iframe>
-    </div>
-    <!-- Reklam 10 -->
-    <div class="ad-box" id="ad10">
-      <iframe src="https://www.revenuecpmgate.com/jmxtn13f4u?key=f0d62284f1985ef0201e08b24c1191f6" width="300" height="250"></iframe>
-    </div>
-    <!-- Reklam 11 -->
-    <div class="ad-box" id="ad11">
-      <iframe src="https://www.revenuecpmgate.com/gggm61xdt?key=d18411038e07bf7ea3618dd99d630270" width="300" height="250"></iframe>
-    </div>
-    <!-- Reklam 12 -->
-    <div class="ad-box" id="ad12">
-      <iframe src="https://www.revenuecpmgate.com/egfxjt4z5?key=d21222c51bdd4afd5a0ecf97c6716982" width="300" height="250"></iframe>
-    </div>
+<div class="ads-wrapper" id="adsWrapper">
+  <!-- Örnek 10 reklam -->
+  <div class="ad-box"><iframe src="https://www.revenuecpmgate.com/wz6qixnvj?key=86bb2cda6a6d12746475b17303b1ef88" width="300" height="250"></iframe></div>
+  <div class="ad-box"><iframe src="https://www.revenuecpmgate.com/jmxtn13f4u?key=f0d62284f1985ef0201e08b24c1191f6" width="300" height="250"></iframe></div>
+  <div class="ad-box"><iframe src="https://www.revenuecpmgate.com/gggm61xdt?key=d18411038e07bf7ea3618dd99d630270" width="300" height="250"></iframe></div>
+  <div class="ad-box"><iframe src="https://www.revenuecpmgate.com/egfxjt4z5?key=d21222c51bdd4afd5a0ecf97c6716982" width="300" height="250"></iframe></div>
+  <div class="ad-box"><iframe src="https://www.revenuecpmgate.com/t03q4w7k4?key=e856e7b091878b706e97b09057eb32b8" width="300" height="250"></iframe></div>
+  <div class="ad-box"><iframe src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></iframe></div>
+  <div class="ad-box"><iframe src="//pl25075542.revenuecpmgate.com/08/d5/a8/08d5a84758ffc0d0f2dc4af2816d121e.js"></iframe></div>
+  <div class="ad-box"><iframe src="//pl25075661.revenuecpmgate.com/b7/86/83/b78683cc54e467ade70cffb61da92366.js"></iframe></div>
+  <div class="ad-box"><iframe src="//www.highperformanceformat.com/3165bb9ead9289ac8ccf41eb2a1fe725/invoke.js"></iframe></div>
+  <div class="ad-box"><iframe src="//www.highperformanceformat.com/81ec3b214b26464352c7fc73b372b7fe/invoke.js"></iframe></div>
+</div>
 
-    <!-- Google AdSense -->
-    <div class="ad-box">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-1779293358827927"
-           data-ad-slot="1234567890"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
-    </div>
-  </div>
+<script>
+  const ads = document.querySelectorAll(".ad-box iframe");
+  let current = 0;
+  let running = false;
+  let timer;
 
-  <script>
-    const adUrls = [
-      "https://www.revenuecpmgate.com/t03q4w7k4?key=e856e7b091878b706e97b09057eb32b8",
-      "https://www.revenuecpmgate.com/wz6qixnvj?key=86bb2cda6a6d12746475b17303b1ef88",
-      "https://www.revenuecpmgate.com/jmxtn13f4u?key=f0d62284f1985ef0201e08b24c1191f6",
-      "https://www.revenuecpmgate.com/gggm61xdt?key=d18411038e07bf7ea3618dd99d630270",
-      "https://www.revenuecpmgate.com/egfxjt4z5?key=d21222c51bdd4afd5a0ecf97c6716982"
-    ];
+  function startAds() {
+    if (running) return;
+    running = true;
+    runNextAd();
+  }
 
-    let currentIndex = 0;
-    let autoRunning = false;
+  function runNextAd() {
+    if (!running) return;
+    if (current >= ads.length) current = 0;
 
-    function openNextAd() {
-      if (!autoRunning) return;
-
-      if (currentIndex >= adUrls.length) currentIndex = 0;
-      const popup = window.open(adUrls[currentIndex], "_blank", "width=800,height=600");
-      currentIndex++;
-
-      const interval = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(interval);
-          setTimeout(openNextAd, 1000); // 1 saniye sonra sonraki reklam
-        }
-      }, 500);
+    const ad = ads[current];
+    ad.scrollIntoView({behavior:"smooth", block:"center"});
+    const ok = confirm("Reklama tıklamak ve kapatmak ister misiniz?");
+    if (ok) {
+      console.log("Reklama tıklandı: ", ad.src);
     }
+    current++;
+    timer = setTimeout(runNextAd, 2000); // 2 saniye aralık
+  }
 
-    document.getElementById("startBtn").addEventListener("click", () => {
-      if (!autoRunning) {
-        autoRunning = true;
-        openNextAd();
-      }
-    });
+  function stopAds() {
+    running = false;
+    clearTimeout(timer);
+    alert("Reklam döngüsü durduruldu.");
+  }
 
-    document.getElementById("stopBtn").addEventListener("click", () => {
-      autoRunning = false;
-      alert("Tüm popup reklamlar durduruldu. Açık pencereleri manuel kapatın.");
-    });
-  </script>
+  document.getElementById("startBtn").addEventListener("click", startAds);
+  document.getElementById("stopBtn").addEventListener("click", stopAds);
+</script>
 
 </body>
 </html>
