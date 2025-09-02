@@ -49,7 +49,7 @@
 <body>
 
   <div class="controls">
-    <button id="startBtn" class="btn">Başlat (3s Yenile)</button>
+    <button id="startBtn" class="btn">Başlat (2s Yenile)</button>
     <button id="stopBtn" class="btn">Durdur</button>
   </div>
 
@@ -122,46 +122,35 @@
       <script async src="//pl25079553.revenuecpmgate.com/7b01b524e51af9e0ba41771eb90430b5/invoke.js"></script>
       <div id="container-7b01b524e51af9e0ba41771eb90430b5-8"></div>
     </div>
-
-    <!-- Reklam 9 -->
-    <div class="ad-box" id="ad9">
-      <iframe src="https://www.revenuecpmgate.com/wz6qixnvj?key=86bb2cda6a6d12746475b17303b1ef88" width="300" height="250"></iframe>
-    </div>
-
-    <!-- Reklam 10 -->
-    <div class="ad-box" id="ad10">
-      <iframe src="https://www.revenuecpmgate.com/jmxtn13f4u?key=f0d62284f1985ef0201e08b24c1191f6" width="300" height="250"></iframe>
-    </div>
-
-    <!-- Reklam 11 -->
-    <div class="ad-box" id="ad11">
-      <iframe src="https://www.revenuecpmgate.com/gggm61xdt?key=d18411038e07bf7ea3618dd99d630270" width="300" height="250"></iframe>
-    </div>
-
-    <!-- Reklam 12 -->
-    <div class="ad-box" id="ad12">
-      <iframe src="https://www.revenuecpmgate.com/egfxjt4z5?key=d21222c51bdd4afd5a0ecf97c6716982" width="300" height="250"></iframe>
-    </div>
   </div>
 
   <script>
     let reloadInterval = null;
 
     function refreshAds() {
-      location.reload(); // tüm reklamları yenilemek için
+      location.reload(); // sayfayı komple yenile
     }
 
     function startAutoReload() {
       if (reloadInterval) return;
-      reloadInterval = setInterval(refreshAds, 3000);
+      localStorage.setItem("autoReload", "true");
+      reloadInterval = setInterval(refreshAds, 2000); // 2 saniye
     }
 
     function stopAutoReload() {
+      localStorage.setItem("autoReload", "false");
       if (reloadInterval) {
         clearInterval(reloadInterval);
         reloadInterval = null;
       }
     }
+
+    // Sayfa yüklendiğinde kontrol et
+    window.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem("autoReload") === "true") {
+        startAutoReload();
+      }
+    });
 
     document.getElementById('startBtn').addEventListener('click', startAutoReload);
     document.getElementById('stopBtn').addEventListener('click', stopAutoReload);
