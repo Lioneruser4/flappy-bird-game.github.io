@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flappy Bird Oyunu</title>
+<title>Reklam Sayfası</title>
 <style>
   body {
     margin: 0;
@@ -83,12 +83,21 @@
     padding: 10px 0;
   }
   
-  .game-layout {
+  .ad-layout {
     display: flex;
     justify-content: center;
     gap: 20px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 20px auto;
+    padding: 0 15px;
+  }
+  
+  .ad-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-grow: 1;
+    max-width: 800px;
   }
   
   .ad-sidebar {
@@ -123,6 +132,12 @@
 </style>
 </head>
 <body>
+  <div class="control-panel">
+    <button id="refreshBtn">Yenile</button>
+    <button id="autoRefreshBtn">Otomatik Yenile (3sn)</button>
+    <button id="stopBtn" disabled>Durdur</button>
+  </div>
+  
   <div class="ad-banner top-banner">
     <script type="text/javascript">
       atOptions = {
@@ -136,7 +151,7 @@
     <script type="text/javascript" src="//www.highperformanceformat.com/afcc99b92186f47b725c39233ffb50c0/invoke.js"></script>
   </div>
 
-  <div class="game-layout">
+  <div class="ad-layout">
     <div class="ad-sidebar left-sidebar">
       <div class="ad-container">
         <script type="text/javascript">
@@ -163,21 +178,8 @@
         <script type="text/javascript" src="//www.highperformanceformat.com/a3cb5a20919037135c53e9e351d8e232/invoke.js"></script>
       </div>
     </div>
-
-    <div class="game-container">
-      <h1>Flappy Bird</h1>
-      <div class="score">Skor: <span id="score">0</span></div>
-    <canvas id="gameCanvas" width="400" height="600"></canvas>
-    <div class="game-over" id="gameOver">
-      <h2>Oyun Bitti!</h2>
-      <p>Skorunuz: <span id="finalScore">0</span></p>
-      <button id="restartButton">Tekrar Oyna</button>
-    </div>
-    <div class="controls">
-      <button id="startButton">Oyunu Başlat</button>
-    </div>
     
-    <div class="ad-sidebar right-sidebar">
+    <div class="ad-main-content">
       <div class="ad-container">
         <script type="text/javascript">
           atOptions = {
@@ -190,6 +192,9 @@
         </script>
         <script type="text/javascript" src="//www.highperformanceformat.com/f681ad44e5eaa2bf1cab090219d05ff0/invoke.js"></script>
       </div>
+    </div>
+    
+    <div class="ad-sidebar right-sidebar">
       <div class="ad-container">
         <script type="text/javascript">
           atOptions = {
@@ -258,19 +263,35 @@
     });
   </script>
   
-  <script src="script.js"></script>
   <script>
-    // Oyun başlatma işlevi
-    document.getElementById('startButton').addEventListener('click', function() {
-      startGame();
-      this.style.display = 'none';
-    });
-
-    // Yeniden başlat butonu
-    document.getElementById('restartButton').addEventListener('click', function() {
-      resetGame();
-      document.getElementById('gameOver').style.display = 'none';
-      startGame();
+    // Video ad handling (5 seconds for video ads)
+    function handleVideoAds() {
+      const videoAds = document.querySelectorAll('video');
+      videoAds.forEach(video => {
+        video.muted = true;
+        video.loop = false;
+        video.playsInline = true;
+        video.play().then(() => {
+          setTimeout(() => {
+            video.pause();
+            video.currentTime = 0;
+          }, 5000);
+        });
+      });
+    }
+    
+    // Run after page loads
+    window.addEventListener('load', function() {
+      // Initial check for video ads
+      handleVideoAds();
+      
+      // Set up mutation observer to handle dynamically loaded ads
+      const observer = new MutationObserver(function(mutations) {
+        handleVideoAds();
+      });
+      
+      // Start observing the document with the configured parameters
+      observer.observe(document.body, { childList: true, subtree: true });
     });
   </script>
 </body>
