@@ -3,316 +3,275 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reklam Sayfası</title>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927" crossorigin="anonymous"></script>
+<title>Flappy Bird Oyunu</title>
 <style>
   body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
+    text-align: center;
   }
   
-  .ads-wrapper {
+  .game-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  canvas {
+    border: 2px solid #333;
+    background-color: #4fc3f7;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .controls {
+    margin: 20px 0;
+  }
+  
+  button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .score {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .game-over {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
+  }
+  
+  /* Ad Styling */
+  .ad-banner {
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px 0;
+    background: #f0f0f0;
+    padding: 10px 0;
+  }
+  
+  .game-layout {
+    display: flex;
     justify-content: center;
     gap: 20px;
-    padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
   }
   
-  .ad-box {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  .ad-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .ad-container {
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
     overflow: hidden;
-    transition: all 0.3s ease;
   }
   
-  .ad-box iframe {
-    border: none;
-    display: block;
+  .ad-banner.bottom-banner {
+    margin-top: 20px;
   }
   
-  .ad-loading {
-    padding: 10px;
-    text-align: center;
-    color: #666;
-    background-color: #f9f9f9;
+  @media (max-width: 1200px) {
+    .game-layout {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .ad-sidebar {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 </style>
 </head>
 <body>
-
-<div class="ads-wrapper" id="adsWrapper">
-  <!-- Reklam 1 -->
-  <div class="ad-box">
+  <div class="ad-banner top-banner">
     <script type="text/javascript">
       atOptions = {
-        'key' : 'dc6d6397ca2140d96eda636efc009008',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/dc6d6397ca2140d96eda636efc009008/invoke.js"></script>
-  </div>
-
-  <!-- Reklam 2 -->
-  <div class="ad-box">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '3165bb9ead9289ac8ccf41eb2a1fe725',
+        'key' : 'afcc99b92186f47b725c39233ffb50c0',
         'format' : 'iframe',
         'height' : 90,
         'width' : 728,
         'params' : {}
       };
     </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/3165bb9ead9289ac8ccf41eb2a1fe725/invoke.js"></script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/afcc99b92186f47b725c39233ffb50c0/invoke.js"></script>
   </div>
 
-  <!-- Reklam 3 -->
-  <div class="ad-box">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '2fa7fa8b3c5be7e730ef99e9c437a42c',
-        'format' : 'iframe',
-        'height' : 600,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/2fa7fa8b3c5be7e730ef99e9c437a42c/invoke.js"></script>
-  </div>
+  <div class="game-layout">
+    <div class="ad-sidebar left-sidebar">
+      <div class="ad-container">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : 'e57bf7384388a432c346f8ab2b49658a',
+            'format' : 'iframe',
+            'height' : 600,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/e57bf7384388a432c346f8ab2b49658a/invoke.js"></script>
+      </div>
+      <div class="ad-container">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : 'a3cb5a20919037135c53e9e351d8e232',
+            'format' : 'iframe',
+            'height' : 300,
+            'width' : 160,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/a3cb5a20919037135c53e9e351d8e232/invoke.js"></script>
+      </div>
+    </div>
 
-  <!-- Reklam 4 -->
-  <div class="ad-box">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : '81ec3b214b26464352c7fc73b372b7fe',
-        'format' : 'iframe',
-        'height' : 300,
-        'width' : 160,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/81ec3b214b26464352c7fc73b372b7fe/invoke.js"></script>
-  </div>
-
-  <!-- Reklam 5 -->
-  <div class="ad-box">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'bf7b78864536c0dd73496e6502e7f7d8',
-        'format' : 'iframe',
-        'height' : 60,
-        'width' : 468,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/bf7b78864536c0dd73496e6502e7f7d8/invoke.js"></script>
-  </div>
-
-  <!-- Reklam 6 -->
-  <div class="ad-box">
-    <iframe src="https://www.revenuecpmgate.com/t03q4w7k4?key=e856e7b091878b706e97b09057eb32b8" width="300" height="250"></iframe>
-  </div>
-
-  <!-- Reklam 7 -->
-  <div class="ad-box">
-    <script type='text/javascript' src='//pl25075542.revenuecpmgate.com/08/d5/a8/08d5a84758ffc0d0f2dc4af2816d121e.js'></script>
-  </div>
-
-  <!-- Reklam 8 -->
-  <div class="ad-box">
-    <script type='text/javascript' src='//pl25075661.revenuecpmgate.com/b7/86/83/b78683cc54e467ade70cffb61da92366.js'></script>
-  </div>
-
-  <!-- Reklam 9 -->
-  <div class="ad-box">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'd8c6bc97079210ffad1026e53cc1cfb1',
-        'format' : 'iframe',
-        'height' : 50,
-        'width' : 320,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/d8c6bc97079210ffad1026e53cc1cfb1/invoke.js"></script>
-  </div>
-</div>
-
-<script>
-  let reloadInterval = null;
-  const REFRESH_INTERVAL = 3000; // 3 saniye
-
-  // Tüm reklamları göster
-  function showAllAds() {
-    const adBoxes = document.querySelectorAll('.ad-box');
-    if (adBoxes.length === 0) {
-      console.log('Reklam bulunamadı!');
-      return;
-    }
+    <div class="game-container">
+      <h1>Flappy Bird</h1>
+      <div class="score">Skor: <span id="score">0</span></div>
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+    <div class="game-over" id="gameOver">
+      <h2>Oyun Bitti!</h2>
+      <p>Skorunuz: <span id="finalScore">0</span></p>
+      <button id="restartButton">Tekrar Oyna</button>
+    </div>
+    <div class="controls">
+      <button id="startButton">Oyunu Başlat</button>
+    </div>
     
-    adBoxes.forEach((ad, index) => {
-      // Reklam kutusunu göster
-      ad.style.display = 'block';
-      ad.style.visibility = 'visible';
-      ad.style.opacity = '1';
-      ad.style.minHeight = '100px';
-      ad.style.margin = '10px auto';
-      ad.style.overflow = 'hidden';
-      ad.style.borderRadius = '8px';
-      ad.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-      
-      // Reklam yüklendiğinde yükleniyor göstergesini kaldır
-      const iframe = ad.querySelector('iframe');
-      if (iframe) {
-        iframe.onload = function() {
-          const loading = ad.querySelector('.ad-loading');
-          if (loading) {
-            loading.style.display = 'none';
-          }
+    <div class="ad-sidebar right-sidebar">
+      <div class="ad-container">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : 'f681ad44e5eaa2bf1cab090219d05ff0',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/f681ad44e5eaa2bf1cab090219d05ff0/invoke.js"></script>
+      </div>
+      <div class="ad-container">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : 'b3893d571fbcbcf66ac0060e8c9e27e5',
+            'format' : 'iframe',
+            'height' : 50,
+            'width' : 320,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/b3893d571fbcbcf66ac0060e8c9e27e5/invoke.js"></script>
+      </div>
+    </div>
+  </div>
+  
+  <div class="ad-banner bottom-banner">
+    <div class="ad-container">
+      <script type="text/javascript">
+        atOptions = {
+          'key' : 'd47660d631c15ead0ce624e6280fd7eb',
+          'format' : 'iframe',
+          'height' : 60,
+          'width' : 468,
+          'params' : {}
         };
-      }
-    });
-  }
-
-  // Tüm reklamları yenile
-  function refreshAds() {
-    console.log('Reklamlar yenileniyor...');
-    
-    // Önce tüm reklamları göster
-    showAllAds();
-    
-    // Tüm reklam kutularını al
-    const adBoxes = document.querySelectorAll('.ad-box');
-    
-    // Her bir reklam kutusu için işlem yap
-    adBoxes.forEach((adBox, index) => {
-      // Reklam kutusunu göster
-      adBox.style.display = 'block';
-      adBox.style.visibility = 'visible';
-      adBox.style.opacity = '1';
-      
-      // Yükleniyor göstergesini kaldır
-      const loading = adBox.querySelector('.ad-loading');
-      if (loading) {
-        setTimeout(() => {
-          loading.style.opacity = '0';
-          setTimeout(() => loading.remove(), 300);
-        }, 500);
-      }
-      
-      // Iframe'leri yenile
-      const iframe = adBox.querySelector('iframe');
-      if (iframe) {
-        try {
-          // Mevcut kaynağı al
-          const currentSrc = iframe.src.split('?')[0];
-          if (currentSrc) {
-            // Rastgele parametre ekleyerek yenile
-            iframe.src = currentSrc + '?r=' + Math.random();
-            
-            // Iframe yüklendiğinde
-            iframe.onload = function() {
-              console.log(`Reklam ${index + 1} yüklendi`);
-            };
-          }
-        } catch (e) {
-          console.error('Reklam yüklenirken hata oluştu:', e);
-        }
-        try {
-          iframe.src = iframeSources[index] + '?r=' + Math.random();
-        } catch (e) {
-          console.log('Reklam yüklenirken hata oluştu:', e);
-        }
-      }
-      
-      // Script tag'lerini yeniden yükle
-      const scripts = adBox.querySelectorAll('script');
-      scripts.forEach(script => {
-        if (script.src) {
-          const newScript = document.createElement('script');
-          newScript.src = script.src;
-          newScript.async = true;
-          script.parentNode.replaceChild(newScript, script);
-        }
+      </script>
+      <script type="text/javascript" src="//www.highperformanceformat.com/d47660d631c15ead0ce624e6280fd7eb/invoke.js"></script>
+    </div>
+  </div>
+  
+  <!-- Additional ad scripts -->
+  <script type='text/javascript' src='//pl27575662.revenuecpmgate.com/31/d9/f0/31d9f0444d74600d11fb7e813ee8882f.js'></script>
+  <script type='text/javascript' src='//pl27575672.revenuecpmgate.com/83/aa/ee/83aaee7ceb3759646ba46c30812a066e.js'></script>
+  <script async="async" data-cfasync="false" src="//pl27575667.revenuecpmgate.com/87abbe86472620b6b18a9d9646163740/invoke.js"></script>
+  <div id="container-87abbe86472620b6b18a9d9646163740"></div>
+  
+  <script>
+    // Video ad handling (5 seconds for video ads)
+    function handleVideoAds() {
+      const videoAds = document.querySelectorAll('video');
+      videoAds.forEach(video => {
+        video.muted = true;
+        video.loop = false;
+        video.playsInline = true;
+        video.play().then(() => {
+          setTimeout(() => {
+            video.pause();
+            video.currentTime = 0;
+          }, 5000);
+        });
       });
-    });
-  }
-
-  // Otomatik yenilemeyi başlat
-  function startAutoReload() {
-    console.log('Reklamlar yükleniyor...');
-    
-    // Önceki interval'i temizle
-    if (reloadInterval) {
-      clearInterval(reloadInterval);
-      reloadInterval = null;
     }
     
-    // Tüm reklamları göster
-    showAllAds();
-    
-    // İlk yenilemeyi hemen yap (kısa bir gecikmeyle)
-    setTimeout(() => {
-      // Reklamları yenile
-      refreshAds();
+    // Run after page loads
+    window.addEventListener('load', function() {
+      // Initial check for video ads
+      handleVideoAds();
       
-      // Sonraki yenilemeleri planla
-      reloadInterval = setInterval(() => {
-        refreshAds();
-      }, REFRESH_INTERVAL);
+      // Set up mutation observer to handle dynamically loaded ads
+      const observer = new MutationObserver(function(mutations) {
+        handleVideoAds();
+      });
       
-      console.log('Reklamlar otomatik olarak yenileniyor. Yenileme aralığı:', REFRESH_INTERVAL + 'ms');
-      notification.style.bottom = '20px';
-      notification.style.right = '20px';
-      notification.style.background = '#4CAF50';
-      notification.style.color = 'white';
-      notification.style.padding = '10px 20px';
-      notification.style.borderRadius = '4px';
-      notification.style.zIndex = '1000';
-      
-      // Eğer önceki bildirim varsa kaldır
-      const existingNotification = document.getElementById('refresh-notification');
-      if (existingNotification) {
-        existingNotification.remove();
-      }
-      
-      document.body.appendChild(notification);
-      
-      // 3 saniye sonra bildirimi kaldır
-      setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transition = 'opacity 0.5s';
-        setTimeout(() => {
-          if (notification && notification.parentNode) {
-            notification.remove();
-          }
-        }, 500);
-      }, 3000);
-      
-      console.log('Reklamlar otomatik yenileme başlatıldı. Yenileme aralığı:', REFRESH_INTERVAL + 'ms');
-    }, 1000); // 1 saniye gecikme ile başlat
-  }
+      // Start observing the document with the configured parameters
+      observer.observe(document.body, { childList: true, subtree: true });
+    });
+  </script>
+  
+  <script src="script.js"></script>
+  <script>
+    // Oyun başlatma işlevi
+    document.getElementById('startButton').addEventListener('click', function() {
+      startGame();
+      this.style.display = 'none';
+    });
 
-
-  // Sayfa yüklendiğinde çalışacak kod
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('Sayfa yüklendi, reklamlar gösteriliyor...');
-    
-    // Tüm reklamları göster
-    showAllAds();
-    
-    console.log('Reklamlar yüklendi.');
-  });
-</script>
-
+    // Yeniden başlat butonu
+    document.getElementById('restartButton').addEventListener('click', function() {
+      resetGame();
+      document.getElementById('gameOver').style.display = 'none';
+      startGame();
+    });
+  </script>
 </body>
 </html>
