@@ -174,11 +174,21 @@
   function reloadAllIframes() {
     if (!isAutoRefresh) return;
     
-    // Tüm reklam container'larını göster
+    // Önce tüm reklamları göster
     const adContainer = document.getElementById('ad-container');
     const adsWrapper = document.getElementById('adsWrapper');
-    if (adContainer) adContainer.style.display = 'block';
-    if (adsWrapper) adsWrapper.style.display = 'flex';
+    
+    if (adContainer) {
+      adContainer.style.display = 'block';
+      adContainer.style.visibility = 'visible';
+      adContainer.style.opacity = '1';
+    }
+    
+    if (adsWrapper) {
+      adsWrapper.style.display = 'flex';
+      adsWrapper.style.visibility = 'visible';
+      adsWrapper.style.opacity = '1';
+    }
     
     // Tüm reklam kutularını göster
     const adBoxes = document.querySelectorAll('.ad-box');
@@ -186,13 +196,30 @@
       ad.style.display = 'block';
       ad.style.visibility = 'visible';
       ad.style.opacity = '1';
+      
+      // Reklam scriptlerini kontrol et ve yeniden yükle
+      const scripts = ad.getElementsByTagName('script');
+      for (let script of scripts) {
+        if (script.src) {
+          const newScript = document.createElement('script');
+          newScript.src = script.src;
+          newScript.async = true;
+          script.parentNode.replaceChild(newScript, script);
+        }
+      }
     });
     
     // Tüm iframeleri yeniden yükle
     const iframes = document.querySelectorAll('iframe');
     if (iframes.length === 0) {
-      // Eğer iframe yoksa, sayfayı tamamen yenile
-      fullPageRefresh();
+      // Eğer iframe yoksa, yeni iframeler oluştur
+      adBoxes.forEach(ad => {
+        const iframe = document.createElement('iframe');
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = 'none';
+        ad.appendChild(iframe);
+      });
       return;
     }
     
@@ -252,20 +279,51 @@
 
   // Sayfa yüklendiğinde çalışacak kod
   document.addEventListener('DOMContentLoaded', function() {
+    // Önce tüm reklamları göster
+    const adContainer = document.getElementById('ad-container');
+    const adsWrapper = document.getElementById('adsWrapper');
+    
+    if (adContainer) {
+      adContainer.style.display = 'block';
+      adContainer.style.visibility = 'visible';
+      adContainer.style.opacity = '1';
+    }
+    
+    if (adsWrapper) {
+      adsWrapper.style.display = 'flex';
+      adsWrapper.style.visibility = 'visible';
+      adsWrapper.style.opacity = '1';
+    }
+    
     // Buton durumlarını ayarla
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     
     // Buton eventlerini bağla
-    if (startBtn) startBtn.addEventListener('click', startAutoRefresh);
-    if (stopBtn) stopBtn.addEventListener('click', stopAutoRefresh);
+    if (startBtn) {
+      startBtn.disabled = false;
+      startBtn.addEventListener('click', startAutoRefresh);
+    }
     
-    // Sayfa ilk yüklendiğinde buton durumlarını ayarla
-    if (startBtn) startBtn.disabled = false;
-    if (stopBtn) stopBtn.disabled = true;
+    if (stopBtn) {
+      stopBtn.disabled = true;
+      stopBtn.addEventListener('click', stopAutoRefresh);
+    }
     
     // Sayfa yüklendiğinde otomatik başlat (kısa bir gecikmeyle)
-    setTimeout(startAutoRefresh, 500);
+    setTimeout(() => {
+      // Tüm reklam scriptlerini yeniden yükle
+      const scripts = document.querySelectorAll('script[src*="highperformanceformat"], script[src*="revenuecpmgate"]');
+      scripts.forEach(script => {
+        const newScript = document.createElement('script');
+        newScript.src = script.src;
+        newScript.async = true;
+        script.parentNode.replaceChild(newScript, script);
+      });
+      
+      // Otomatik yenilemeyi başlat
+      startAutoRefresh();
+    }, 1000);
   });
 
   function hideAds() {
