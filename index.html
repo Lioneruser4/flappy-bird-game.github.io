@@ -169,16 +169,25 @@
 
   function startAutoReload() {
     if (reloadInterval) return;
+    localStorage.setItem("autoReload", "true"); // kaydet
     refreshAds();
     reloadInterval = setInterval(refreshAds, 3000);
   }
 
   function stopAutoReload() {
+    localStorage.setItem("autoReload", "false"); // kaydet
     if (reloadInterval) {
       clearInterval(reloadInterval);
       reloadInterval = null;
     }
   }
+
+  // Sayfa açıldığında otomatik başlat
+  window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("autoReload") === "true") {
+      startAutoReload();
+    }
+  });
 
   document.getElementById('startBtn').addEventListener('click', startAutoReload);
   document.getElementById('stopBtn').addEventListener('click', stopAutoReload);
