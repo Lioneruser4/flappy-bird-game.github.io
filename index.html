@@ -161,29 +161,37 @@
   // Tüm reklamları göster
   function showAllAds() {
     const adBoxes = document.querySelectorAll('.ad-box');
-    adBoxes.forEach(ad => {
+    adBoxes.forEach((ad, index) => {
+      // Her reklam kutusuna özel stil ekle
       ad.style.display = 'block';
       ad.style.visibility = 'visible';
       ad.style.opacity = '1';
-      ad.style.minHeight = '100px'; // Minimum yükseklik ayarı
+      ad.style.transition = 'opacity 0.3s ease-in-out';
+      ad.style.minHeight = '100px';
+      ad.style.margin = '10px auto';
+      ad.style.overflow = 'hidden';
+      ad.style.borderRadius = '8px';
+      ad.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+      
+      // Reklam yüklenirken yükleniyor göstergesi
+      if (!ad.querySelector('.ad-loading')) {
+        const loading = document.createElement('div');
+        loading.className = 'ad-loading';
+        loading.style.padding = '10px';
+        loading.style.textAlign = 'center';
+        loading.style.color = '#666';
+        loading.textContent = 'Reklam yükleniyor...';
+        ad.prepend(loading);
+      }
     });
   }
 
   // Tüm reklamları yenile
   function refreshAds() {
+    console.log('Reklamlar yenileniyor...');
+    
     // Önce tüm reklamları göster
     showAllAds();
-    
-    // Mevcut iframe'lerin kaynaklarını sakla
-    const iframes = document.querySelectorAll('iframe');
-    const iframeSources = [];
-    
-    // Mevcut iframe'lerin kaynaklarını topla
-    iframes.forEach(iframe => {
-      if (iframe.src) {
-        iframeSources.push(iframe.src.split('?')[0]);
-      }
-    });
     
     // Tüm reklam kutularını al
     const adBoxes = document.querySelectorAll('.ad-box');
@@ -195,9 +203,33 @@
       adBox.style.visibility = 'visible';
       adBox.style.opacity = '1';
       
-      // Eğer iframe varsa yenile
+      // Yükleniyor göstergesini kaldır
+      const loading = adBox.querySelector('.ad-loading');
+      if (loading) {
+        setTimeout(() => {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.remove(), 300);
+        }, 500);
+      }
+      
+      // Iframe'leri yenile
       const iframe = adBox.querySelector('iframe');
-      if (iframe && iframeSources[index]) {
+      if (iframe) {
+        try {
+          // Mevcut kaynağı al
+          const currentSrc = iframe.src.split('?')[0];
+          if (currentSrc) {
+            // Rastgele parametre ekleyerek yenile
+            iframe.src = currentSrc + '?r=' + Math.random();
+            
+            // Iframe yüklendiğinde
+            iframe.onload = function() {
+              console.log(`Reklam ${index + 1} yüklendi`);
+            };
+          }
+        } catch (e) {
+          console.error('Reklam yüklenirken hata oluştu:', e);
+        }
         try {
           iframe.src = iframeSources[index] + '?r=' + Math.random();
         } catch (e) {
@@ -220,8 +252,11 @@
 
   // Otomatik yenilemeyi başlat
   function startAutoReload() {
+    console.log('Otomatik yenileme başlatılıyor...');
+    
+    // Önceki interval'i temizle
     if (reloadInterval) {
-      clearInterval(reloadInterval); // Önceki interval'i temizle
+      clearInterval(reloadInterval);
     }
     
     // Tüm reklamları göster
@@ -233,8 +268,7 @@
       
       // Sonraki yenilemeleri planla
       reloadInterval = setInterval(() => {
-        // Her seferinde reklamları göster ve sonra yenile
-        showAllAds();
+        console.log('Otomatik yenileme çalışıyor...');
         refreshAds();
       }, REFRESH_INTERVAL);
       
@@ -242,8 +276,28 @@
       document.getElementById('startBtn').disabled = true;
       document.getElementById('stopBtn').disabled = false;
       
+      // Kullanıcıya bildirim göster
+      const notification = document.createElement('div');
+      notification.textContent = 'Reklamlar otomatik olarak yenileniyor';
+      notification.style.position = 'fixed';
+      notification.style.bottom = '20px';
+      notification.style.right = '20px';
+      notification.style.background = '#4CAF50';
+      notification.style.color = 'white';
+      notification.style.padding = '10px 20px';
+      notification.style.borderRadius = '4px';
+      notification.style.zIndex = '1000';
+      document.body.appendChild(notification);
+      
+      // 3 saniye sonra bildirimi kaldır
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transition = 'opacity 0.5s';
+        setTimeout(() => notification.remove(), 500);
+      }, 3000);
+      
       console.log('Reklamlar otomatik yenileme başlatıldı. Yenileme aralığı:', REFRESH_INTERVAL + 'ms');
-    }, 500); // 500ms gecikme ile başlat
+    }, 1000); // 1 saniye gecikme ile başlat
   }
 
   // Otomatik yenilemeyi durdur
