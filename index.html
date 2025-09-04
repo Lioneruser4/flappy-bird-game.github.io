@@ -187,6 +187,20 @@
     document.getElementById('startBtn').disabled = true;
     document.getElementById('stopBtn').disabled = false;
     
+    // Tüm reklamların görünür olduğundan emin ol
+    const adBoxes = document.querySelectorAll('.ad-box');
+    adBoxes.forEach(ad => {
+      ad.style.display = 'block';
+      ad.style.visibility = 'visible';
+      ad.style.opacity = '1';
+    });
+    
+    // Reklam container'larını göster
+    const adContainer = document.getElementById('ad-container');
+    const adsWrapper = document.getElementById('adsWrapper');
+    if (adContainer) adContainer.style.display = 'block';
+    if (adsWrapper) adsWrapper.style.display = 'flex';
+    
     // İlk yenilemeyi hemen yap
     reloadAllIframes();
     
@@ -217,27 +231,44 @@
 
   // Sayfa yüklendiğinde çalışacak kod
   document.addEventListener('DOMContentLoaded', function() {
-    // Tüm reklamları göster
+    // Önce tüm reklamları göster
     const adContainer = document.getElementById('ad-container');
     const adsWrapper = document.getElementById('adsWrapper');
     
-    if (adContainer) adContainer.style.display = 'block';
-    if (adsWrapper) adsWrapper.style.display = 'flex';
-    
-    // Tüm reklam kutularını göster
+    // Tüm reklam kutularını göster ve yükle
     const adBoxes = document.querySelectorAll('.ad-box');
     adBoxes.forEach(ad => {
       ad.style.display = 'block';
       ad.style.visibility = 'visible';
       ad.style.opacity = '1';
+      
+      // Reklam scriptlerini yeniden yükle
+      const scripts = ad.getElementsByTagName('script');
+      for (let i = 0; i < scripts.length; i++) {
+        if (scripts[i].src) {
+          const newScript = document.createElement('script');
+          newScript.src = scripts[i].src;
+          newScript.async = true;
+          scripts[i].parentNode.replaceChild(newScript, scripts[i]);
+        }
+      }
     });
     
-    // Buton eventlerini bağla
-    document.getElementById('startBtn').addEventListener('click', startAutoRefresh);
-    document.getElementById('stopBtn').addEventListener('click', stopAutoRefresh);
+    // Container'ları göster
+    if (adContainer) adContainer.style.display = 'block';
+    if (adsWrapper) adsWrapper.style.display = 'flex';
     
-    // Sayfa yüklendiğinde otomatik başlat
-    startAutoRefresh();
+    // Buton eventlerini bağla
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    
+    if (startBtn) startBtn.addEventListener('click', startAutoRefresh);
+    if (stopBtn) stopBtn.addEventListener('click', stopAutoRefresh);
+    
+    // Sayfa yüklendiğinde otomatik başlat (kısa bir gecikmeyle)
+    setTimeout(() => {
+      startAutoRefresh();
+    }, 500);
   });
 
   function hideAds() {
