@@ -232,34 +232,63 @@
   <div id="container-87abbe86472620b6b18a9d9646163740"></div>
   
   <script>
-    let refreshInterval;
-    const REFRESH_INTERVAL = 3000; // 3 seconds
-    
-    // Manual refresh button
-    document.getElementById('refreshBtn').addEventListener('click', function() {
-      window.location.reload();
-    });
-    
-    // Auto refresh button
-    document.getElementById('autoRefreshBtn').addEventListener('click', function() {
-      // Disable auto refresh button and enable stop button
-      this.disabled = true;
-      document.getElementById('stopBtn').disabled = false;
+    // Run when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      let refreshInterval;
+      const REFRESH_INTERVAL = 3000; // 3 seconds
+      const autoRefreshBtn = document.getElementById('autoRefreshBtn');
+      const stopBtn = document.getElementById('stopBtn');
       
-      // Start auto refresh
-      refreshInterval = setInterval(function() {
+      // Check if auto-refresh was enabled before page reload
+      if (localStorage.getItem('autoRefreshEnabled') === 'true') {
+        // If auto-refresh was enabled, start it automatically
+        autoRefreshBtn.disabled = true;
+        stopBtn.disabled = false;
+        
+        refreshInterval = setInterval(function() {
+          window.location.reload();
+        }, REFRESH_INTERVAL);
+      }
+      
+      // Manual refresh button
+      document.getElementById('refreshBtn').addEventListener('click', function() {
+        // Clear auto-refresh state when manually refreshing
+        localStorage.removeItem('autoRefreshEnabled');
         window.location.reload();
-      }, REFRESH_INTERVAL);
-    });
-    
-    // Stop button
-    document.getElementById('stopBtn').addEventListener('click', function() {
-      // Clear the interval
-      clearInterval(refreshInterval);
+      });
       
-      // Enable auto refresh button and disable stop button
-      document.getElementById('autoRefreshBtn').disabled = false;
-      this.disabled = true;
+      // Auto refresh button
+      autoRefreshBtn.addEventListener('click', function() {
+        // Save state to localStorage
+        localStorage.setItem('autoRefreshEnabled', 'true');
+        
+        // Disable auto refresh button and enable stop button
+        this.disabled = true;
+        stopBtn.disabled = false;
+        
+        // Clear any existing interval
+        if (refreshInterval) {
+          clearInterval(refreshInterval);
+        }
+        
+        // Start auto refresh
+        refreshInterval = setInterval(function() {
+          window.location.reload();
+        }, REFRESH_INTERVAL);
+      });
+      
+      // Stop button
+      stopBtn.addEventListener('click', function() {
+        // Clear the interval
+        clearInterval(refreshInterval);
+        
+        // Remove auto-refresh state
+        localStorage.removeItem('autoRefreshEnabled');
+        
+        // Enable auto refresh button and disable stop button
+        autoRefreshBtn.disabled = false;
+        this.disabled = true;
+      });
     });
     
     // Video ad handling (5 seconds for video ads)
