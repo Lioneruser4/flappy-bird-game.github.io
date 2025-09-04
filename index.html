@@ -169,16 +169,15 @@
       ad.style.borderRadius = '8px';
       ad.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
       
-      // Reklam yükleniyor göstergesi
-      let loading = ad.querySelector('.ad-loading');
-      if (!loading) {
-        loading = document.createElement('div');
-        loading.className = 'ad-loading';
-        loading.style.padding = '10px';
-        loading.style.textAlign = 'center';
-        loading.style.color = '#666';
-        loading.textContent = 'Reklam yükleniyor...';
-        ad.prepend(loading);
+      // Reklam yüklendiğinde yükleniyor göstergesini kaldır
+      const iframe = ad.querySelector('iframe');
+      if (iframe) {
+        iframe.onload = function() {
+          const loading = ad.querySelector('.ad-loading');
+          if (loading) {
+            loading.style.display = 'none';
+          }
+        };
       }
     });
   }
@@ -305,17 +304,12 @@
 
   // Sayfa yüklendiğinde çalışacak kod
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('Sayfa yüklendi, reklamlar hazırlanıyor...');
+    console.log('Sayfa yüklendi, reklamlar gösteriliyor...');
     
     // Tüm reklamları göster
     showAllAds();
     
-    // Sayfa yüklendiğinde otomatik başlat
-    setTimeout(() => {
-      startAutoReload();
-    }, 2000);
-    
-    console.log('Sayfa yüklendi, reklamlar otomatik olarak yenilenecek.');
+    console.log('Reklamlar yüklendi.');
   });
 </script>
 
