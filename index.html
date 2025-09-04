@@ -161,21 +161,26 @@
   // Tüm reklamları göster
   function showAllAds() {
     const adBoxes = document.querySelectorAll('.ad-box');
+    if (adBoxes.length === 0) {
+      console.log('Reklam bulunamadı!');
+      return;
+    }
+    
     adBoxes.forEach((ad, index) => {
-      // Her reklam kutusuna özel stil ekle
+      // Reklam kutusunu göster
       ad.style.display = 'block';
       ad.style.visibility = 'visible';
       ad.style.opacity = '1';
-      ad.style.transition = 'opacity 0.3s ease-in-out';
       ad.style.minHeight = '100px';
       ad.style.margin = '10px auto';
       ad.style.overflow = 'hidden';
       ad.style.borderRadius = '8px';
       ad.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
       
-      // Reklam yüklenirken yükleniyor göstergesi
-      if (!ad.querySelector('.ad-loading')) {
-        const loading = document.createElement('div');
+      // Reklam yükleniyor göstergesi
+      let loading = ad.querySelector('.ad-loading');
+      if (!loading) {
+        loading = document.createElement('div');
         loading.className = 'ad-loading';
         loading.style.padding = '10px';
         loading.style.textAlign = 'center';
@@ -257,6 +262,7 @@
     // Önceki interval'i temizle
     if (reloadInterval) {
       clearInterval(reloadInterval);
+      reloadInterval = null;
     }
     
     // Tüm reklamları göster
@@ -264,11 +270,12 @@
     
     // İlk yenilemeyi hemen yap (kısa bir gecikmeyle)
     setTimeout(() => {
+      // Reklamları yenile
       refreshAds();
       
       // Sonraki yenilemeleri planla
       reloadInterval = setInterval(() => {
-        console.log('Otomatik yenileme çalışıyor...');
+        console.log('Reklamlar otomatik olarak yenileniyor...');
         refreshAds();
       }, REFRESH_INTERVAL);
       
@@ -278,6 +285,7 @@
       
       // Kullanıcıya bildirim göster
       const notification = document.createElement('div');
+      notification.id = 'refresh-notification';
       notification.textContent = 'Reklamlar otomatik olarak yenileniyor';
       notification.style.position = 'fixed';
       notification.style.bottom = '20px';
@@ -287,13 +295,24 @@
       notification.style.padding = '10px 20px';
       notification.style.borderRadius = '4px';
       notification.style.zIndex = '1000';
+      
+      // Eğer önceki bildirim varsa kaldır
+      const existingNotification = document.getElementById('refresh-notification');
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+      
       document.body.appendChild(notification);
       
       // 3 saniye sonra bildirimi kaldır
       setTimeout(() => {
         notification.style.opacity = '0';
         notification.style.transition = 'opacity 0.5s';
-        setTimeout(() => notification.remove(), 500);
+        setTimeout(() => {
+          if (notification && notification.parentNode) {
+            notification.remove();
+          }
+        }, 500);
       }, 3000);
       
       console.log('Reklamlar otomatik yenileme başlatıldı. Yenileme aralığı:', REFRESH_INTERVAL + 'ms');
@@ -316,15 +335,31 @@
 
   // Sayfa yüklendiğinde çalışacak kod
   document.addEventListener('DOMContentLoaded', function() {
+    console.log('Sayfa yüklendi, reklamlar hazırlanıyor...');
+    
     // Tüm reklamları göster
     showAllAds();
     
     // Buton eventlerini bağla
-    document.getElementById('startBtn').addEventListener('click', startAutoReload);
-    document.getElementById('stopBtn').addEventListener('click', stopAutoReload);
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
     
-    // Başlangıçta durdur butonunu devre dışı bırak
-    document.getElementById('stopBtn').disabled = true;
+    if (startBtn) {
+      startBtn.addEventListener('click', startAutoReload);
+    }
+    
+    if (stopBtn) {
+      stopBtn.addEventListener('click', stopAutoReload);
+      stopBtn.disabled = true; // Başlangıçta durdur butonunu devre dışı bırak
+    }
+    
+    // Sayfa yüklendiğinde otomatik başlat
+    if (startBtn) {
+      // Kısa bir gecikmeyle başlat
+      setTimeout(() => {
+        startAutoReload();
+      }, 2000);
+    }
     
     console.log('Sayfa yüklendi, reklamlar hazır.');
   });
