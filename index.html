@@ -8,50 +8,42 @@
   body {
     margin: 0;
     padding: 0;
-    background: #000;
-    color: #fff;
     font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
   }
-  .controls {
-    text-align: center;
-    padding: 15px;
-    background: #222;
-    position: sticky;
-    top: 0;
-    z-index: 9999;
-  }
-  .btn {
-    padding: 10px 20px;
-    margin: 5px;
-    font-size: 16px;
-    cursor: pointer;
-  }
+  
   .ads-wrapper {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
     padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
+  
   .ad-box {
-    background: #111;
-    padding: 10px;
-    border: 1px solid #333;
-    min-width: 160px;
-    max-width: 728px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
   }
-  iframe {
-    max-width: 100%;
+  
+  .ad-box iframe {
     border: none;
+    display: block;
+  }
+  
+  .ad-loading {
+    padding: 10px;
+    text-align: center;
+    color: #666;
+    background-color: #f9f9f9;
   }
 </style>
 </head>
 <body>
-
-<div class="controls">
-  <button id="startBtn" class="btn">Başlat (3s Yenile)</button>
-  <button id="stopBtn" class="btn">Durdur</button>
-</div>
 
 <div class="ads-wrapper" id="adsWrapper">
   <!-- Reklam 1 -->
@@ -257,7 +249,7 @@
 
   // Otomatik yenilemeyi başlat
   function startAutoReload() {
-    console.log('Otomatik yenileme başlatılıyor...');
+    console.log('Reklamlar yükleniyor...');
     
     // Önceki interval'i temizle
     if (reloadInterval) {
@@ -275,19 +267,10 @@
       
       // Sonraki yenilemeleri planla
       reloadInterval = setInterval(() => {
-        console.log('Reklamlar otomatik olarak yenileniyor...');
         refreshAds();
       }, REFRESH_INTERVAL);
       
-      // Buton durumlarını güncelle
-      document.getElementById('startBtn').disabled = true;
-      document.getElementById('stopBtn').disabled = false;
-      
-      // Kullanıcıya bildirim göster
-      const notification = document.createElement('div');
-      notification.id = 'refresh-notification';
-      notification.textContent = 'Reklamlar otomatik olarak yenileniyor';
-      notification.style.position = 'fixed';
+      console.log('Reklamlar otomatik olarak yenileniyor. Yenileme aralığı:', REFRESH_INTERVAL + 'ms');
       notification.style.bottom = '20px';
       notification.style.right = '20px';
       notification.style.background = '#4CAF50';
@@ -319,19 +302,6 @@
     }, 1000); // 1 saniye gecikme ile başlat
   }
 
-  // Otomatik yenilemeyi durdur
-  function stopAutoReload() {
-    if (reloadInterval) {
-      clearInterval(reloadInterval);
-      reloadInterval = null;
-    }
-    
-    // Buton durumlarını güncelle
-    document.getElementById('startBtn').disabled = false;
-    document.getElementById('stopBtn').disabled = true;
-    
-    console.log('Otomatik yenileme durduruldu.');
-  }
 
   // Sayfa yüklendiğinde çalışacak kod
   document.addEventListener('DOMContentLoaded', function() {
@@ -340,28 +310,12 @@
     // Tüm reklamları göster
     showAllAds();
     
-    // Buton eventlerini bağla
-    const startBtn = document.getElementById('startBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    
-    if (startBtn) {
-      startBtn.addEventListener('click', startAutoReload);
-    }
-    
-    if (stopBtn) {
-      stopBtn.addEventListener('click', stopAutoReload);
-      stopBtn.disabled = true; // Başlangıçta durdur butonunu devre dışı bırak
-    }
-    
     // Sayfa yüklendiğinde otomatik başlat
-    if (startBtn) {
-      // Kısa bir gecikmeyle başlat
-      setTimeout(() => {
-        startAutoReload();
-      }, 2000);
-    }
+    setTimeout(() => {
+      startAutoReload();
+    }, 2000);
     
-    console.log('Sayfa yüklendi, reklamlar hazır.');
+    console.log('Sayfa yüklendi, reklamlar otomatik olarak yenilenecek.');
   });
 </script>
 
