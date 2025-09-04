@@ -232,38 +232,36 @@
   <div id="container-87abbe86472620b6b18a9d9646163740"></div>
   
   <script>
-    // Video ad handling (5 seconds for video ads)
-    function handleVideoAds() {
-      const videoAds = document.querySelectorAll('video');
-      videoAds.forEach(video => {
-        video.muted = true;
-        video.loop = false;
-        video.playsInline = true;
-        video.play().then(() => {
-          setTimeout(() => {
-            video.pause();
-            video.currentTime = 0;
-          }, 5000);
-        });
-      });
-    }
+    let refreshInterval;
+    const REFRESH_INTERVAL = 3000; // 3 seconds
     
-    // Run after page loads
-    window.addEventListener('load', function() {
-      // Initial check for video ads
-      handleVideoAds();
-      
-      // Set up mutation observer to handle dynamically loaded ads
-      const observer = new MutationObserver(function(mutations) {
-        handleVideoAds();
-      });
-      
-      // Start observing the document with the configured parameters
-      observer.observe(document.body, { childList: true, subtree: true });
+    // Manual refresh button
+    document.getElementById('refreshBtn').addEventListener('click', function() {
+      window.location.reload();
     });
-  </script>
-  
-  <script>
+    
+    // Auto refresh button
+    document.getElementById('autoRefreshBtn').addEventListener('click', function() {
+      // Disable auto refresh button and enable stop button
+      this.disabled = true;
+      document.getElementById('stopBtn').disabled = false;
+      
+      // Start auto refresh
+      refreshInterval = setInterval(function() {
+        window.location.reload();
+      }, REFRESH_INTERVAL);
+    });
+    
+    // Stop button
+    document.getElementById('stopBtn').addEventListener('click', function() {
+      // Clear the interval
+      clearInterval(refreshInterval);
+      
+      // Enable auto refresh button and disable stop button
+      document.getElementById('autoRefreshBtn').disabled = false;
+      this.disabled = true;
+    });
+    
     // Video ad handling (5 seconds for video ads)
     function handleVideoAds() {
       const videoAds = document.querySelectorAll('video');
