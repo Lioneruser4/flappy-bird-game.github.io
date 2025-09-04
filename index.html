@@ -49,8 +49,8 @@
 <body>
 
 <div class="controls">
-  <button id="startBtn" class="btn">Başlat (3s Yenile)</button>
-  <button id="stopBtn" class="btn">Durdur</button>
+  <button id="startBtn" class="btn">Başlad 3s Yenile</button>
+  <button id="stopBtn" class="btn">S T O P </button>
 </div>
 
 <div id="ad-container" style="margin: 20px auto; text-align: center;">
@@ -164,30 +164,81 @@
 </div>
 
 <script>
+  let refreshTimeout;
+  let isAutoRefresh = true;
+  const REFRESH_INTERVAL = 2000; // 2 saniye
+
+  // Tüm reklam iframelerini yeniden yükle
+  function reloadAllIframes() {
+    if (!isAutoRefresh) return;
+    
+    const iframes = document.querySelectorAll('iframe');
+    iframes.forEach(iframe => {
+      const src = iframe.src;
+      if (src) {
+        iframe.src = src.split('?')[0] + '?r=' + Math.random();
+      }
+    });
+  }
+
+  // Sayfa yenileme işlemini başlat
+  function startAutoRefresh() {
+    isAutoRefresh = true;
+    document.getElementById('startBtn').disabled = true;
+    document.getElementById('stopBtn').disabled = false;
+    
+    // İlk yenilemeyi hemen yap
+    reloadAllIframes();
+    
+    // Sonraki yenilemeler için zamanlayıcıyı ayarla
+    scheduleNextRefresh();
+  }
+  
+  // Bir sonraki yenilemeyi planla
+  function scheduleNextRefresh() {
+    if (!isAutoRefresh) return;
+    
+    clearTimeout(refreshTimeout);
+    refreshTimeout = setTimeout(() => {
+      if (isAutoRefresh) {
+        reloadAllIframes();
+        scheduleNextRefresh();
+      }
+    }, REFRESH_INTERVAL);
+  }
+  
+  // Otomatik yenilemeyi durdur
+  function stopAutoRefresh() {
+    isAutoRefresh = false;
+    clearTimeout(refreshTimeout);
+    document.getElementById('startBtn').disabled = false;
+    document.getElementById('stopBtn').disabled = true;
+  }
+
   // Sayfa yüklendiğinde çalışacak kod
   document.addEventListener('DOMContentLoaded', function() {
-    // 2 saniyede bir sayfayı yenile
-    setTimeout(function() {
-      window.location.reload();
-    }, 2000);
-    
     // Tüm reklamları göster
     const adContainer = document.getElementById('ad-container');
-    if (adContainer) {
-      adContainer.style.display = 'block';
-    }
+    const adsWrapper = document.getElementById('adsWrapper');
     
+    if (adContainer) adContainer.style.display = 'block';
+    if (adsWrapper) adsWrapper.style.display = 'flex';
+    
+    // Tüm reklam kutularını göster
     const adBoxes = document.querySelectorAll('.ad-box');
     adBoxes.forEach(ad => {
       ad.style.display = 'block';
+      ad.style.visibility = 'visible';
+      ad.style.opacity = '1';
     });
+    
+    // Buton eventlerini bağla
+    document.getElementById('startBtn').addEventListener('click', startAutoRefresh);
+    document.getElementById('stopBtn').addEventListener('click', stopAutoRefresh);
+    
+    // Sayfa yüklendiğinde otomatik başlat
+    startAutoRefresh();
   });
-  
-  // Eski fonksiyonları kaldırıyoruz
-  let reloadInterval = null;
-  function refreshAds() {
-    // Bu fonksiyon artık kullanılmayacak
-  }
 
   function hideAds() {
     const adContainer = document.getElementById('ad-container');
