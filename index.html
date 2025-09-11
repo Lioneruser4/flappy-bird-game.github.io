@@ -1,325 +1,394 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reklam Sayfası</title>
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    text-align: center;
-  }
-  
-  .game-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  canvas {
-    border: 2px solid #333;
-    background-color: #4fc3f7;
-    display: block;
-    margin: 0 auto;
-  }
-  
-  h1 {
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .controls {
-    margin: 20px 0;
-  }
-  
-  button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  .score {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 10px 0;
-  }
-  
-  .game-over {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    z-index: 1000;
-  }
-  
-  /* Ad Styling */
-  .ad-banner {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 10px 0;
-    background: #f0f0f0;
-    padding: 10px 0;
-  }
-  
-  .ad-layout {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 15px;
-  }
-  
-  .ad-main-content {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    flex-grow: 1;
-    max-width: 800px;
-  }
-  
-  .ad-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .ad-container {
-    background: #f8f8f8;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  
-  .ad-banner.bottom-banner {
-    margin-top: 20px;
-  }
-  
-  @media (max-width: 1200px) {
-    .game-layout {
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .ad-sidebar {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>NotCoin — Tiklama Oyunu (Telegram Girişli)</title>
+  <style>
+    :root{ --bg:#000; --card:#0e0e0e; --accent:#ffd166; --muted:rgba(255,255,255,0.65); }
+    html,body{height:100%;margin:0;padding:0;background:var(--bg);color:#fff;font-family:Inter,system-ui, -apple-system, 'Helvetica Neue', Arial}
+    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box}
+    .game-card{width:100%;max-width:460px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:16px;box-shadow:0 10px 40px rgba(0,0,0,0.7)}
+    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .title{font-weight:700;font-size:18px}
+    .sub{font-size:13px;color:var(--muted)}
+
+    .score-panel{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);margin-bottom:12px}
+    .score{font-size:28px;font-weight:800}
+    .small{font-size:12px;color:var(--muted)}
+
+    .coin-area{display:flex;align-items:center;justify-content:center;padding:8px}
+    .coin-btn{width:200px;height:200px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;user-select:none;touch-action:manipulation;transition:transform .12s}
+    .coin-btn img{width:100%;height:100%;object-fit:contain;border-radius:50%;display:block}
+    .coin-btn:active{transform:scale(.96)}
+    .particle{position:absolute;pointer-events:none;font-weight:700;font-size:14px}
+
+    .controls{display:flex;gap:8px;margin-top:10px}
+    .btn{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,#ffd166,#ff9f1c);color:#111;border:none}
+
+    .section{margin-top:14px;background:rgba(255,255,255,0.01);padding:10px;border-radius:10px}
+    .section h3{margin:0 0 10px 0;font-size:14px;color:var(--muted)}
+
+    .missions .mission{padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:8px}
+    .progress{width:100%;height:8px;background:#111;border-radius:6px;overflow:hidden}
+    .progress-bar{height:100%;background:var(--accent);width:0%;transition:width .3s}
+
+    .invite-row{display:flex;gap:8px}
+    input[type=text]{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff}
+
+    footer{margin-top:12px;text-align:center;color:var(--muted);font-size:12px}
+
+    @media (max-width:420px){ .coin-btn{width:170px;height:170px} }
+  </style>
 </head>
 <body>
-  <div class="control-panel">
-    <button id="refreshBtn">Yenile</button>
-    <button id="autoRefreshBtn">Otomatik Yenile (3sn)</button>
-    <button id="stopBtn" disabled>Durdur</button>
-  </div>
-  
-  <div class="ad-banner top-banner">
-    <script type="text/javascript">
-      atOptions = {
-        'key' : 'afcc99b92186f47b725c39233ffb50c0',
-        'format' : 'iframe',
-        'height' : 90,
-        'width' : 728,
-        'params' : {}
-      };
-    </script>
-    <script type="text/javascript" src="//www.highperformanceformat.com/afcc99b92186f47b725c39233ffb50c0/invoke.js"></script>
+  <div class="wrap">
+    <div class="game-card">
+      <div class="header">
+        <div>
+          <div class="title">NotCoin — Tikla & Biriktir</div>
+          <div id="userLabel" class="sub">Giriş yok</div>
+        </div>
+        <div class="sub">Mobil / WebView uyumlu</div>
+      </div>
+
+      <div class="score-panel">
+        <div>
+          <div class="small">Toplam Coin</div>
+          <div id="score" class="score">0</div>
+        </div>
+        <div style="text-align:right">
+          <div class="small">Tıklama Gücü</div>
+          <div id="perClick" class="small">1</div>
+        </div>
+      </div>
+
+      <div class="coin-area">
+        <div id="coinBtn" class="coin-btn" title="Tıkla!">
+          <img id="coinImg" src="coin.png" alt="coin" draggable="false">
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="upgradeBtn" class="btn primary">Geliştir (+1 tıklama)</button>
+        <button id="claimAdBtn" class="btn">Reklam İzle (100)</button>
+      </div>
+
+      <div class="section">
+        <h3>🎁 Günlük Bonus</h3>
+        <div style="display:flex;gap:8px"><button id="dailyBtn" class="btn">Günlük Bonusu Al</button><div id="dailyInfo" class="sub" style="align-self:center"></div></div>
+      </div>
+
+      <div class="section">
+        <h3>👥 Davet & Referans</h3>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <input id="inviteInput" type="text" readonly>
+          <button id="copyInvite" class="btn">Kopyala</button>
+        </div>
+        <div class="sub">Yeni kullanıcılar bu link ile gelirse, davet edene 200 coin verilir.</div>
+      </div>
+
+      <div class="section missions">
+        <h3>Görevler</h3>
+        <div id="missionsList"></div>
+      </div>
+
+      <div class="section">
+        <h3>Telegram ile Giriş</h3>
+        <div class="sub">Telegram WebApp içinde açılırsa otomatik giriş yapılır. Alternatif olarak aşağıdaki Telegram login widget'ını kullanabilirsin.</div>
+        <!-- Telegram Login Widget (fallback) - BOT KULLANICI ADINI DEĞİŞTİR -->
+        <div style="margin-top:8px">
+          <script async src="https://telegram.org/js/telegram-widget.js?15" data-telegram-login="YOUR_BOT_USERNAME" data-size="large" data-userpic="false" data-onauth="onTelegramAuth" data-request-access="write"></script>
+        </div>
+      </div>
+
+      <footer>Deploy: GitHub Pages / Vercel. Veriler tarayıcıda saklanır (localStorage).</footer>
+    </div>
   </div>
 
-  <div class="ad-layout">
-    <div class="ad-sidebar left-sidebar">
-      <div class="ad-container">
-        <script type="text/javascript">
-          atOptions = {
-            'key' : 'e57bf7384388a432c346f8ab2b49658a',
-            'format' : 'iframe',
-            'height' : 600,
-            'width' : 160,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/e57bf7384388a432c346f8ab2b49658a/invoke.js"></script>
-      </div>
-      <div class="ad-container">
-        <script type="text/javascript">
-          atOptions = {
-            'key' : 'a3cb5a20919037135c53e9e351d8e232',
-            'format' : 'iframe',
-            'height' : 300,
-            'width' : 160,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/a3cb5a20919037135c53e9e351d8e232/invoke.js"></script>
-      </div>
-    </div>
-    
-    <div class="ad-main-content">
-      <div class="ad-container">
-        <script type="text/javascript">
-          atOptions = {
-            'key' : 'f681ad44e5eaa2bf1cab090219d05ff0',
-            'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/f681ad44e5eaa2bf1cab090219d05ff0/invoke.js"></script>
-      </div>
-    </div>
-    
-    <div class="ad-sidebar right-sidebar">
-      <div class="ad-container">
-        <script type="text/javascript">
-          atOptions = {
-            'key' : 'b3893d571fbcbcf66ac0060e8c9e27e5',
-            'format' : 'iframe',
-            'height' : 50,
-            'width' : 320,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/b3893d571fbcbcf66ac0060e8c9e27e5/invoke.js"></script>
-      </div>
-    </div>
-  </div>
-  
-  <div class="ad-banner bottom-banner">
-    <div class="ad-container">
-      <script type="text/javascript">
-        atOptions = {
-          'key' : 'd47660d631c15ead0ce624e6280fd7eb',
-          'format' : 'iframe',
-          'height' : 60,
-          'width' : 468,
-          'params' : {}
-        };
-      </script>
-      <script type="text/javascript" src="//www.highperformanceformat.com/d47660d631c15ead0ce624e6280fd7eb/invoke.js"></script>
-    </div>
-  </div>
-  
-  <!-- Additional ad scripts -->
-  <script type='text/javascript' src='//pl27575662.revenuecpmgate.com/31/d9/f0/31d9f0444d74600d11fb7e813ee8882f.js'></script>
-  <script type='text/javascript' src='//pl27575672.revenuecpmgate.com/83/aa/ee/83aaee7ceb3759646ba46c30812a066e.js'></script>
-  <script async="async" data-cfasync="false" src="//pl27575667.revenuecpmgate.com/87abbe86472620b6b18a9d9646163740/invoke.js"></script>
-  <div id="container-87abbe86472620b6b18a9d9646163740"></div>
-  
   <script>
-    // Run when the page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      let refreshInterval;
-      const REFRESH_INTERVAL = 3000; // 3 seconds
-      const autoRefreshBtn = document.getElementById('autoRefreshBtn');
-      const stopBtn = document.getElementById('stopBtn');
-      
-      // Check if auto-refresh was enabled before page reload
-      if (localStorage.getItem('autoRefreshEnabled') === 'true') {
-        // If auto-refresh was enabled, start it automatically
-        autoRefreshBtn.disabled = true;
-        stopBtn.disabled = false;
-        
-        refreshInterval = setInterval(function() {
-          window.location.reload();
-        }, REFRESH_INTERVAL);
-      }
-      
-      // Manual refresh button
-      document.getElementById('refreshBtn').addEventListener('click', function() {
-        // Clear auto-refresh state when manually refreshing
-        localStorage.removeItem('autoRefreshEnabled');
-        window.location.reload();
-      });
-      
-      // Auto refresh button
-      autoRefreshBtn.addEventListener('click', function() {
-        // Save state to localStorage
-        localStorage.setItem('autoRefreshEnabled', 'true');
-        
-        // Disable auto refresh button and enable stop button
-        this.disabled = true;
-        stopBtn.disabled = false;
-        
-        // Clear any existing interval
-        if (refreshInterval) {
-          clearInterval(refreshInterval);
+    /* NOT: Güvenlik notu: Telegram tarafından gelen kullanıcı verisini tam güvenli şekilde doğrulamak için sunucu tarafında doğrulama önerilir.
+       Bu demo, sunucusuz (GitHub Pages) kullanım için "kullanıcı deneyimi" amaçlı kolay yol sağlar (initDataUnsafe veya widget'dan gelen veriyi yerel olarak kullanır).
+    */
+
+    // --- Yardımcı fonksiyonlar ---
+    const q = (s) => document.querySelector(s);
+    const getParam = (name) => new URLSearchParams(location.search).get(name);
+    function uuid(len=8){ return Math.random().toString(36).substring(2,2+len); }
+
+    // --- Storage keys ---
+    const USERS_KEY = 'notcoin_users_v1';
+    const CUR_KEY = 'notcoin_current_v1';
+
+    function loadUsers(){ try{return JSON.parse(localStorage.getItem(USERS_KEY) || '{}');}catch(e){return {}} }
+    function saveUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
+    function getCurrentId(){ return localStorage.getItem(CUR_KEY); }
+    function setCurrentId(id){ localStorage.setItem(CUR_KEY, id); }
+
+    // --- Oyuncu işlemleri ---
+    function createUser(id, opts={}){
+      const users = loadUsers();
+      if(users[id]) return users[id];
+      const newUser = Object.assign({
+        id: String(id),
+        name: opts.name||('user_'+uuid(4)),
+        username: opts.username||'',
+        total: 0,
+        perClick: 1,
+        boosts: 1,
+        clicks: 0,
+        referrals: 0,
+        claimedMissions: {},
+        lastDaily: 0,
+        createdAt: Date.now(),
+        refFrom: opts.refFrom||null
+      }, opts);
+      users[id] = newUser; saveUsers(users); return newUser;
+    }
+    function saveUser(user){ const u = loadUsers(); u[user.id]=user; saveUsers(u); }
+    function getUser(id){ return loadUsers()[id]; }
+
+    // --- Auth & referral on load ---
+    function tryAutoLogin(){
+      // 1) Telegram WebApp environment
+      const hasWebApp = window.Telegram && window.Telegram.WebApp;
+      if(hasWebApp){
+        const tg = window.Telegram.WebApp;
+        const info = tg.initDataUnsafe && tg.initDataUnsafe.user;
+        if(info && info.id){
+          const id = 'tg'+info.id;
+          const user = createUser(id, {name: (info.first_name||'') + (info.last_name?(' '+info.last_name):''), username: info.username||''});
+          setCurrentId(id);
+          // if ref param exists and new and ref valid => credit
+          handleRefOnSignup(user);
+          render();
+          return true;
         }
-        
-        // Start auto refresh
-        refreshInterval = setInterval(function() {
-          window.location.reload();
-        }, REFRESH_INTERVAL);
-      });
-      
-      // Stop button
-      stopBtn.addEventListener('click', function() {
-        // Clear the interval
-        clearInterval(refreshInterval);
-        
-        // Remove auto-refresh state
-        localStorage.removeItem('autoRefreshEnabled');
-        
-        // Enable auto refresh button and disable stop button
-        autoRefreshBtn.disabled = false;
-        this.disabled = true;
-      });
-    });
-    
-    // Video ad handling (5 seconds for video ads)
-    function handleVideoAds() {
-      const videoAds = document.querySelectorAll('video');
-      videoAds.forEach(video => {
-        video.muted = true;
-        video.loop = false;
-        video.playsInline = true;
-        video.play().then(() => {
-          setTimeout(() => {
-            video.pause();
-            video.currentTime = 0;
-          }, 5000);
-        });
+      }
+
+      // 2) URL param 'ref' (referral) with guest auto-create
+      const ref = getParam('ref');
+      const cur = getCurrentId();
+      if(!cur){
+        const guestId = 'g_'+uuid(8);
+        const guest = createUser(guestId, {name:'Guest_'+guestId.substring(2,6), refFrom: ref||null});
+        setCurrentId(guestId);
+        handleRefOnSignup(guest);
+        render();
+        return true;
+      }
+      return false;
+    }
+
+    function handleRefOnSignup(newUser){
+      // If newUser has refFrom and the referrer exists, give them bonus and increase referrals
+      if(newUser.refFrom){
+        const users = loadUsers();
+        const refId = String(newUser.refFrom);
+        // Support both 'tg123' and plain ids
+        if(users[refId]){
+          users[refId].total = (users[refId].total||0) + 200; // 200 coin to referrer
+          users[refId].referrals = (users[refId].referrals||0) + 1;
+          saveUsers(users);
+        }
+      }
+    }
+
+    // --- App state helpers ---
+    function currentUser(){ const id = getCurrentId(); if(!id) return null; return getUser(id); }
+
+    // --- Render & UI ---
+    const scoreEl = q('#score');
+    const perClickEl = q('#perClick');
+    const userLabel = q('#userLabel');
+    const coinBtn = q('#coinBtn');
+    const upgradeBtn = q('#upgradeBtn');
+    const dailyBtn = q('#dailyBtn');
+    const claimAdBtn = q('#claimAdBtn');
+    const inviteInput = q('#inviteInput');
+    const copyInvite = q('#copyInvite');
+    const missionsList = q('#missionsList');
+    const dailyInfo = q('#dailyInfo');
+
+    const MISSIONS = [
+      {id:1, title:'100 coin biriktir', type:'coin', goal:100, reward:{boost:2}, desc:'2x boost'},
+      {id:2, title:'500 coin biriktir', type:'coin', goal:500, reward:{boost:5}, desc:'5x boost'},
+      {id:3, title:'1000 coin biriktir', type:'coin', goal:1000, reward:{boost:10}, desc:'10x boost'},
+      {id:4, title:'100 tıklama yap', type:'clicks', goal:100, reward:{coins:500}, desc:'+500 coin'},
+      {id:5, title:'500 tıklama yap', type:'clicks', goal:500, reward:{coins:3000}, desc:'+3000 coin'},
+      {id:6, title:'5 kişi davet et', type:'referrals', goal:5, reward:{coins:2000}, desc:'+2000 coin'}
+    ];
+
+    function render(){
+      const u = currentUser();
+      if(!u){ userLabel.textContent = 'Giriş yok'; scoreEl.textContent='0'; perClickEl.textContent='1'; inviteInput.value = location.origin+location.pathname+'?ref=guest'; renderMissions(null); return; }
+      userLabel.textContent = (u.username?('@'+u.username):u.name) + ' — ID:' + u.id;
+      scoreEl.textContent = Math.floor(u.total||0);
+      perClickEl.textContent = (u.perClick * (u.boosts||1));
+      inviteInput.value = location.origin + location.pathname + '?ref=' + encodeURIComponent(u.id);
+      // Daily info
+      const now = Date.now();
+      const left = Math.max(0, 24*3600*1000 - (now - (u.lastDaily||0)));
+      if(left<=0) dailyInfo.textContent = 'Hazır'; else { const h = Math.floor(left/3600000); dailyInfo.textContent = `yeniden: ${h}s` }
+      renderMissions(u);
+    }
+
+    function renderMissions(u){
+      missionsList.innerHTML = '';
+      MISSIONS.forEach(m => {
+        const el = document.createElement('div'); el.className='mission';
+        const title = document.createElement('div'); title.innerHTML = `<strong>${m.title}</strong> <div class="sub">${m.desc}</div>`;
+        const progWrap = document.createElement('div'); progWrap.className='progress';
+        const progBar = document.createElement('div'); progBar.className='progress-bar'; progWrap.appendChild(progBar);
+        const actions = document.createElement('div'); actions.style.marginTop='6px';
+
+        let progress = 0; let done = false;
+        if(!u){ progress = 0; }
+        else{
+          if(m.type==='coin') progress = Math.min(1, (u.total||0)/m.goal);
+          if(m.type==='clicks') progress = Math.min(1, (u.clicks||0)/m.goal);
+          if(m.type==='referrals') progress = Math.min(1, (u.referrals||0)/m.goal);
+          done = progress>=1 && (u.claimedMissions && u.claimedMissions[m.id]);
+        }
+        progBar.style.width = (progress*100)+'%';
+
+        const btn = document.createElement('button'); btn.textContent = (u && u.claimedMissions && u.claimedMissions[m.id]) ? 'Alındı' : 'Al';
+        btn.className='btn';
+        btn.disabled = !(u && progress>=1 && !(u.claimedMissions && u.claimedMissions[m.id]));
+        btn.onclick = ()=>{ if(!u) return alert('Önce giriş yap'); claimMission(m.id); };
+        actions.appendChild(btn);
+
+        el.appendChild(title); el.appendChild(progWrap); el.appendChild(actions);
+        missionsList.appendChild(el);
       });
     }
-    
-    // Run after page loads
-    window.addEventListener('load', function() {
-      // Initial check for video ads
-      handleVideoAds();
-      
-      // Set up mutation observer to handle dynamically loaded ads
-      const observer = new MutationObserver(function(mutations) {
-        handleVideoAds();
-      });
-      
-      // Start observing the document with the configured parameters
-      observer.observe(document.body, { childList: true, subtree: true });
+
+    // --- Oyun mantığı ---
+    function clickCoin(){
+      const u = currentUser();
+      if(!u){ alert('Önce Telegram ile giriş yap'); return; }
+      const gain = (u.perClick||1) * (u.boosts||1);
+      u.total = (u.total||0) + gain;
+      u.clicks = (u.clicks||0) + 1;
+      saveUser(u); render(); animateParticle(gain);
+    }
+
+    function animateParticle(value){
+      const rect = coinBtn.getBoundingClientRect();
+      const p = document.createElement('div'); p.className='particle'; p.textContent = '+'+value; coinBtn.appendChild(p);
+      p.style.left = (rect.width/2 - 12) + 'px'; p.style.top = (rect.height/2 - 12) + 'px';
+      const dx = (Math.random()-0.5)*80; const dy = - (60 + Math.random()*80);
+      p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${dx}px,${dy}px) scale(.9)`,opacity:0}],{duration:900});
+      setTimeout(()=>p.remove(),920);
+    }
+
+    coinBtn.addEventListener('click',(e)=>{ clickCoin(); });
+
+    upgradeBtn.addEventListener('click',()=>{
+      const u = currentUser(); if(!u) return alert('Giriş yap');
+      const cost = Math.ceil((u.perClick+1) * 25);
+      if(u.total >= cost){ u.total -= cost; u.perClick += 1; saveUser(u); render(); } else alert('Yetersiz coin: ' + cost);
     });
+
+    function claimMission(mid){
+      const u = currentUser(); if(!u) return alert('Giriş yok');
+      const m = MISSIONS.find(x=>x.id===mid); if(!m) return;
+      let eligible = false;
+      if(m.type==='coin') eligible = (u.total||0) >= m.goal;
+      if(m.type==='clicks') eligible = (u.clicks||0) >= m.goal;
+      if(m.type==='referrals') eligible = (u.referrals||0) >= m.goal;
+      if(!eligible) return alert('Şartlar sağlanmıyor');
+      // ödül uygula
+      if(m.reward.coins) u.total += m.reward.coins;
+      if(m.reward.boost) { u.boosts = (u.boosts||1) * m.reward.boost; }
+      if(m.reward.boost && !m.reward.coins && m.reward.boost>1){ /* legacy support */ }
+      u.claimedMissions = u.claimedMissions || {}; u.claimedMissions[mid] = true;
+      saveUser(u); render(); alert('Ödül alındı!');
+    }
+
+    // --- Günlük bonus ---
+    dailyBtn.addEventListener('click',()=>{
+      const u = currentUser(); if(!u) return alert('Giriş yok');
+      const now = Date.now();
+      if(now - (u.lastDaily||0) >= 24*3600*1000){
+        const bonus = 100; u.total = (u.total||0) + bonus; u.lastDaily = now; saveUser(u); render(); alert(bonus + ' coin alındı!');
+      } else alert('Günlük bonus zaten alınmış');
+    });
+
+    // --- Reklam / Ödül ---
+    claimAdBtn.addEventListener('click',()=>{
+      const u = currentUser(); if(!u) return alert('Giriş yok');
+      const adUrl = prompt('Reklam URL'ini yapıştır (sen ekle):', 'https://example.com');
+      if(!adUrl) return;
+      // popup ile aç, kapanınca ödül ver
+      let start = Date.now();
+      const w = window.open(adUrl, '_blank');
+      if(!w){ alert('Popup engellendi. Lütfen linki manuel aç ve sonra geri dönüp "Reklam Tamam" butonuna bas.'); return; }
+      const check = setInterval(()=>{
+        try{
+          if(w.closed){
+            clearInterval(check);
+            const elapsed = Date.now() - start;
+            if(elapsed >= 3000){ // minimum 3s izleme
+              u.total = (u.total||0) + 100; saveUser(u); render(); alert('100 coin ödülünü aldın!');
+            } else { alert('Videoyu izleme süresi yeterli olmadı. (en az 3s)'); }
+          }
+        }catch(e){ /* ignore cross-origin */ }
+      },500);
+    });
+
+    // --- Davet kopyala (invite) ---
+    copyInvite.addEventListener('click', ()=>{
+      const v = inviteInput.value; navigator.clipboard.writeText(v).then(()=>alert('Kopyalandı')).catch(()=>alert('Kopyalama başarısız'));
+    });
+
+    // --- Telegram Login Widget callback (fallback) ---
+    function onTelegramAuth(user){
+      // Bu fonksiyon Telegram login widget tarafından çağrılırsa çalışır.
+      // user objesi: id, first_name, last_name, username, photo_url, auth_date, hash
+      const id = 'tg'+user.id;
+      const u = createUser(id, {name:(user.first_name||'') + (user.last_name?(' '+user.last_name):''), username:user.username||''});
+      setCurrentId(id);
+      handleRefOnSignup(u);
+      render();
+      alert('Telegram ile giriş yapıldı: ' + u.name);
+    }
+    window.onTelegramAuth = onTelegramAuth; // expose for widget
+
+    // --- Başlangıç ---
+    tryAutoLogin();
+    // Eğer halen giriş yoksa guest oluştur
+    if(!getCurrentId()){
+      const guestId = 'g_'+uuid(8);
+      createUser(guestId,{name:'Guest_'+guestId.substring(2,6)});
+      setCurrentId(guestId);
+    }
+    render();
+
+    // --- Kullanıcıyı bot ile entegre etme (örnek) ---
+    /*
+      Bot tarafında /start komutu için örnek (Node.js / Telegraf):
+
+      const { Telegraf } = require('telegraf');
+      const bot = new Telegraf(process.env.BOT_TOKEN);
+      bot.start(async (ctx) => {
+        // web_app tuşu ile açılan site, ?ref= kullanarak daveti ekleyebilirsin
+        const url = 'https://YOUR_DOMAIN_HERE' + '/?ref=' + ctx.from.id;
+        await ctx.reply('NotCoin sitesini aç:', {
+          reply_markup: {
+            inline_keyboard: [
+              [{ text: 'NotCoin ile Aç', web_app: { url } }],
+              [{ text: 'Web link (tarayıcı)', url }]
+            ]
+          }
+        });
+      });
+      bot.launch();
+
+      NOT: web_app özelliği Telegram mobil uygulamalarında WebView içinde siteyi açar ve window.Telegram.WebApp initData bilgilerini sağlar.
+    */
+
   </script>
 </body>
 </html>
