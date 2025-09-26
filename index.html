@@ -1,394 +1,252 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>NotCoin — Tiklama Oyunu (Telegram Girişli)</title>
-  <style>
-    :root{ --bg:#000; --card:#0e0e0e; --accent:#ffd166; --muted:rgba(255,255,255,0.65); }
-    html,body{height:100%;margin:0;padding:0;background:var(--bg);color:#fff;font-family:Inter,system-ui, -apple-system, 'Helvetica Neue', Arial}
-    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box}
-    .game-card{width:100%;max-width:460px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:16px;box-shadow:0 10px 40px rgba(0,0,0,0.7)}
-    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .title{font-weight:700;font-size:18px}
-    .sub{font-size:13px;color:var(--muted)}
-
-    .score-panel{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);margin-bottom:12px}
-    .score{font-size:28px;font-weight:800}
-    .small{font-size:12px;color:var(--muted)}
-
-    .coin-area{display:flex;align-items:center;justify-content:center;padding:8px}
-    .coin-btn{width:200px;height:200px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;user-select:none;touch-action:manipulation;transition:transform .12s}
-    .coin-btn img{width:100%;height:100%;object-fit:contain;border-radius:50%;display:block}
-    .coin-btn:active{transform:scale(.96)}
-    .particle{position:absolute;pointer-events:none;font-weight:700;font-size:14px}
-
-    .controls{display:flex;gap:8px;margin-top:10px}
-    .btn{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
-    .btn.primary{background:linear-gradient(90deg,#ffd166,#ff9f1c);color:#111;border:none}
-
-    .section{margin-top:14px;background:rgba(255,255,255,0.01);padding:10px;border-radius:10px}
-    .section h3{margin:0 0 10px 0;font-size:14px;color:var(--muted)}
-
-    .missions .mission{padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:8px}
-    .progress{width:100%;height:8px;background:#111;border-radius:6px;overflow:hidden}
-    .progress-bar{height:100%;background:var(--accent);width:0%;transition:width .3s}
-
-    .invite-row{display:flex;gap:8px}
-    input[type=text]{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff}
-
-    footer{margin-top:12px;text-align:center;color:var(--muted);font-size:12px}
-
-    @media (max-width:420px){ .coin-btn{width:170px;height:170px} }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canlı TV - Azerbaycan ve Türk Kanalları</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        header {
+            background-color: #e74c3c;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .player-container {
+            background-color: #000;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            position: relative;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        #player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .channel-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .channel-category {
+            margin: 30px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e74c3c;
+            color: #333;
+        }
+        
+        .channel {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .channel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .channel-logo {
+            width: 100%;
+            height: 120px;
+            background-color: #f8f8f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+        
+        .channel-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .channel-name {
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            background-color: #fff;
+        }
+        
+        .active {
+            border: 3px solid #e74c3c;
+        }
+        
+        .search-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        #search {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        @media (max-width: 768px) {
+            .channel-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .channel-logo {
+                height: 100px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="game-card">
-      <div class="header">
-        <div>
-          <div class="title">NotCoin — Tikla & Biriktir</div>
-          <div id="userLabel" class="sub">Giriş yok</div>
+    <header>
+        <h1>Canlı TV İzle</h1>
+        <p>Türk ve Azerbaycan Kanalları</p>
+    </header>
+    
+    <div class="container">
+        <div class="player-container">
+            <iframe id="player" src="" frameborder="0" allowfullscreen></iframe>
         </div>
-        <div class="sub">Mobil / WebView uyumlu</div>
-      </div>
-
-      <div class="score-panel">
-        <div>
-          <div class="small">Toplam Coin</div>
-          <div id="score" class="score">0</div>
+        
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Kanal ara...">
         </div>
-        <div style="text-align:right">
-          <div class="small">Tıklama Gücü</div>
-          <div id="perClick" class="small">1</div>
+        
+        <h2 class="channel-category">Azerbaycan Kanalları</h2>
+        <div class="channel-list" id="azerbaycan-kanallari">
+            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
+                <div class="channel-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/az/9/9e/AzTV_logo_2015.png" alt="AzTV">
+                </div>
+                <div class="channel-name">AzTV</div>
+            </div>
+            
+            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
+                <div class="channel-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/az/thumb/9/9c/İctimai_TV_Logo.svg/1200px-İctimai_TV_Logo.svg.png" alt="İctimai TV">
+                </div>
+                <div class="channel-name">İctimai TV</div>
+            </div>
+            
+            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
+                <div class="channel-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/az/thumb/5/5f/İdman_Azərbaycan_TV_logo.svg/1200px-İdman_Azərbaycan_TV_logo.svg.png" alt="İdman TV">
+                </div>
+                <div class="channel-name">İdman TV</div>
+            </div>
+            
+            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
+                <div class="channel-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/az/thumb/4/4e/X%C9%99z%C9%99r_TV_logo.png/1200px-X%C9%99z%C9%99r_TV_logo.png" alt="Xəzər TV">
+                </div>
+                <div class="channel-name">Xəzər TV</div>
+            </div>
         </div>
-      </div>
-
-      <div class="coin-area">
-        <div id="coinBtn" class="coin-btn" title="Tıkla!">
-          <img id="coinImg" src="coin.png" alt="coin" draggable="false">
+        
+        <h2 class="channel-category">Türk Kanalları</h2>
+        <div class="channel-list" id="turk-kanallari">
+            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCqS6HmNwvQH2jQlSPgMPF0w">
+                <div class="channel-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/TRT_1_logo_%282019%29.png/800px-TRT_1_logo_%282019%29.png" alt="TRT 1">
+                </div>
+                <div class="channel-name">TRT 1</div>
+            </div>
+            
+            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
+                <div class="channel-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Show_TV_logo.png/800px-Show_TV_logo.png" alt="Show TV">
+                </div>
+                <div class="channel-name">Show TV</div>
+            </div>
+            
+            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
+                <div class="channel-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Star_TV_logo.svg/800px-Star_TV_logo.svg.png" alt="Star TV">
+                </div>
+                <div class="channel-name">Star TV</div>
+            </div>
+            
+            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
+                <div class="channel-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/ATV_logo_%282016%29.png/800px-ATV_logo_%282016%29.png" alt="ATV">
+                </div>
+                <div class="channel-name">ATV</div>
+            </div>
         </div>
-      </div>
-
-      <div class="controls">
-        <button id="upgradeBtn" class="btn primary">Geliştir (+1 tıklama)</button>
-        <button id="claimAdBtn" class="btn">Reklam İzle (100)</button>
-      </div>
-
-      <div class="section">
-        <h3>🎁 Günlük Bonus</h3>
-        <div style="display:flex;gap:8px"><button id="dailyBtn" class="btn">Günlük Bonusu Al</button><div id="dailyInfo" class="sub" style="align-self:center"></div></div>
-      </div>
-
-      <div class="section">
-        <h3>👥 Davet & Referans</h3>
-        <div style="display:flex;gap:8px;margin-bottom:8px">
-          <input id="inviteInput" type="text" readonly>
-          <button id="copyInvite" class="btn">Kopyala</button>
-        </div>
-        <div class="sub">Yeni kullanıcılar bu link ile gelirse, davet edene 200 coin verilir.</div>
-      </div>
-
-      <div class="section missions">
-        <h3>Görevler</h3>
-        <div id="missionsList"></div>
-      </div>
-
-      <div class="section">
-        <h3>Telegram ile Giriş</h3>
-        <div class="sub">Telegram WebApp içinde açılırsa otomatik giriş yapılır. Alternatif olarak aşağıdaki Telegram login widget'ını kullanabilirsin.</div>
-        <!-- Telegram Login Widget (fallback) - BOT KULLANICI ADINI DEĞİŞTİR -->
-        <div style="margin-top:8px">
-          <script async src="https://telegram.org/js/telegram-widget.js?15" data-telegram-login="YOUR_BOT_USERNAME" data-size="large" data-userpic="false" data-onauth="onTelegramAuth" data-request-access="write"></script>
-        </div>
-      </div>
-
-      <footer>Deploy: GitHub Pages / Vercel. Veriler tarayıcıda saklanır (localStorage).</footer>
     </div>
-  </div>
-
-  <script>
-    /* NOT: Güvenlik notu: Telegram tarafından gelen kullanıcı verisini tam güvenli şekilde doğrulamak için sunucu tarafında doğrulama önerilir.
-       Bu demo, sunucusuz (GitHub Pages) kullanım için "kullanıcı deneyimi" amaçlı kolay yol sağlar (initDataUnsafe veya widget'dan gelen veriyi yerel olarak kullanır).
-    */
-
-    // --- Yardımcı fonksiyonlar ---
-    const q = (s) => document.querySelector(s);
-    const getParam = (name) => new URLSearchParams(location.search).get(name);
-    function uuid(len=8){ return Math.random().toString(36).substring(2,2+len); }
-
-    // --- Storage keys ---
-    const USERS_KEY = 'notcoin_users_v1';
-    const CUR_KEY = 'notcoin_current_v1';
-
-    function loadUsers(){ try{return JSON.parse(localStorage.getItem(USERS_KEY) || '{}');}catch(e){return {}} }
-    function saveUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
-    function getCurrentId(){ return localStorage.getItem(CUR_KEY); }
-    function setCurrentId(id){ localStorage.setItem(CUR_KEY, id); }
-
-    // --- Oyuncu işlemleri ---
-    function createUser(id, opts={}){
-      const users = loadUsers();
-      if(users[id]) return users[id];
-      const newUser = Object.assign({
-        id: String(id),
-        name: opts.name||('user_'+uuid(4)),
-        username: opts.username||'',
-        total: 0,
-        perClick: 1,
-        boosts: 1,
-        clicks: 0,
-        referrals: 0,
-        claimedMissions: {},
-        lastDaily: 0,
-        createdAt: Date.now(),
-        refFrom: opts.refFrom||null
-      }, opts);
-      users[id] = newUser; saveUsers(users); return newUser;
-    }
-    function saveUser(user){ const u = loadUsers(); u[user.id]=user; saveUsers(u); }
-    function getUser(id){ return loadUsers()[id]; }
-
-    // --- Auth & referral on load ---
-    function tryAutoLogin(){
-      // 1) Telegram WebApp environment
-      const hasWebApp = window.Telegram && window.Telegram.WebApp;
-      if(hasWebApp){
-        const tg = window.Telegram.WebApp;
-        const info = tg.initDataUnsafe && tg.initDataUnsafe.user;
-        if(info && info.id){
-          const id = 'tg'+info.id;
-          const user = createUser(id, {name: (info.first_name||'') + (info.last_name?(' '+info.last_name):''), username: info.username||''});
-          setCurrentId(id);
-          // if ref param exists and new and ref valid => credit
-          handleRefOnSignup(user);
-          render();
-          return true;
-        }
-      }
-
-      // 2) URL param 'ref' (referral) with guest auto-create
-      const ref = getParam('ref');
-      const cur = getCurrentId();
-      if(!cur){
-        const guestId = 'g_'+uuid(8);
-        const guest = createUser(guestId, {name:'Guest_'+guestId.substring(2,6), refFrom: ref||null});
-        setCurrentId(guestId);
-        handleRefOnSignup(guest);
-        render();
-        return true;
-      }
-      return false;
-    }
-
-    function handleRefOnSignup(newUser){
-      // If newUser has refFrom and the referrer exists, give them bonus and increase referrals
-      if(newUser.refFrom){
-        const users = loadUsers();
-        const refId = String(newUser.refFrom);
-        // Support both 'tg123' and plain ids
-        if(users[refId]){
-          users[refId].total = (users[refId].total||0) + 200; // 200 coin to referrer
-          users[refId].referrals = (users[refId].referrals||0) + 1;
-          saveUsers(users);
-        }
-      }
-    }
-
-    // --- App state helpers ---
-    function currentUser(){ const id = getCurrentId(); if(!id) return null; return getUser(id); }
-
-    // --- Render & UI ---
-    const scoreEl = q('#score');
-    const perClickEl = q('#perClick');
-    const userLabel = q('#userLabel');
-    const coinBtn = q('#coinBtn');
-    const upgradeBtn = q('#upgradeBtn');
-    const dailyBtn = q('#dailyBtn');
-    const claimAdBtn = q('#claimAdBtn');
-    const inviteInput = q('#inviteInput');
-    const copyInvite = q('#copyInvite');
-    const missionsList = q('#missionsList');
-    const dailyInfo = q('#dailyInfo');
-
-    const MISSIONS = [
-      {id:1, title:'100 coin biriktir', type:'coin', goal:100, reward:{boost:2}, desc:'2x boost'},
-      {id:2, title:'500 coin biriktir', type:'coin', goal:500, reward:{boost:5}, desc:'5x boost'},
-      {id:3, title:'1000 coin biriktir', type:'coin', goal:1000, reward:{boost:10}, desc:'10x boost'},
-      {id:4, title:'100 tıklama yap', type:'clicks', goal:100, reward:{coins:500}, desc:'+500 coin'},
-      {id:5, title:'500 tıklama yap', type:'clicks', goal:500, reward:{coins:3000}, desc:'+3000 coin'},
-      {id:6, title:'5 kişi davet et', type:'referrals', goal:5, reward:{coins:2000}, desc:'+2000 coin'}
-    ];
-
-    function render(){
-      const u = currentUser();
-      if(!u){ userLabel.textContent = 'Giriş yok'; scoreEl.textContent='0'; perClickEl.textContent='1'; inviteInput.value = location.origin+location.pathname+'?ref=guest'; renderMissions(null); return; }
-      userLabel.textContent = (u.username?('@'+u.username):u.name) + ' — ID:' + u.id;
-      scoreEl.textContent = Math.floor(u.total||0);
-      perClickEl.textContent = (u.perClick * (u.boosts||1));
-      inviteInput.value = location.origin + location.pathname + '?ref=' + encodeURIComponent(u.id);
-      // Daily info
-      const now = Date.now();
-      const left = Math.max(0, 24*3600*1000 - (now - (u.lastDaily||0)));
-      if(left<=0) dailyInfo.textContent = 'Hazır'; else { const h = Math.floor(left/3600000); dailyInfo.textContent = `yeniden: ${h}s` }
-      renderMissions(u);
-    }
-
-    function renderMissions(u){
-      missionsList.innerHTML = '';
-      MISSIONS.forEach(m => {
-        const el = document.createElement('div'); el.className='mission';
-        const title = document.createElement('div'); title.innerHTML = `<strong>${m.title}</strong> <div class="sub">${m.desc}</div>`;
-        const progWrap = document.createElement('div'); progWrap.className='progress';
-        const progBar = document.createElement('div'); progBar.className='progress-bar'; progWrap.appendChild(progBar);
-        const actions = document.createElement('div'); actions.style.marginTop='6px';
-
-        let progress = 0; let done = false;
-        if(!u){ progress = 0; }
-        else{
-          if(m.type==='coin') progress = Math.min(1, (u.total||0)/m.goal);
-          if(m.type==='clicks') progress = Math.min(1, (u.clicks||0)/m.goal);
-          if(m.type==='referrals') progress = Math.min(1, (u.referrals||0)/m.goal);
-          done = progress>=1 && (u.claimedMissions && u.claimedMissions[m.id]);
-        }
-        progBar.style.width = (progress*100)+'%';
-
-        const btn = document.createElement('button'); btn.textContent = (u && u.claimedMissions && u.claimedMissions[m.id]) ? 'Alındı' : 'Al';
-        btn.className='btn';
-        btn.disabled = !(u && progress>=1 && !(u.claimedMissions && u.claimedMissions[m.id]));
-        btn.onclick = ()=>{ if(!u) return alert('Önce giriş yap'); claimMission(m.id); };
-        actions.appendChild(btn);
-
-        el.appendChild(title); el.appendChild(progWrap); el.appendChild(actions);
-        missionsList.appendChild(el);
-      });
-    }
-
-    // --- Oyun mantığı ---
-    function clickCoin(){
-      const u = currentUser();
-      if(!u){ alert('Önce Telegram ile giriş yap'); return; }
-      const gain = (u.perClick||1) * (u.boosts||1);
-      u.total = (u.total||0) + gain;
-      u.clicks = (u.clicks||0) + 1;
-      saveUser(u); render(); animateParticle(gain);
-    }
-
-    function animateParticle(value){
-      const rect = coinBtn.getBoundingClientRect();
-      const p = document.createElement('div'); p.className='particle'; p.textContent = '+'+value; coinBtn.appendChild(p);
-      p.style.left = (rect.width/2 - 12) + 'px'; p.style.top = (rect.height/2 - 12) + 'px';
-      const dx = (Math.random()-0.5)*80; const dy = - (60 + Math.random()*80);
-      p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${dx}px,${dy}px) scale(.9)`,opacity:0}],{duration:900});
-      setTimeout(()=>p.remove(),920);
-    }
-
-    coinBtn.addEventListener('click',(e)=>{ clickCoin(); });
-
-    upgradeBtn.addEventListener('click',()=>{
-      const u = currentUser(); if(!u) return alert('Giriş yap');
-      const cost = Math.ceil((u.perClick+1) * 25);
-      if(u.total >= cost){ u.total -= cost; u.perClick += 1; saveUser(u); render(); } else alert('Yetersiz coin: ' + cost);
-    });
-
-    function claimMission(mid){
-      const u = currentUser(); if(!u) return alert('Giriş yok');
-      const m = MISSIONS.find(x=>x.id===mid); if(!m) return;
-      let eligible = false;
-      if(m.type==='coin') eligible = (u.total||0) >= m.goal;
-      if(m.type==='clicks') eligible = (u.clicks||0) >= m.goal;
-      if(m.type==='referrals') eligible = (u.referrals||0) >= m.goal;
-      if(!eligible) return alert('Şartlar sağlanmıyor');
-      // ödül uygula
-      if(m.reward.coins) u.total += m.reward.coins;
-      if(m.reward.boost) { u.boosts = (u.boosts||1) * m.reward.boost; }
-      if(m.reward.boost && !m.reward.coins && m.reward.boost>1){ /* legacy support */ }
-      u.claimedMissions = u.claimedMissions || {}; u.claimedMissions[mid] = true;
-      saveUser(u); render(); alert('Ödül alındı!');
-    }
-
-    // --- Günlük bonus ---
-    dailyBtn.addEventListener('click',()=>{
-      const u = currentUser(); if(!u) return alert('Giriş yok');
-      const now = Date.now();
-      if(now - (u.lastDaily||0) >= 24*3600*1000){
-        const bonus = 100; u.total = (u.total||0) + bonus; u.lastDaily = now; saveUser(u); render(); alert(bonus + ' coin alındı!');
-      } else alert('Günlük bonus zaten alınmış');
-    });
-
-    // --- Reklam / Ödül ---
-    claimAdBtn.addEventListener('click',()=>{
-      const u = currentUser(); if(!u) return alert('Giriş yok');
-      const adUrl = prompt('Reklam URL'ini yapıştır (sen ekle):', 'https://example.com');
-      if(!adUrl) return;
-      // popup ile aç, kapanınca ödül ver
-      let start = Date.now();
-      const w = window.open(adUrl, '_blank');
-      if(!w){ alert('Popup engellendi. Lütfen linki manuel aç ve sonra geri dönüp "Reklam Tamam" butonuna bas.'); return; }
-      const check = setInterval(()=>{
-        try{
-          if(w.closed){
-            clearInterval(check);
-            const elapsed = Date.now() - start;
-            if(elapsed >= 3000){ // minimum 3s izleme
-              u.total = (u.total||0) + 100; saveUser(u); render(); alert('100 coin ödülünü aldın!');
-            } else { alert('Videoyu izleme süresi yeterli olmadı. (en az 3s)'); }
-          }
-        }catch(e){ /* ignore cross-origin */ }
-      },500);
-    });
-
-    // --- Davet kopyala (invite) ---
-    copyInvite.addEventListener('click', ()=>{
-      const v = inviteInput.value; navigator.clipboard.writeText(v).then(()=>alert('Kopyalandı')).catch(()=>alert('Kopyalama başarısız'));
-    });
-
-    // --- Telegram Login Widget callback (fallback) ---
-    function onTelegramAuth(user){
-      // Bu fonksiyon Telegram login widget tarafından çağrılırsa çalışır.
-      // user objesi: id, first_name, last_name, username, photo_url, auth_date, hash
-      const id = 'tg'+user.id;
-      const u = createUser(id, {name:(user.first_name||'') + (user.last_name?(' '+user.last_name):''), username:user.username||''});
-      setCurrentId(id);
-      handleRefOnSignup(u);
-      render();
-      alert('Telegram ile giriş yapıldı: ' + u.name);
-    }
-    window.onTelegramAuth = onTelegramAuth; // expose for widget
-
-    // --- Başlangıç ---
-    tryAutoLogin();
-    // Eğer halen giriş yoksa guest oluştur
-    if(!getCurrentId()){
-      const guestId = 'g_'+uuid(8);
-      createUser(guestId,{name:'Guest_'+guestId.substring(2,6)});
-      setCurrentId(guestId);
-    }
-    render();
-
-    // --- Kullanıcıyı bot ile entegre etme (örnek) ---
-    /*
-      Bot tarafında /start komutu için örnek (Node.js / Telegraf):
-
-      const { Telegraf } = require('telegraf');
-      const bot = new Telegraf(process.env.BOT_TOKEN);
-      bot.start(async (ctx) => {
-        // web_app tuşu ile açılan site, ?ref= kullanarak daveti ekleyebilirsin
-        const url = 'https://YOUR_DOMAIN_HERE' + '/?ref=' + ctx.from.id;
-        await ctx.reply('NotCoin sitesini aç:', {
-          reply_markup: {
-            inline_keyboard: [
-              [{ text: 'NotCoin ile Aç', web_app: { url } }],
-              [{ text: 'Web link (tarayıcı)', url }]
-            ]
-          }
+    
+    <script>
+        // Kanal seçildiğinde oynatıcıyı güncelle
+        document.querySelectorAll('.channel').forEach(channel => {
+            channel.addEventListener('click', function() {
+                // Tüm kanallardan active sınıfını kaldır
+                document.querySelectorAll('.channel').forEach(c => c.classList.remove('active'));
+                // Tıklanan kanala active sınıfını ekle
+                this.classList.add('active');
+                // Oynatıcıyı güncelle
+                document.getElementById('player').src = this.getAttribute('data-stream');
+                // Sayfayı oynatıcıya kaydır
+                document.querySelector('.player-container').scrollIntoView({ behavior: 'smooth' });
+            });
         });
-      });
-      bot.launch();
-
-      NOT: web_app özelliği Telegram mobil uygulamalarında WebView içinde siteyi açar ve window.Telegram.WebApp initData bilgilerini sağlar.
-    */
-
-  </script>
+        
+        // Arama işlevselliği
+        document.getElementById('search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const channels = document.querySelectorAll('.channel');
+            
+            channels.forEach(channel => {
+                const channelName = channel.querySelector('.channel-name').textContent.toLowerCase();
+                if (channelName.includes(searchTerm)) {
+                    channel.style.display = 'block';
+                } else {
+                    channel.style.display = 'none';
+                }
+            });
+        });
+        
+        // Sayfa yüklendiğinde ilk kanalı seçili yap
+        window.onload = function() {
+            const firstChannel = document.querySelector('.channel');
+            if (firstChannel) {
+                firstChannel.click();
+            }
+        };
+    </script>
 </body>
 </html>
