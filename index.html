@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canlı TV İzle - Türk ve Azerbaycan Kanalları</title>
@@ -161,10 +159,12 @@
         
         /* Channel List */
         .channel-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0 40px;
+            padding: 0 10px;
         }
         
         .section-title {
@@ -188,15 +188,30 @@
             margin-left: 15px;
         }
         
-        .channel {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: var(--transition);
+        .channel-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
             cursor: pointer;
-            position: relative;
-            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            width: calc(33.333% - 10px);
+            max-width: 200px;
+            text-align: center;
+        }
+
+        .channel-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .channel-btn:active {
+            transform: translateY(0);
         }
         
         .channel:hover {
@@ -525,6 +540,12 @@
         }
 
         @media (max-width: 768px) {
+            .channel-btn {
+                width: calc(50% - 10px);
+                font-size: 14px;
+                padding: 10px 5px;
+            }
+            
             .header-content {
                 flex-direction: column;
                 text-align: center;
@@ -666,33 +687,12 @@
             Azerbaycan Kanalları
         </h2>
         <div class="channel-list" id="azerbaycan-kanallari">
-            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
-                <div class="channel-logo">
-                    <img src="https://upload.wikimedia.org/wikipedia/az/9/9e/AzTV_logo_2015.png" alt="AzTV">
-                </div>
-                <div class="channel-name">AzTV</div>
-            </div>
-            
-            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
-                <div class="channel-logo">
-                    <img src="https://upload.wikimedia.org/wikipedia/az/thumb/9/9c/İctimai_TV_Logo.svg/1200px-İctimai_TV_Logo.svg.png" alt="İctimai TV">
-                </div>
-                <div class="channel-name">İctimai TV</div>
-            </div>
-            
-            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
-                <div class="channel-logo">
-                    <img src="https://upload.wikimedia.org/wikipedia/az/thumb/5/5f/İdman_Azərbaycan_TV_logo.svg/1200px-İdman_Azərbaycan_TV_logo.svg.png" alt="İdman TV">
-                </div>
-                <div class="channel-name">İdman TV</div>
-            </div>
-            
-            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
-                <div class="channel-logo">
-                    <img src="https://upload.wikimedia.org/wikipedia/az/thumb/4/4e/X%C9%99z%C9%99r_TV_logo.png/1200px-X%C9%99z%C9%99r_TV_logo.png" alt="Xəzər TV">
-                </div>
-                <div class="channel-name">Xəzər TV</div>
-            </div>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">AzTV</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">İctimai TV</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">İdman TV</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Xəzər TV</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Space TV</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Lider TV</button>
         </div>
         
         <h2 class="section-title" id="turk-kanallari">
@@ -700,42 +700,20 @@
             Türk Kanalları
         </h2>
         <div class="channel-list" id="turk-kanallari">
-            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCqS6HmNwvQH2jQlSPgMPF0w">
-                <div class="channel-logo">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/TRT_1_logo_%282019%29.png/800px-TRT_1_logo_%282019%29.png" alt="TRT 1">
-                </div>
-                <div class="channel-name">TRT 1</div>
-            </div>
-            
-            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
-                <div class="channel-logo">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Show_TV_logo.png/800px-Show_TV_logo.png" alt="Show TV">
-                </div>
-                <div class="channel-name">Show TV</div>
-            </div>
-            
-            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
-                <div class="channel-logo">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Star_TV_logo.svg/800px-Star_TV_logo.svg.png" alt="Star TV">
-                </div>
-                <div class="channel-name">Star TV</div>
-            </div>
-            
-            <div class="channel" data-stream="https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ">
-                <div class="channel-logo">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/ATV_logo_%282016%29.png/800px-ATV_logo_%282016%29.png" alt="ATV">
-                </div>
-                <div class="channel-name">ATV</div>
-            </div>
-        </div>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">TRT 1</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Show TV</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Star TV</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">ATV</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Kanal D</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">FOX</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">TV8</button>
+            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Kanal 7</button>
     </div>
-
     <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
-                    <h3>Hakkımızda</h3>
                     <p>En sevdiğiniz Türk ve Azerbaycan kanallarını kesintisiz izleyebileceğiniz güvenilir platformunuz. Kaliteli yayın keyfi için buradayız.</p>
                     <div class="social-links" style="margin-top: 15px;">
                         <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
