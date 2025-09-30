@@ -3,803 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canlı TV İzle - Türk ve Azerbaycan Kanalları</title>
+    <title>Canlı TV İzle</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927" crossorigin="anonymous"></script>
     <style>
-        :root {
-            --primary-color: #e74c3c;
-            --secondary-color: #2c3e50;
-            --accent-color: #3498db;
-            --dark-color: #2c3e50;
-            --light-color: #ecf0f1;
-            --gray-color: #95a5a6;
-            --success-color: #2ecc71;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
         
         body {
-            background-color: #f8f9fa;
+            background-color: #f5f5f5;
             color: #333;
             line-height: 1.6;
-        }
-        
-        /* Header Styles */
-        .top-bar {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 10px 0;
-            font-size: 14px;
-        }
-
-        .top-bar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        .social-links a {
-            color: white;
-            margin-left: 15px;
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .social-links a:hover {
-            color: var(--primary-color);
-        }
-
-        header {
-            background-color: white;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 15px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo i {
-            margin-right: 10px;
-            font-size: 28px;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 25px;
-        }
-
-        nav ul li a {
-            color: var(--dark-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            padding: 5px 0;
-            position: relative;
-        }
-
-        nav ul li a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            background: var(--primary-color);
-            bottom: 0;
-            left: 0;
-            transition: var(--transition);
-        }
-
-        nav ul li a:hover:after,
-        nav ul li a.active:after {
-            width: 100%;
-        }
-
-        nav ul li a:hover,
-        nav ul li a.active {
-            color: var(--primary-color);
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 15px;
         }
         
-        .player-container {
-            background-color: #000;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            position: relative;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            overflow: hidden;
+        header {
+            background: #1e88e5;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
-        #player {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
+        header h1 {
+            font-size: 2.2rem;
+            margin: 0;
         }
         
-        /* Channel List */
         .channel-list {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            margin: 20px 0 40px;
-            padding: 0 10px;
-        }
-        
-        .section-title {
-            display: flex;
-            align-items: center;
-            margin: 30px 0 20px;
-            color: var(--dark-color);
-            font-size: 1.5rem;
-        }
-
-        .section-title i {
-            margin-right: 10px;
-            color: var(--primary-color);
-        }
-
-        .section-title:after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #ddd;
-            margin-left: 15px;
+            gap: 15px;
+            margin-bottom: 40px;
         }
         
         .channel-btn {
-            display: inline-block;
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
+            background: white;
+            border: 2px solid #1e88e5;
             border-radius: 8px;
-            padding: 12px 20px;
-            margin: 5px;
-            font-size: 16px;
-            font-weight: 500;
-            color: #333;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: calc(33.333% - 10px);
-            max-width: 200px;
-            text-align: center;
-        }
-
-        .channel-btn:hover {
-            background: #e9ecef;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .channel-btn:active {
-            transform: translateY(0);
-        }
-        
-        .channel:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .channel-logo {
-            width: 100%;
-            height: 120px;
-            background-color: #f8f8f8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            transition: var(--transition);
-        }
-
-        .channel:hover .channel-logo {
-            background-color: #f0f0f0;
-        }
-        
-        .channel-logo img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        
-        .channel-name {
-            padding: 12px 10px;
-            text-align: center;
-            font-weight: 600;
-            background-color: #fff;
-            border-top: 1px solid #f0f0f0;
-            transition: var(--transition);
-        }
-
-        .channel:hover .channel-name {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        .active {
-            border: 2px solid var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.2);
-        }
-
-        .active .channel-name {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                        url('https://images.unsplash.com/photo-1577730000693-6ccfeb0fbc7f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-            margin-bottom: 40px;
-            border-radius: 10px;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            opacity: 0.9;
-        }
-
-        /* Search Container */
-        .search-container {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        #search {
-            width: 100%;
             padding: 15px 25px;
-            border: none;
-            border-radius: 50px;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding-right: 60px;
-            transition: var(--transition);
-        }
-
-        #search:focus {
-            outline: none;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        }
-
-        .search-container button {
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            text-decoration: none;
+            color: #1e88e5;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 200px;
+            display: inline-block;
             cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .search-container button:hover {
-            background: #c0392b;
-            transform: scale(1.05);
         }
         
-        /* Player Section */
-        .player-section {
-            margin-bottom: 50px;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .player-header {
-            background: var(--dark-color);
+        .channel-btn:hover {
+            background: #1e88e5;
             color: white;
-            padding: 12px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-
-        .now-playing {
-            display: flex;
-            align-items: center;
-        }
-
-        .live-badge {
-            background: #e74c3c;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-right: 15px;
-            display: inline-flex;
-            align-items: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .live-badge:before {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            margin-right: 5px;
-            animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
-
-        .channel-info {
-            display: flex;
-            align-items: center;
-        }
-
-        .channel-logo-small {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            margin-right: 10px;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-
-        .player-actions .btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: none;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 13px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            transition: var(--transition);
-        }
-
-        .player-actions .btn i {
-            margin-right: 5px;
-        }
-
-        .player-actions .btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark-color);
-            color: #fff;
-            padding: 50px 0 20px;
-            margin-top: 50px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .footer-column h3 {
-            color: white;
-            margin-bottom: 20px;
-            font-size: 18px;
+        
+        .section-title {
+            text-align: center;
+            margin: 30px 0 20px;
+            color: #333;
+            font-size: 1.5rem;
             position: relative;
             padding-bottom: 10px;
         }
-
-        .footer-column h3:after {
+        
+        .section-title:after {
             content: '';
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--primary-color);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 10px;
-        }
-
-        .footer-links a {
-            color: #ddd;
-            text-decoration: none;
-            transition: var(--transition);
             display: block;
-            padding: 5px 0;
+            width: 60px;
+            height: 3px;
+            background: #1e88e5;
+            margin: 10px auto 0;
         }
-
-        .footer-links a:hover {
-            color: var(--primary-color);
-            padding-left: 5px;
-        }
-
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--dark-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-
-        .loading-screen.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 15px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-screen p {
-            color: white;
-            margin-top: 15px;
-            font-size: 16px;
-        }
-
-        .footer-bottom {
+        
+        footer {
+            background: #333;
+            color: #fff;
+            padding: 30px 0 15px;
+            margin-top: 50px;
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 14px;
-            color: #aaa;
         }
-
-        /* Responsive */
-        @media (max-width: 992px) {
-            .channel-list {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-        }
-
+        
         @media (max-width: 768px) {
+            .channel-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            
             .channel-btn {
-                width: calc(50% - 10px);
-                font-size: 14px;
-                padding: 10px 5px;
+                width: 90%;
+                max-width: 300px;
             }
             
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-                padding: 15px;
-            }
-
-            nav ul {
-                margin-top: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            nav ul li {
-                margin: 5px 10px;
-            }
-
-            .channel-list {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-                gap: 15px;
-            }
-            
-            .channel-logo {
-                height: 100px;
-            }
-
-            .hero {
-                padding: 60px 15px;
-                margin: 0 -15px 30px;
-                border-radius: 0;
-            }
-
-            .hero h1 {
+            header h1 {
                 font-size: 1.8rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .channel-list {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .player-header {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px 15px;
-            }
-
-            .player-actions {
-                margin-top: 10px;
-                width: 100%;
-            }
-
-            .player-actions .btn {
-                width: 100%;
-                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Yükleniyor Ekranı -->
-    <div class="loading-screen">
-        <div class="spinner"></div>
-        <p>Yükleniyor...</p>
-    </div>
-    
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="container">
-            <div class="welcome-text">Hoş Geldiniz! Canlı TV Keyfini Çıkarın</div>
-            <div class="social-links">
-                <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="#" title="Youtube"><i class="fab fa-youtube"></i></a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Header -->
-    <header class="header">
-        <div class="container">
-            <h1>Canlı TV</h1>
-        </div>
-    </header>
-
     <!-- Başlık -->
-    <header class="simple-header">
+    <header>
         <div class="container">
-            <h1>Canlı TV</h1>
+            <h1>Canlı TV İzle</h1>
         </div>
     </header>
 
     <div class="container">
-        <!-- Azerbaycan Kanalları -->
-        <div class="channel-list">
-            <a href="https://www.trtavaz.com.tr/canli" class="channel-btn" target="_blank">TRT Azerbaycan</a>
-            <a href="https://xezerxeber.az/canli-yayim" class="channel-btn" target="_blank">Xəzər TV</a>
-        </div>
-        
         <!-- Türk Kanalları -->
+        <h2 class="section-title">Türk Kanalları</h2>
         <div class="channel-list">
             <a href="https://www.trt1.com.tr/canli-yayin" class="channel-btn" target="_blank">TRT 1</a>
             <a href="https://www.showtv.com.tr/canli-yayin/1" class="channel-btn" target="_blank">Show TV</a>
             <a href="https://www.atv.com.tr/canli-yayin" class="channel-btn" target="_blank">ATV</a>
         </div>
+        
+        <!-- Azerbaycan Kanalları -->
+        <h2 class="section-title">Azerbaycan Kanalları</h2>
+        <div class="channel-list">
+            <a href="https://www.trtavaz.com.tr/canli" class="channel-btn" target="_blank">TRT Azerbaycan</a>
+            <a href="https://xezerxeber.az/canli-yayim" class="channel-btn" target="_blank">Xəzər TV</a>
+        </div>
     </div>
-    <!-- Footer -->
+
     <footer>
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <p>En sevdiğiniz Türk ve Azerbaycan kanallarını kesintisiz izleyebileceğiniz güvenilir platformunuz. Kaliteli yayın keyfi için buradayız.</p>
-                    <div class="social-links" style="margin-top: 15px;">
-                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" title="Youtube"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Hızlı Linkler</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Ana Sayfa</a></li>
-                        <li><a href="#turk-kanallari">Türk Kanalları</a></li>
-                        <li><a href="#azerbaycan-kanallari">Azerbaycan Kanalları</a></li>
-                        <li><a href="#canli-yayin">Canlı Yayın</a></li>
-                        <li><a href="#iletisim">İletişim</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Kategoriler</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Haber</a></li>
-                        <li><a href="#">Spor</a></li>
-                        <li><a href="#">Müzik</a></li>
-                        <li><a href="#">Sinema</a></li>
-                        <li><a href="#">Belgesel</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>İletişim</h3>
-                    <ul class="footer-links">
-                        <li><i class="fas fa-map-marker-alt"></i> İstanbul, Türkiye</li>
-                        <li><i class="fas fa-envelope"></i> info@canlitvizle.com</li>
-                        <li><i class="fas fa-phone"></i> +90 555 123 45 67</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 Canlı TV İzle. Tüm hakları saklıdır.</p>
-            </div>
+            <p>&copy; 2023 Canlı TV İzle. Tüm hakları saklıdır.</p>
         </div>
     </footer>
-    
-    <script>
-    // Sayfa yüklendiğinde çalışacak kod
-    document.addEventListener('DOMContentLoaded', function() {
-        // Basit stil ekle
-        const style = document.createElement('style');
-        style.textContent = `
-            .simple-header {
-                background: #1e88e5;
-                color: white;
-                padding: 20px 0;
-                text-align: center;
-                margin-bottom: 30px;
-            }
-            .simple-header h1 {
-                margin: 0;
-                font-size: 2rem;
-            }
-            .channel-list {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
-                margin-bottom: 40px;
-            }
-            .channel-btn {
-                background: #f5f5f5;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-                padding: 15px 25px;
-                text-decoration: none;
-                color: #333;
-                font-weight: 500;
-                transition: all 0.3s ease;
-                text-align: center;
-                min-width: 150px;
-                display: inline-block;
-            }
-            .channel-btn:hover {
-                background: #e0e0e0;
-                transform: translateY(-2px);
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            }
-            @media (max-width: 600px) {
-                .channel-list {
-                    flex-direction: column;
-                    align-items: center;
-                }
-                .channel-btn {
-                    width: 80%;
-                    max-width: 300px;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    });
-            if (firstChannel) {
-                firstChannel.click();
-            }
-            
-            // Yükleme ekranını kaldır
-            setTimeout(() => {
-                const loadingScreen = document.querySelector('.loading-screen');
-                if (loadingScreen) {
-                    loadingScreen.classList.add('fade-out');
-                    // Animasyon bittikten sonra elementi gizle
-                    setTimeout(() => {
-                        loadingScreen.style.display = 'none';
-                    }, 500);
-                }
-            }, 1000);
-        };
-        
-        // Tam ekran butonu
-        document.addEventListener('DOMContentLoaded', function() {
-            const fullscreenBtn = document.createElement('button');
-            fullscreenBtn.className = 'btn btn-sm';
-            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Tam Ekran';
-            fullscreenBtn.onclick = function() {
-                const playerContainer = document.querySelector('.player-container');
-                if (playerContainer.requestFullscreen) {
-                    playerContainer.requestFullscreen();
-                } else if (playerContainer.webkitRequestFullscreen) { /* Safari */
-                    playerContainer.webkitRequestFullscreen();
-                } else if (playerContainer.msRequestFullscreen) { /* IE11 */
-                    playerContainer.msRequestFullscreen();
-                }
-            };
-            
-            const playerActions = document.querySelector('.player-actions');
-            if (playerActions) {
-                playerActions.appendChild(fullscreenBtn);
-            }
-        });
-    </script>
 </body>
 </html>
