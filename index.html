@@ -1,9 +1,8 @@
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
-     crossorigin="anonymous"></script>
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
+     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canlı TV İzle - Türk ve Azerbaycan Kanalları</title>
@@ -730,6 +729,55 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Hakkımızda</h3>
+                    <p>En sevdiğiniz Türk ve Azerbaycan kanallarını kesintisiz izleyebileceğiniz güvenilir platformunuz. Kaliteli yayın keyfi için buradayız.</p>
+                    <div class="social-links" style="margin-top: 15px;">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="Youtube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Hızlı Linkler</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Ana Sayfa</a></li>
+                        <li><a href="#turk-kanallari">Türk Kanalları</a></li>
+                        <li><a href="#azerbaycan-kanallari">Azerbaycan Kanalları</a></li>
+                        <li><a href="#canli-yayin">Canlı Yayın</a></li>
+                        <li><a href="#iletisim">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Kategoriler</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Haber</a></li>
+                        <li><a href="#">Spor</a></li>
+                        <li><a href="#">Müzik</a></li>
+                        <li><a href="#">Sinema</a></li>
+                        <li><a href="#">Belgesel</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>İletişim</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt"></i> İstanbul, Türkiye</li>
+                        <li><i class="fas fa-envelope"></i> info@canlitvizle.com</li>
+                        <li><i class="fas fa-phone"></i> +90 555 123 45 67</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Canlı TV İzle. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
     
     <script>
         // Kanal seçildiğinde oynatıcıyı güncelle
@@ -761,13 +809,47 @@
             });
         });
         
-        // Sayfa yüklendiğinde ilk kanalı seçili yap
+        // Sayfa yüklendiğinde ilk kanalı seçili yap ve yükleme ekranını kaldır
         window.onload = function() {
             const firstChannel = document.querySelector('.channel');
             if (firstChannel) {
                 firstChannel.click();
             }
+            
+            // Yükleme ekranını kaldır
+            setTimeout(() => {
+                const loadingScreen = document.querySelector('.loading-screen');
+                if (loadingScreen) {
+                    loadingScreen.classList.add('fade-out');
+                    // Animasyon bittikten sonra elementi gizle
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 1000);
         };
+        
+        // Tam ekran butonu
+        document.addEventListener('DOMContentLoaded', function() {
+            const fullscreenBtn = document.createElement('button');
+            fullscreenBtn.className = 'btn btn-sm';
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i> Tam Ekran';
+            fullscreenBtn.onclick = function() {
+                const playerContainer = document.querySelector('.player-container');
+                if (playerContainer.requestFullscreen) {
+                    playerContainer.requestFullscreen();
+                } else if (playerContainer.webkitRequestFullscreen) { /* Safari */
+                    playerContainer.webkitRequestFullscreen();
+                } else if (playerContainer.msRequestFullscreen) { /* IE11 */
+                    playerContainer.msRequestFullscreen();
+                }
+            };
+            
+            const playerActions = document.querySelector('.player-actions');
+            if (playerActions) {
+                playerActions.appendChild(fullscreenBtn);
+            }
+        });
     </script>
 </body>
 </html>
