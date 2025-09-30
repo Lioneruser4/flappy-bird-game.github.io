@@ -632,84 +632,32 @@
     </div>
 
     <!-- Main Header -->
-    <header>
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <i class="fas fa-tv"></i>
-                <span>Canlı TV</span>
-            </a>
-            <nav>
-                <ul>
-                    <li><a href="#" class="active">Ana Sayfa</a></li>
-                    <li><a href="#turk-kanallari">Türk Kanalları</a></li>
-                    <li><a href="#azerbaycan-kanallari">Azerbaycan Kanalları</a></li>
-                    <li><a href="#canli-yayin">Canlı Yayın</a></li>
-                    <li><a href="#iletisim">İletişim</a></li>
-                </ul>
-            </nav>
+    <header class="header">
+        <div class="container">
+            <h1>Canlı TV</h1>
         </div>
     </header>
-    
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Canlı TV İzleme Keyfi</h1>
-            <p>Türk ve Azerbaycan kanallarını kesintisiz izleyin, en sevdiğiniz programları kaçırmayın!</p>
-            
-            <div class="search-container">
-                <input type="text" id="search" placeholder="Aradığınız kanalı yazın...">
-                <button type="button"><i class="fas fa-search"></i></button>
-            </div>
-        </div>
-    </section>
 
-    <!-- Live Player Section -->
-    <section class="player-section">
-        <div class="player-header">
-            <div class="now-playing">
-                <span class="live-badge">CANLI</span>
-                <div class="channel-info">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/TRT_1_logo_%282019%29.png/800px-TRT_1_logo_%282019%29.png" alt="TRT 1" class="channel-logo-small">
-                    <span>TRT 1</span>
-                </div>
-            </div>
-            <div class="player-actions">
-                <button class="btn btn-sm"><i class="fas fa-expand"></i> Tam Ekran</button>
-            </div>
+    <!-- Başlık -->
+    <header class="simple-header">
+        <div class="container">
+            <h1>Canlı TV</h1>
         </div>
-        <div class="player-container">
-            <iframe id="player" src="" frameborder="0" allowfullscreen></iframe>
-        </div>
-    </section>
+    </header>
 
     <div class="container">
-        
-        <h2 class="section-title" id="azerbaycan-kanallari">
-            <i class="fas fa-satellite-dish"></i>
-            Azerbaycan Kanalları
-        </h2>
-        <div class="channel-list" id="azerbaycan-kanallari">
-            <a href="https://www.trt.net.tr/anasayfa/canli.aspx?y=tv&k=trtavaz" class="channel-btn" target="_blank">AzTV</a>
-            <a href="https://www.ictimaitv.az/canli" class="channel-btn" target="_blank">İctimai TV</a>
-            <a href="https://idmantv.az/canli" class="channel-btn" target="_blank">İdman TV</a>
+        <!-- Azerbaycan Kanalları -->
+        <div class="channel-list">
+            <a href="https://www.trtavaz.com.tr/canli" class="channel-btn" target="_blank">TRT Azerbaycan</a>
             <a href="https://xezerxeber.az/canli-yayim" class="channel-btn" target="_blank">Xəzər TV</a>
-            <a href="https://www.space.az/canli-yayim" class="channel-btn" target="_blank">Space TV</a>
-            <a href="https://www.lider.tv/canli-yayim" class="channel-btn" target="_blank">Lider TV</a>
         </div>
         
-        <h2 class="section-title" id="turk-kanallari">
-            <i class="fas fa-tv"></i>
-            Türk Kanalları
-        </h2>
-        <div class="channel-list" id="turk-kanallari">
+        <!-- Türk Kanalları -->
+        <div class="channel-list">
             <a href="https://www.trt1.com.tr/canli-yayin" class="channel-btn" target="_blank">TRT 1</a>
             <a href="https://www.showtv.com.tr/canli-yayin/1" class="channel-btn" target="_blank">Show TV</a>
-            <a href="https://www.startv.com.tr/canli-yayin" class="channel-btn" target="_blank">Star TV</a>
             <a href="https://www.atv.com.tr/canli-yayin" class="channel-btn" target="_blank">ATV</a>
-            <a href="https://www.kanald.com.tr/canli-yayin" class="channel-btn" target="_blank">Kanal D</a>
-            <a href="https://www.fox.com.tr/canli-yayin" class="channel-btn" target="_blank">FOX</a>
-            <a href="https://www.tv8.com.tr/canli-yayin" class="channel-btn" target="_blank">TV8</a>
-            <a href="https://www.kanal7.com/canli-yayin" class="channel-btn" target="_blank">Kanal 7</a>
+        </div>
     </div>
     <!-- Footer -->
     <footer>
@@ -760,35 +708,60 @@
     </footer>
     
     <script>
-    // Kanal butonlarına tıklandığında aktif görünüm ekle
-    document.querySelectorAll('.channel-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            // Tüm butonlardan active sınıfını kaldır
-            document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
-            // Tıklanan butona active sınıfını ekle
-            this.classList.add('active');
-        });
-    });
-    
-    // Sayfa yüklendiğinde ilk kanalı yükle
-    window.onload = function() {
-        const firstBtn = document.querySelector('.channel-btn');
-        if (firstBtn) firstBtn.click();
-    };
-            
-            channels.forEach(channel => {
-                const channelName = channel.querySelector('.channel-name').textContent.toLowerCase();
-                if (channelName.includes(searchTerm)) {
-                    channel.style.display = 'block';
-                } else {
-                    channel.style.display = 'none';
+    // Sayfa yüklendiğinde çalışacak kod
+    document.addEventListener('DOMContentLoaded', function() {
+        // Basit stil ekle
+        const style = document.createElement('style');
+        style.textContent = `
+            .simple-header {
+                background: #1e88e5;
+                color: white;
+                padding: 20px 0;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .simple-header h1 {
+                margin: 0;
+                font-size: 2rem;
+            }
+            .channel-list {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+                margin-bottom: 40px;
+            }
+            .channel-btn {
+                background: #f5f5f5;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 15px 25px;
+                text-decoration: none;
+                color: #333;
+                font-weight: 500;
+                transition: all 0.3s ease;
+                text-align: center;
+                min-width: 150px;
+                display: inline-block;
+            }
+            .channel-btn:hover {
+                background: #e0e0e0;
+                transform: translateY(-2px);
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            @media (max-width: 600px) {
+                .channel-list {
+                    flex-direction: column;
+                    align-items: center;
                 }
-            });
-        });
-        
-        // Sayfa yüklendiğinde ilk kanalı seçili yap ve yükleme ekranını kaldır
-        window.onload = function() {
-            const firstChannel = document.querySelector('.channel');
+                .channel-btn {
+                    width: 80%;
+                    max-width: 300px;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    });
             if (firstChannel) {
                 firstChannel.click();
             }
