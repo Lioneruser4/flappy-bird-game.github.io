@@ -189,6 +189,7 @@
         }
         
         .channel-btn {
+            display: inline-block;
             background: #f8f9fa;
             border: 2px solid #e9ecef;
             border-radius: 8px;
@@ -197,6 +198,7 @@
             font-size: 16px;
             font-weight: 500;
             color: #333;
+            text-decoration: none;
             cursor: pointer;
             transition: all 0.3s ease;
             width: calc(33.333% - 10px);
@@ -687,12 +689,12 @@
             Azerbaycan Kanalları
         </h2>
         <div class="channel-list" id="azerbaycan-kanallari">
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">AzTV</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">İctimai TV</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">İdman TV</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">Xəzər TV</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">Space TV</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">Lider TV</button>
+            <a href="https://www.trt.net.tr/anasayfa/canli.aspx?y=tv&k=trtavaz" class="channel-btn" target="_blank">AzTV</a>
+            <a href="https://www.ictimaitv.az/canli" class="channel-btn" target="_blank">İctimai TV</a>
+            <a href="https://idmantv.az/canli" class="channel-btn" target="_blank">İdman TV</a>
+            <a href="https://xezerxeber.az/canli-yayim" class="channel-btn" target="_blank">Xəzər TV</a>
+            <a href="https://www.space.az/canli-yayim" class="channel-btn" target="_blank">Space TV</a>
+            <a href="https://www.lider.tv/canli-yayim" class="channel-btn" target="_blank">Lider TV</a>
         </div>
         
         <h2 class="section-title" id="turk-kanallari">
@@ -700,14 +702,14 @@
             Türk Kanalları
         </h2>
         <div class="channel-list" id="turk-kanallari">
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCqS6HmNwvQH2jQlSPgMPF0w')">TRT 1</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">Show TV</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">Star TV</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">ATV</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">Kanal D</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">FOX</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">TV8</button>
-            <button class="channel-btn" onclick="loadStream('https://www.youtube.com/embed/live_stream?channel=UCG3KaGt8WmYsHqn9HhO4dJQ')">Kanal 7</button>
+            <a href="https://www.trt1.com.tr/canli-yayin" class="channel-btn" target="_blank">TRT 1</a>
+            <a href="https://www.showtv.com.tr/canli-yayin/1" class="channel-btn" target="_blank">Show TV</a>
+            <a href="https://www.startv.com.tr/canli-yayin" class="channel-btn" target="_blank">Star TV</a>
+            <a href="https://www.atv.com.tr/canli-yayin" class="channel-btn" target="_blank">ATV</a>
+            <a href="https://www.kanald.com.tr/canli-yayin" class="channel-btn" target="_blank">Kanal D</a>
+            <a href="https://www.fox.com.tr/canli-yayin" class="channel-btn" target="_blank">FOX</a>
+            <a href="https://www.tv8.com.tr/canli-yayin" class="channel-btn" target="_blank">TV8</a>
+            <a href="https://www.kanal7.com/canli-yayin" class="channel-btn" target="_blank">Kanal 7</a>
     </div>
     <!-- Footer -->
     <footer>
@@ -758,19 +760,15 @@
     </footer>
     
     <script>
-    // Canlı yayın yükleme fonksiyonu
-    function loadStream(streamUrl) {
-        const player = document.getElementById('player');
-        player.src = streamUrl;
-        
-        // Tüm butonlardan active sınıfını kaldır
-        document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
-        // Tıklanan butona active sınıfını ekle
-        event.target.classList.add('active');
-        
-        // Sayfayı oynatıcıya kaydır
-        document.querySelector('.player-container').scrollIntoView({ behavior: 'smooth' });
-    }
+    // Kanal butonlarına tıklandığında aktif görünüm ekle
+    document.querySelectorAll('.channel-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Tüm butonlardan active sınıfını kaldır
+            document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
+            // Tıklanan butona active sınıfını ekle
+            this.classList.add('active');
+        });
+    });
     
     // Sayfa yüklendiğinde ilk kanalı yükle
     window.onload = function() {
