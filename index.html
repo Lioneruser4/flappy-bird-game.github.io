@@ -687,12 +687,12 @@
             Azerbaycan Kanalları
         </h2>
         <div class="channel-list" id="azerbaycan-kanallari">
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">AzTV</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">İctimai TV</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">İdman TV</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Xəzər TV</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Space TV</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Lider TV</button>
+            <button class="channel-btn" onclick="openStream('aztv')">AzTV</button>
+            <button class="channel-btn" onclick="openStream('ictimai-tv-az')">İctimai TV</button>
+            <button class="channel-btn" onclick="openStream('idman-tv-az')">İdman TV</button>
+            <button class="channel-btn" onclick="openStream('xazar-tv')">Xəzər TV</button>
+            <button class="channel-btn" onclick="openStream('space-tv-az')">Space TV</button>
+            <button class="channel-btn" onclick="openStream('lider-tv')">Lider TV</button>
         </div>
         
         <h2 class="section-title" id="turk-kanallari">
@@ -700,14 +700,14 @@
             Türk Kanalları
         </h2>
         <div class="channel-list" id="turk-kanallari">
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">TRT 1</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Show TV</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Star TV</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">ATV</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Kanal D</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">FOX</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">TV8</button>
-            <button class="channel-btn" data-stream="https://www.dailymotion.com/embed/video/x8f0k4r">Kanal 7</button>
+            <button class="channel-btn" onclick="openStream('trt-1')">TRT 1</button>
+            <button class="channel-btn" onclick="openStream('show-tv')">Show TV</button>
+            <button class="channel-btn" onclick="openStream('star-tv')">Star TV</button>
+            <button class="channel-btn" onclick="openStream('atv')">ATV</button>
+            <button class="channel-btn" onclick="openStream('kanal-d')">Kanal D</button>
+            <button class="channel-btn" onclick="openStream('fox')">FOX</button>
+            <button class="channel-btn" onclick="openStream('tv8')">TV8</button>
+            <button class="channel-btn" onclick="openStream('kanal-7')">Kanal 7</button>
     </div>
     <!-- Footer -->
     <footer>
@@ -758,24 +758,23 @@
     </footer>
     
     <script>
-        // Kanal seçildiğinde oynatıcıyı güncelle
-        document.querySelectorAll('.channel').forEach(channel => {
-            channel.addEventListener('click', function() {
-                // Tüm kanallardan active sınıfını kaldır
-                document.querySelectorAll('.channel').forEach(c => c.classList.remove('active'));
-                // Tıklanan kanala active sınıfını ekle
-                this.classList.add('active');
-                // Oynatıcıyı güncelle
-                document.getElementById('player').src = this.getAttribute('data-stream');
-                // Sayfayı oynatıcıya kaydır
-                document.querySelector('.player-container').scrollIntoView({ behavior: 'smooth' });
-            });
+    // Canlı yayın açma fonksiyonu
+    function openStream(channelSlug) {
+        // Canlı TV sitesine yönlendir
+        window.open(`https://canlitv.com/${channelSlug}`, '_blank');
+    }
+    
+    // Kanal seçildiğinde oynatıcıyı güncelle
+    document.querySelectorAll('.channel-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Tüm butonlardan active sınıfını kaldır
+            document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
+            // Tıklanan butona active sınıfını ekle
+            this.classList.add('active');
+            // Canlı yayın açma fonksiyonunu çalıştır
+            openStream(this.getAttribute('data-channel'));
         });
-        
-        // Arama işlevselliği
-        document.getElementById('search').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const channels = document.querySelectorAll('.channel');
+    });
             
             channels.forEach(channel => {
                 const channelName = channel.querySelector('.channel-name').textContent.toLowerCase();
