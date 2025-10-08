@@ -7,15 +7,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="profile-bg" class="hidden"></div> 
-    
     <div class="container">
-        <div id="user-info" class="hidden"></div> 
-        <div id="error-area" class="error-message hidden"></div>
-        
         <div id="game-area">
             <div class="game-header">
-                <h1>Yaddaş Oyunu X BETA 🧠</h1>
+                <button id="theme-toggle-button" class="theme-toggle-button" title="Gece/Gündüz Rejimi">
+                    <span id="theme-icon">🌙</span>
+                </button>
+                
+                <h1>Yaddaş Oyunu X BETA <span id="current-level">(Səviyyə 1)</span></h1>
+                
                 <div class="game-info">
                     <div>Hərəkət: <span id="moves">0</span></div>
                     <div>Cütlük: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
@@ -30,14 +30,14 @@
         <div id="ad-container" class="hidden">
             <div id="game-completed-ad">
                 <h3>Təbriklər! 🎉</h3>
-                <p>Oyunu <span id="final-moves">0</span> hərəkətdə bitirdiniz!</p>
+                <p>Səviyyəni <span id="final-moves">0</span> hərəkətdə bitirdiniz!</p>
                 
                 <div id="ad-content">
                     </div>
                 
                 <div class="button-group">
                     <button id="next-level" class="game-button">Növbəti Səviyyə</button>
-                    <button id="restart-level" class="game-button">Yenidən Başla</button>
+                    <button id="restart-level" class="game-button">Təkrar Oyna</button>
                 </div>
             </div>
         </div>
