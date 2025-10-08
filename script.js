@@ -11,11 +11,12 @@ const totalPairs = 6; // 12 kart (6 çift)
 const emojis = ['🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', '🦉', '🐸'];
 
 // DOM elementleri
-let memoryBoard, movesDisplay, matchedDisplay, restartButton, gameAreaDiv, errorAreaDiv;
+let memoryBoard, movesDisplay, matchedDisplay, restartButton, gameAreaDiv, userInfoDiv, profileBg, errorAreaDiv;
 
 // Sayfa yüklendiğinde oyunu başlat
 document.addEventListener('DOMContentLoaded', function() {
     // Elementleri seç
+    userInfoDiv = document.getElementById('user-info');
     gameAreaDiv = document.getElementById('game-area');
     errorAreaDiv = document.getElementById('error-area');
     memoryBoard = document.getElementById('memory-board');
@@ -23,12 +24,44 @@ document.addEventListener('DOMContentLoaded', function() {
     movesDisplay = document.getElementById('moves');
     matchedDisplay = document.getElementById('matched');
     const totalPairsDisplay = document.getElementById('total-pairs');
+    profileBg = document.getElementById('profile-bg');
     
     // Toplam eşleşme sayısını göster
     if (totalPairsDisplay) totalPairsDisplay.textContent = totalPairs;
     
+    // Telegram WebApp kontrolü
+    const tg = window.Telegram && window.Telegram.WebApp;
+    
     // Oyunu başlat
-    startGame();
+    initGame();
+    
+    // Telegram kullanıcı bilgilerini yükle
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const user = tg.initDataUnsafe.user;
+        if (userInfoDiv) {
+            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
+            userInfoDiv.classList.remove('hidden');
+            
+            // Profil fotoğrafını ayarla
+            if (user.photo_url && profileBg) {
+                profileBg.style.backgroundImage = `url('${user.photo_url}')`;
+                profileBg.classList.add('loaded');
+            }
+            
+            // Telegram butonlarını göster
+            if (tg.MainButton) {
+                tg.MainButton.setText('OYUNA BAŞLA').show();
+                tg.MainButton.onClick(function() {
+                    tg.MainButton.hide();
+                    startGame();
+                });
+            }
+        }
+    } else {
+        // Telegram dışındaki tarayıcılar için
+        if (errorAreaDiv) errorAreaDiv.classList.add('hidden');
+        startGame();
+    }
     
     // Oyunu başlat
     function startGame() {
