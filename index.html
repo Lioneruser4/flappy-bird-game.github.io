@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Yaddaş Oyunu</title>
+    <title>Kart Oyunu  ( BETA )</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,35 +14,23 @@
         
         <div id="game-area" class="hidden">
             <div class="game-header">
-                <h1>Yaddaş Oyunu</h1>
+                <h1>Kart Oyunu ( BETA )</h1>
                 <div class="game-info">
-                    <div>Gediş: <span id="moves">0</span></div>
-                    <div>Uyğun: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
+                    <div>Hamle: <span id="moves">0</span></div>
+                    <div>Eşleşen: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
                 </div>
             </div>
             
             <div id="memory-board" class="memory-board"></div>
             
-            <button id="restart-button" class="game-button">Yenidən Başla</button>
+            <button id="restart-button" class="game-button">Yeniden Başlat</button>
         </div>
         
         <div id="error-area" class="error-message hidden">
-            <p>Oyun yüklənərkən xəta baş verdi. Zəhmət olmasa Telegram vasitəsilə açmağı sınayın.</p>
+            <p>Oyun yüklenirken bir hata oluştu. Lütfen Telegram üzerinden açmayı deneyin.</p>
         </div>
     </div>
 
-    <script>
-        // Telegram WebApp yüklenirken hata olması durumunda alternatif içerik göster
-        window.onerror = function(message, source, lineno, colno, error) {
-            console.error('Hata oluştu:', message, 'Dosya:', source, 'Satır:', lineno, 'Sütun:', colno, 'Hata detayı:', error);
-            const errorArea = document.getElementById('error-area');
-            if (errorArea) {
-                errorArea.classList.remove('hidden');
-                errorArea.innerHTML += `<p>Hata: ${message}</p>`;
-            }
-            return true; // Tarayıcının varsayılan hata işleyicisini engelle
-        };
-    </script>
-    <script src="https://telegram.org/js/telegram-web-app.js" onerror="console.error('Telegram WebApp yüklenirken hata oluştu')"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="script.js"></script>
 </body>
