@@ -1,16 +1,16 @@
-// Oyun değişkenleri
+// Oyun dəyişənləri
 let cards = [];
 let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard, secondCard;
 let moves = 0;
 let matchedPairs = 0;
-const totalPairs = 6; // 12 kart (6 çift)
+const totalPairs = 6; // 12 kart (6 cüt)
 
-// Emoji seti (12 farklı emoji)
+// Emoji dəsti (12 fərqli emoji)
 const emojis = ['🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', '🦉', '🐸'];
 
-// DOM elementleri
+// DOM elementləri
 let memoryBoard, movesDisplay, matchedDisplay, restartButton, gameAreaDiv, userInfoDiv, profileBg, errorAreaDiv;
 
 // Sayfa yüklendiğinde oyunu başlat
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
         if (userInfoDiv) {
-            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
+            userInfoDiv.innerHTML = `Xoş gəlmisiniz, ${user.first_name || 'İstifadəçi'}!`;
             userInfoDiv.classList.remove('hidden');
             
             // Profil fotoğrafını ayarla
@@ -110,10 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
             card.dataset.emoji = emoji;
             card.dataset.index = index;
             
-            card.innerHTML = '
+            card.innerHTML = `
                 <div class="front"></div>
-                <div class="back">' + emoji + '</div>
-            ';
+                <div class="back">${emoji}</div>
+            `;
             
             card.addEventListener('click', flipCard);
             memoryBoard.appendChild(card);
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Tüm eşleşmeler tamamlandı mı?
             if (matchedPairs === totalPairs) {
                 setTimeout(function() {
-                    alert('Tebrikler! Oyunu ' + moves + ' hamlede tamamladınız!');
+                    alert('Təbriklər! Oyunu ' + moves + ' gedişdə tamamladınız!');
                 }, 500);
             }
         } else {
