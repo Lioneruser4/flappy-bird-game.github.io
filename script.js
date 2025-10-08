@@ -1,34 +1,35 @@
 
 // Oyun değişkenleri
 let cards = [];
+let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard, secondCard;
 let moves = 0;
 let matchedPairs = 0;
 let level = 1;
-let totalPairs = 8; // İlk seviye için 8 çift
+let totalPairs = 8; // İlk səviyyə üçün 8 cüt (16 kart)
 
-// Emoji setleri
+// Emoji dəstləri
 const emojiSets = [
     ['🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵'],
     ['🦉', '🐸', '🐧', '🐨', '🐼', '🦘', '🐬', '🐠', '🦀', '🐙'],
     ['🍎', '🍌', '🍒', '🍓', '🍊', '🍋', '🍉', '🍇', '🍍', '🥝']
 ];
 
-// Seviyeye göre emojileri al
+// Cari səviyyə üçün emojiləri al
 function getEmojisForLevel(level) {
-    // Her seviyede daha çok emoji kullan
+    // Hər səviyyədə daha çox emoji istifadə et
     const startIndex = (level - 1) * 4;
-    const endIndex = 6 + (level - 1) * 2; // Her seviyede 2 yeni emoji ekle
+    const endIndex = 6 + (level - 1) * 2; // Hər səviyyədə 2 yeni emoji əlavə et
     return [...emojiSets[level - 1]].slice(0, endIndex);
 }
 
-// Sayfa yüklendiğinde oyunu başlat
-document.addEventListener('DOMContentLoaded', function() {
+// Səhifə yüklənəndə oyunu başlat
+document.addEventListener('DOMContentLoaded', function () {
     // Telegram Web App obyektini alırıq
-    const tg = window.Telegram.WebApp;
+    const tg = window.Telegram && window.Telegram.WebApp;
 
-    // Elementleri seçiyoruz
+    // Elementləri seçirik
     const userInfoDiv = document.getElementById('user-info');
     const gameAreaDiv = document.getElementById('game-area');
     const errorAreaDiv = document.getElementById('error-area');
@@ -39,8 +40,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const levelDisplay = document.getElementById('level-display');
     const totalPairsDisplay = document.getElementById('total-pairs');
     
-    // Oyun değişkenleri
+    // Oyun sahəsini göstər
+    if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
+    
+    // Telegram məlumatlarını yoxla
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const user = tg.initDataUnsafe.user;
+        if (userInfoDiv) {
+            userInfoDiv.innerHTML = `Xoş gəlmisiniz, ${user.first_name || 'İstifadəçi'}!`;
+            userInfoDiv.classList.remove('hidden');
+        }
+    } else if (errorAreaDiv) {
+        errorAreaDiv.classList.remove('hidden');
+    }
+    
+    // Oyun dəyişənləri
     let hasFlippedCard = false;
+    
+    // Oyunu başlat
+    initGame();
 
     // Oyunu başlat
     function initGame() {
