@@ -150,11 +150,6 @@ html, body {
     background: white;
     transform: rotateY(180deg);
     color: var(--text-color);
-    visibility: hidden;
-}
-
-.card.flipped .back {
-    visibility: visible;
 }
 
 /* Butonlar */
