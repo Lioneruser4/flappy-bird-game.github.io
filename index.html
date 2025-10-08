@@ -1,85 +1,33 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="tr">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
-    crossorigin="anonymous"></script>
-    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kart Oyunu</title>
-    <link rel="stylesheet" href="style-new.css">
+    <title>Hafıza Oyunu</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div id="telegram-login" class="hidden">
-            <h2>Telegram ilə Daxil Olun</h2>
-            <p>Oyunu oynamaq üçün zəhmət olmasa Telegram ilə daxil olun.</p>
-            <a href="https://t.me/your_bot_username" class="telegram-button">Telegram ilə Daxil Ol</a>
-            <button id="play-offline" class="game-button">Offline Oyna</button>
-        </div>
-        
-        <div id="user-info" class="hidden">
-            <p>İstifadəçi məlumatları yüklənir...</p>
+        <div id="user-info">
+            <p>Kullanıcı bilgileri alınıyor...</p>
         </div>
 
         <div id="game-area" class="hidden">
-            <div class="game-header">
-                <h2>Yaddaş Oyunu</h2>
-                <p id="level-display" class="level-display">Səviyyə: 1</p>
-            </div>
+            <h2>Hafıza Oyunu</h2>
             <div class="game-info">
-                <p>Hərəkət: <span id="moves">0</span></p>
-                <p>Uyğun: <span id="matched">0</span>/<span id="total-pairs">8</span></p>
+                <p>Hamle: <span id="moves">0</span></p>
+                <p>Eşleşen: <span id="matched">0</span>/8</p>
             </div>
             <div id="memory-board"></div>
-            <button id="restart-button">Yenidən Başla</button>
+            <button id="restart-button">Yeniden Başla</button>
         </div>
 
         <div id="error-area" class="hidden">
-            <p>Zəhmət olmasa bu tətbiqə Telegram daxilindən daxil olun.</p>
-        </div>
-        
-        <!-- Reklam üçün div -->
-        <div id="ad-container" class="hidden">
-            <div id="game-completed-ad">
-                <h3>Təbriklər! Səviyyəni tamamladınız! 🎉</h3>
-                <div id="ad-content"></div>
-            </div>
+            <p>Lütfen bu uygulamayı Telegram içinden açın.</p>
         </div>
     </div>
 
-    <script>
-        // Check if we're in Telegram WebView
-        const isTelegram = window.Telegram && window.Telegram.WebApp;
-        
-        // Load Telegram WebApp script only if in Telegram
-        if (isTelegram) {
-            const script = document.createElement('script');
-            script.src = 'https://telegram.org/js/telegram-web-app.js';
-            script.onload = function() {
-                // Initialize the game after Telegram script loads
-                const gameScript = document.createElement('script');
-                gameScript.src = 'script.js';
-                document.body.appendChild(gameScript);
-            };
-            document.body.appendChild(script);
-        } else {
-            // For non-Telegram users, show the game directly
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('telegram-login').classList.remove('hidden');
-                document.getElementById('game-area').classList.remove('hidden');
-                
-                // Load the game script
-                const gameScript = document.createElement('script');
-                gameScript.src = 'script.js';
-                document.body.appendChild(gameScript);
-                
-                // Handle offline play button
-                document.getElementById('play-offline').addEventListener('click', function() {
-                    document.getElementById('telegram-login').classList.add('hidden');
-                    document.getElementById('game-area').classList.remove('hidden');
-                });
-            });
-        }
-    </script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="script.js"></script>
+</body>
 </html>
