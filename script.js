@@ -1,5 +1,5 @@
 
-// Oyun durumu
+// Oyun dəyişənləri
 let cards = [];
 let hasFlippedCard = false;
 let lockBoard = false;
@@ -8,15 +8,15 @@ let moves = 0;
 let matchedPairs = 0;
 const totalPairs = 8;
 
-// Emoji seti
+// Emoji dəsti
 const emojis = ['🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵'];
 
-// Sayfa yüklendiğinde oyunu başlat
+// Səhifə yüklənəndə oyunu başlat
 document.addEventListener('DOMContentLoaded', function () {
-    // Telegram Web App nesnesini alıyoruz
+    // Telegram Web App obyektini alırıq
     const tg = window.Telegram.WebApp;
 
-    // Elementleri seçiyoruz
+    // Elementləri seçirik
     const userInfoDiv = document.getElementById('user-info');
     const gameAreaDiv = document.getElementById('game-area');
     const errorAreaDiv = document.getElementById('error-area');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Oyunu başlat
     function initGame() {
-        // Oyun tahtasını temizle
+        // Oyun taxtasını təmizlə
         memoryBoard.innerHTML = '';
         moves = 0;
         matchedPairs = 0;
@@ -37,27 +37,33 @@ document.addEventListener('DOMContentLoaded', function () {
         lockBoard = false;
         hasFlippedCard = false;
         
-        // Kart çiftlerini oluştur
+        // Kart cütlərini yarat
         const gameEmojis = [...emojis].slice(0, totalPairs);
         const gameCards = [...gameEmojis, ...gameEmojis];
         
-        // Kartları karıştır
+        // Kartları qarışdır
         gameCards.sort(() => Math.random() - 0.5);
         
-        // Kartları oluştur
+        // Kartları yarat
         gameCards.forEach((emoji, index) => {
             const card = document.createElement('div');
             card.classList.add('card');
             card.dataset.emoji = emoji;
             card.dataset.index = index;
-            card.innerHTML = `<span>${emoji}</span>`;
+            
+            // Kartın ön və arxa üzlərini yarat
+            card.innerHTML = `
+                <div class="front"></div>
+                <div class="back">${emoji}</div>
+            `;
+            
             card.addEventListener('click', flipCard);
             memoryBoard.appendChild(card);
             cards.push(card);
         });
     }
 
-    // Kart çevirme işlemi
+    // Kart çevirmə əməliyyatı
     function flipCard() {
         if (lockBoard) return;
         if (this === firstCard) return;
@@ -79,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
         checkForMatch();
     }
 
-    // Eşleşme kontrolü
+    // Uyğunluq yoxlaması
     function checkForMatch() {
         const isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
         
@@ -88,10 +94,10 @@ document.addEventListener('DOMContentLoaded', function () {
             matchedPairs++;
             matchedDisplay.textContent = `${matchedPairs}/${totalPairs}`;
             
-            // Tüm eşleşmeler tamamlandı mı?
+            // Bütün cütlüklər tapıldı mı?
             if (matchedPairs === totalPairs) {
                 setTimeout(() => {
-                    alert(`Tebrikler! Oyunu ${moves} hamlede tamamladınız!`);
+                    alert(`Təbriklər! Oyunu ${moves} hərəkətdə tamamladınız!`);
                 }, 500);
             }
         } else {
@@ -99,14 +105,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Eşleşen kartları devre dışı bırak
+    // Uyğun gələn kartları qeyd et
     function disableCards() {
         firstCard.classList.add('matched');
         secondCard.classList.add('matched');
         resetBoard();
     }
 
-    // Eşleşme yoksa kartları geri çevir
+    // Uyğunluq yoxdursa kartları geri çevir
     function unflipCards() {
         lockBoard = true;
         
@@ -117,37 +123,37 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
     }
 
-    // Oyun tahtasını sıfırla
+    // Oyun taxtasını sıfırla
     function resetBoard() {
         [hasFlippedCard, lockBoard] = [false, false];
         [firstCard, secondCard] = [null, null];
     }
 
-    // Yeniden başlat butonu
+    // Yenidən başlat düyməsi
     restartButton.addEventListener('click', initGame);
 
-    // Telegram'dan gelen kullanıcı verisini kontrol et
+    // Telegram-dan gələn istifadəçi məlumatını yoxla
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
 
-        // Hoşgeldin mesajını oluştur
+        // Xoş gəlmisiniz mesajı yarat
         const welcomeMessage = `
-            <h1>Hoş Geldin, ${user.first_name}!</h1>
-            <p>Hafıza Oyunu'na hoş geldin!</p>
+            <h1>Xoş gəlmisiniz, ${user.first_name}!</h1>
+            <p>Yaddaş Oyununa xoş gəlmisiniz!</p>
         `;
         userInfoDiv.innerHTML = welcomeMessage;
 
-        // Oyun alanını göster ve oyunu başlat
+        // Oyun sahəsini göstər və oyunu başlat
         gameAreaDiv.classList.remove('hidden');
         initGame();
 
     } else {
-        // Eğer Telegram dışından girildiyse hata mesajı göster
+        // Əgər Telegram xaricindən daxil olunubsa, xəta mesajı göstər
         userInfoDiv.classList.add('hidden');
         errorAreaDiv.classList.remove('hidden');
-        console.error("Telegram user data not found. Make sure you are running this in a Telegram Web App.");
+        console.error("Telegram istifadəçi məlumatı tapılmadı. Zəhmət olmasa bu tətbiqə Telegram daxilindən daxil olun.");
     }
 
-    // Web App'in hazır olduğunu Telegram'a bildir
+    // Web App-in hazır olduğunu Telegram-a bildir
     tg.ready();
 });
