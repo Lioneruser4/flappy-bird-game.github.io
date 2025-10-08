@@ -32,6 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Telegram WebApp kontrolü
     const tg = window.Telegram && window.Telegram.WebApp;
     
+    // Oyun alanını göster
+    if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
+    
     // Oyunu başlat
     initGame();
     
