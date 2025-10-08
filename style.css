@@ -54,11 +54,6 @@ html, body {
     height: 100%;
     background-size: cover;
     background-position: center;
-    opacity: 0.1;
-    z-index: 0;
-}
-    background-size: cover;
-    background-position: center;
     filter: blur(8px) brightness(0.9);
     z-index: -1;
     opacity: 0;
@@ -66,7 +61,7 @@ html, body {
 }
 
 #profile-bg.loaded {
-    opacity: 1;
+    opacity: 0.1;
 }
 
 /* Oyun Alanı */
@@ -149,199 +144,22 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 8px;
     font-size: 2rem;
 }
 
 .card .front {
     background: var(--primary-color);
-    color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
 }
 
 .card .back {
     background: white;
     transform: rotateY(180deg);
-    color: var(--text-color);
-}
-
-/* Butonlar */
-.game-button {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 30px;
-    cursor: pointer;
-    margin: 10px auto;
-    display: block;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
-    width: 100%;
-    max-width: 300px;
-}
-
-.game-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(52, 152, 219, 0.4);
-}
-
-.game-button:active {
-    transform: translateY(0);
-}
-
-/* Hata Mesajı */
-.error-message {
-    background-color: #fde8e8;
-    color: #e74c3c;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    margin-top: 20px;
-    font-weight: 500;
-}
-
-/* Reklam Konteyneri */
-#ad-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-#ad-container.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-#ad-content {
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* Kullanıcı Bilgisi */
-#user-info {
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: var(--shadow);
-}
-
-/* Responsive Tasarım */
-@media (max-width: 768px) {
-    .memory-board {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .game-info {
-        flex-direction: column;
-        gap: 8px;
-    }
-    
-    .game-info div {
-        width: 100%;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .memory-board {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .game-header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .card .front,
-    .card .back {
-        font-size: 1.5rem;
-    }
-}
-
-/* Gizleme Sınıfı */
-.hidden {
-    display: none !important;
-}
-
-/* Profile background for Telegram users */
-.profile-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    filter: blur(8px) brightness(0.7);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.profile-bg.loaded {
-    opacity: 1;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--tg-theme-bg-color, #f4f4f4);
-    height: 100%;
-    min-height: -webkit-fill-available;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    position: relative;
-}
-
-#game-area {
-    background-color: white;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-    height: 100%;
-    max-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-}
-
-.game-header {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.game-header h2 {
-    color: #2c3e50;
-    margin-bottom: 5px;
-}
-
-.game-info {
-    display: flex;
-    justify-content: space-around;
-    background-color: #f8f9fa;
-    padding: 10px;
+{{ ... }}
     border-radius: 8px;
     margin: 10px 0;
     font-weight: 600;
@@ -351,31 +169,33 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 8px;
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    padding: 5px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    height: calc(100vh - 200px);
+    padding: 10px;
+    overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
 
 .card {
     aspect-ratio: 1;
-    background-color: var(--tg-theme-button-color, #3498db);
-    border-radius: 8px;
+    perspective: 1000px;
     cursor: pointer;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.5s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    transition: transform 0.5s, box-shadow 0.3s;
+    background: var(--primary-color);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    min-width: 40px;
+    min-height: 40px;
     font-size: 24px;
     color: white;
 }
 
 .card.flipped {
     transform: rotateY(180deg);
-    background-color: white;
     color: #2c3e50;
 }
 
