@@ -19,6 +19,8 @@
                 <div class="game-info">
                     <div>Hərəkət: <span id="moves">0</span></div>
                     <div>Cütlük: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
+                    <div>Vaxt: <span id="timer">00:00</span></div>
+                    <div>Xal: <span id="score">0</span></div>
                 </div>
             </div>
             
@@ -29,8 +31,9 @@
         
         <div id="ad-container" class="hidden">
             <div id="game-completed-ad">
-                <h3>Təbriklər! 🎉</h3>
-                <p>Səviyyəni <span id="final-moves">0</span> hərəkətdə bitirdiniz!</p>
+                <h3 id="ad-title">Təbriklər! 🎉</h3>
+                <p>Xalınız: <span id="final-score">0</span> | Hərəkət: <span id="final-moves">0</span></p>
+                <p class="final-message"></p>
                 
                 <div id="ad-content">
                     </div>
@@ -42,6 +45,12 @@
             </div>
         </div>
     </div>
+
+    <audio id="flip-sound" src="sounds/flip.mp3" preload="auto"></audio>
+    <audio id="match-sound" src="sounds/match.mp3" preload="auto"></audio>
+    <audio id="mismatch-sound" src="sounds/mismatch.mp3" preload="auto"></audio>
+    <audio id="win-sound" src="sounds/win.mp3" preload="auto"></audio>
+    <audio id="gameover-sound" src="sounds/gameover.mp3" preload="auto"></audio>
 
     <script src="script.js"></script>
 </body>
