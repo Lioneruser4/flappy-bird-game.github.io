@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobil Coin Avcısı</title>
+    <title>Pro Hayatta Kalma Arenası</title>
     
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Consolas', monospace;
             margin: 0;
             padding: 0;
-            background-color: #333;
+            background-color: #121212;
             color: #fff;
             display: flex;
             flex-direction: column;
@@ -18,83 +18,85 @@
             justify-content: center;
             min-height: 100vh;
             text-align: center;
-            user-select: none; /* Mobil tarayıcılarda seçimi engeller */
+            user-select: none;
         }
 
-        /* Oyun Alanı (Canvas) */
         #oyunAlani {
-            border: 3px solid #FFC107; /* Altın sarısı çerçeve */
-            background-color: #1a1a1a;
-            touch-action: none; /* Dokunmatik kaydırmayı engeller */
+            border: 3px solid #6200EE; /* Mor çerçeve */
+            background-color: #000;
+            touch-action: none;
+            box-shadow: 0 0 20px rgba(98, 0, 238, 0.5);
         }
 
-        /* Skor ve Mesaj Alanı */
         .kontrol-paneli {
             width: 300px;
             margin-bottom: 10px;
             padding: 10px;
             background: #222;
-            border-radius: 5px;
+            border-radius: 8px;
             display: flex;
             justify-content: space-between;
             font-size: 1.2em;
         }
 
         #mesaj {
-            color: #4CAF50;
+            color: #BB86FC; /* Açık mor */
             font-weight: bold;
             margin-top: 15px;
         }
         
         button {
-            padding: 10px 20px;
-            background-color: #03A9F4;
-            color: white;
+            padding: 12px 25px;
+            background-color: #03DAC5; /* Turkuaz */
+            color: #000;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1em;
-            margin-top: 10px;
+            font-size: 1.1em;
+            margin-top: 15px;
+            font-weight: bold;
+            transition: background-color 0.2s;
         }
         
         button:active {
-            opacity: 0.8;
+            background-color: #018786;
         }
-        
     </style>
 </head>
 <body>
 
     <div class="kontrol-paneli">
-        <span>Siz: <span id="oyuncuSkor">0</span></span>
-        <span>Bot: <span id="botSkor">0</span></span>
+        <span>SKOR: <span id="oyuncuSkor">0</span></span>
+        <span>SEVİYE: <span id="seviyeGosterge">1</span></span>
     </div>
 
     <canvas id="oyunAlani" width="300" height="500"></canvas>
     
-    <button id="baslatDugmesi">OYUNU BAŞLAT</button>
+    <button id="baslatDugmesi">ARENAYA GİR</button>
 
-    <div id="mesaj">Hazır! Başlat düğmesine basın.</div>
+    <div id="mesaj">Hayatta kal ve skor topla!</div>
 
     <script>
         // === HTML5 CANVAS VE OYUN AYARLARI ===
         const canvas = document.getElementById('oyunAlani');
         const ctx = canvas.getContext('2d');
         const oyuncuSkorElement = document.getElementById('oyuncuSkor');
-        const botSkorElement = document.getElementById('botSkor');
+        const seviyeGostergeElement = document.getElementById('seviyeGosterge');
         const mesajElement = document.getElementById('mesaj');
         const baslatDugmesi = document.getElementById('baslatDugmesi');
 
         let oyunDurumu = 'hazir';
-        let oyuncu = { x: canvas.width / 4, y: 450, boyut: 30, skor: 0, renk: '#4CAF50' }; // Yeşil
-        let bot = { x: canvas.width * 3 / 4, y: 450, boyut: 30, skor: 0, renk: '#F44336' }; // Kırmızı
-        let coinler = [];
-        let coinSayaci = 0; // Coinlerin yaratılma hızını kontrol etmek için
-        const oyunHizi = 1;
-        const botHizi = 2; // Bot sizden biraz daha hızlı olsun
-        const OYUN_SURESI = 60; // Saniye
-        let kalanSure = OYUN_SURESI;
-        let sureSayaci; // setInterval için
+        let oyuncu = { x: canvas.width / 2, y: 450, boyut: 25, skor: 0, renk: '#03DAC5' }; // Turkuaz
+        let nesneler = []; // Hem puan küpleri hem mayınlar
+        let botRakipler = []; // Saldıran botlar
+        
+        let zorlukSeviyesi = 1;
+        let puanSayaci = 0; // Seviye atlamak için toplanan puanı tutar
+        const SEVIYE_GEREKSINIM = 10; // Her 10 puanda bir seviye atlanır
+
+        // Nesne tipleri
+        const TIP_PUAN = 'puan';
+        const TIP_MAYIN = 'mayın';
 
         // === TEMEL OYUN FONKSİYONLARI ===
 
@@ -104,197 +106,207 @@
 
         function karakterCiz(karakter) {
             ctx.fillStyle = karakter.renk;
-            ctx.fillRect(karakter.x - karakter.boyut / 2, karakter.y - karakter.boyut / 2, karakter.boyut, karakter.boyut);
-            ctx.strokeStyle = '#fff';
-            ctx.strokeRect(karakter.x - karakter.boyut / 2, karakter.y - karakter.boyut / 2, karakter.boyut, karakter.boyut);
+            // Basit animasyon: Karakteri hafifçe küçültüp büyütme
+            const boyut = karakter.boyut * (1 + Math.sin(Date.now() / 300) * 0.05);
+            ctx.fillRect(karakter.x - boyut / 2, karakter.y - boyut / 2, boyut, boyut);
         }
 
-        function coinCiz(coin) {
-            ctx.fillStyle = '#FFEB3B'; // Sarı
-            ctx.beginPath();
-            ctx.arc(coin.x, coin.y, coin.boyut, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        function coinYarat() {
-            // Coinleri rastgele bir x pozisyonunda yarat
-            const x = Math.random() * (canvas.width - 20) + 10;
-            coinler.push({ x: x, y: 0, boyut: 8, hiz: Math.random() * 1.5 + 1 });
-        }
-
-        function coinleriGuncelle() {
-            for (let i = 0; i < coinler.length; i++) {
-                coinler[i].y += coinler[i].hiz * oyunHizi;
-
-                // Ekranın altından çıkan coinleri kaldır
-                if (coinler[i].y > canvas.height) {
-                    coinler.splice(i, 1);
-                    i--;
-                }
-            }
-        }
-
-        function carpismaKontrol(karakter, coin) {
-            const dx = karakter.x - coin.x;
-            const dy = karakter.y - coin.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            return distance < (karakter.boyut / 2 + coin.boyut);
-        }
-
-        function skorGuncelle() {
-            for (let i = 0; i < coinler.length; i++) {
-                const coin = coinler[i];
-
-                // Oyuncu Çarpışması
-                if (carpismaKontrol(oyuncu, coin)) {
-                    oyuncu.skor += 1;
-                    oyuncuSkorElement.textContent = oyuncu.skor;
-                    coinler.splice(i, 1);
-                    i--;
-                    continue; // Bot kontrolüne geçmeden döngüden çık
-                }
-
-                // Bot Çarpışması
-                if (carpismaKontrol(bot, coin)) {
-                    bot.skor += 1;
-                    botSkorElement.textContent = bot.skor;
-                    coinler.splice(i, 1);
-                    i--;
-                }
+        function nesneCiz(nesne) {
+            if (nesne.tip === TIP_PUAN) {
+                ctx.fillStyle = '#4CAF50'; // Yeşil
+                ctx.fillRect(nesne.x - nesne.boyut / 2, nesne.y - nesne.boyut / 2, nesne.boyut, nesne.boyut);
+            } else if (nesne.tip === TIP_MAYIN) {
+                ctx.fillStyle = '#FFC107'; // Sarı
+                ctx.beginPath();
+                ctx.arc(nesne.x, nesne.y, nesne.boyut, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (nesne.tip === 'bot') {
+                ctx.fillStyle = '#CF6679'; // Kırmızımsı
+                ctx.fillRect(nesne.x - nesne.boyut / 2, nesne.y - nesne.boyut / 2, nesne.boyut, nesne.boyut);
+                // Botlara göz gibi bir detay ekleyelim
+                ctx.fillStyle = '#000';
+                ctx.fillRect(nesne.x - 5, nesne.y - 5, 2, 2);
+                ctx.fillRect(nesne.x + 3, nesne.y - 5, 2, 2);
             }
         }
         
-        // === BOT MANTIĞI ===
-        function botHareket() {
-            if (coinler.length === 0) return;
+        function rastgeleNesneYarat() {
+            const x = Math.random() * (canvas.width - 40) + 20;
+            const tip = Math.random() < 0.7 ? TIP_PUAN : TIP_MAYIN; // %70 Puan, %30 Mayın
+            const boyut = tip === TIP_MAYIN ? 12 : 10;
+            const hiz = Math.random() * (0.8 + zorlukSeviyesi * 0.3) + 1; // Zorluğa göre hızlanır
 
-            // Bota en yakın coin'i bul
-            let hedefCoin = coinler[0];
-            let minDistance = Infinity;
-
-            for (const coin of coinler) {
-                const distance = Math.abs(bot.x - coin.x);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    hedefCoin = coin;
-                }
-            }
-
-            // Hedefe doğru hareket et
-            if (hedefCoin) {
-                if (bot.x < hedefCoin.x) {
-                    bot.x += botHizi;
-                } else if (bot.x > hedefCoin.x) {
-                    bot.x -= botHizi;
-                }
-            }
-            // Alan dışına çıkmasını engelle
-            bot.x = Math.max(bot.boyut / 2, Math.min(canvas.width - bot.boyut / 2, bot.x));
+            nesneler.push({ x: x, y: 0, boyut: boyut, tip: tip, hiz: hiz });
         }
 
-        // === MOBİL KONTROL (KAYDIRMA) ===
+        function botYarat() {
+            const x = Math.random() * (canvas.width - 40) + 20;
+            const hiz = 1.5 + zorlukSeviyesi * 0.4; // Bot da zorluğa göre hızlanır
+            botRakipler.push({ x: x, y: 0, boyut: 20, tip: 'bot', hiz: hiz });
+        }
+        
+        function nesneleriGuncelle() {
+            for (let i = 0; i < nesneler.length; i++) {
+                nesneler[i].y += nesneler[i].hiz;
 
+                if (nesneler[i].y > canvas.height) {
+                    nesneler.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function botlariGuncelle() {
+            for (let i = 0; i < botRakipler.length; i++) {
+                const bot = botRakipler[i];
+                
+                // Bot, oyuncuya doğru hareket eder (Basit takip mantığı)
+                if (bot.x < oyuncu.x) {
+                    bot.x += bot.hiz * 0.5;
+                } else if (bot.x > oyuncu.x) {
+                    bot.x -= bot.hiz * 0.5;
+                }
+                
+                // Botu aşağı doğru hareket ettir
+                bot.y += bot.hiz;
+
+                // Ekranın altından çıkan botları kaldır
+                if (bot.y > canvas.height) {
+                    botRakipler.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function carpismaKontrol(obj1, obj2) {
+            const dx = obj1.x - obj2.x;
+            const dy = obj1.y - obj2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            return distance < (obj1.boyut / 2 + obj2.boyut);
+        }
+
+        function skorVeCarismaKontrol() {
+            // Nesnelerle çarpışma
+            for (let i = 0; i < nesneler.length; i++) {
+                if (carpismaKontrol(oyuncu, nesneler[i])) {
+                    const nesne = nesneler[i];
+                    
+                    if (nesne.tip === TIP_PUAN) {
+                        oyuncu.skor += 10;
+                        puanSayaci += 10;
+                        oyuncuSkorElement.textContent = oyuncu.skor;
+                    } else if (nesne.tip === TIP_MAYIN) {
+                        oyunuBitir('Mayına Çarptın!');
+                        return; 
+                    }
+                    
+                    nesneler.splice(i, 1);
+                    i--;
+                }
+            }
+            
+            // Botlarla çarpışma
+            for (let i = 0; i < botRakipler.length; i++) {
+                 if (carpismaKontrol(oyuncu, botRakipler[i])) {
+                    oyunuBitir('Bot Rakibe Yakalandın!');
+                    return; 
+                }
+            }
+
+            // Seviye kontrolü
+            if (puanSayaci >= SEVIYE_GEREKSINIM) {
+                seviyeAtla();
+            }
+        }
+
+        // === OYUN ZORLUK MANTIĞI ===
+        function seviyeAtla() {
+            zorlukSeviyesi++;
+            puanSayaci = 0; // Sayacı sıfırla
+            seviyeGostergeElement.textContent = zorlukSeviyesi;
+            mesajElement.textContent = `SEVİYE ${zorlukSeviyesi} AKTİF! ZORLUK ARTTI.`;
+        }
+
+
+        // === MOBİL KONTROL (KAYDIRMA) ===
         function handleTouchMove(e) {
             if (oyunDurumu !== 'oynuyor') return;
-            // Dokunmatik X koordinatını al
             const touchX = e.touches[0].clientX;
-            // Canvas'ın sayfadaki konumunu al
             const rect = canvas.getBoundingClientRect();
-            // X pozisyonunu Canvas koordinatına dönüştür
             let newX = touchX - rect.left;
             
-            // Karakterin ortasını dokunulan yere ayarla, sınırları kontrol et
+            // Karakteri ortala ve sınırları kontrol et
             oyuncu.x = Math.max(oyuncu.boyut / 2, Math.min(canvas.width - oyuncu.boyut / 2, newX));
             
-            e.preventDefault(); // Sayfanın kaymasını engelle
+            e.preventDefault(); 
         }
 
         canvas.addEventListener('touchmove', handleTouchMove, false);
 
         // === OYUN DÖNGÜSÜ ===
+        let nesneSayac = 0;
+        let botSayac = 0;
 
         function oyunCevrimi() {
             if (oyunDurumu !== 'oynuyor') return;
 
-            // Coin yaratma
-            coinSayaci++;
-            if (coinSayaci % 30 === 0) { // Her 30 frame'de bir (yaklaşık yarım saniye)
-                coinYarat();
+            // Nesne yaratma hızı: Zorluk arttıkça hızlanır
+            nesneSayac++;
+            if (nesneSayac % Math.max(30 - zorlukSeviyesi * 3, 10) === 0) {
+                rastgeleNesneYarat();
             }
+            
+            // Bot yaratma hızı: Zorluk arttıkça daha sık bot gelir
+            botSayac++;
+            if (botSayac % Math.max(200 - zorlukSeviyesi * 20, 50) === 0) {
+                botYarat();
+            }
+
 
             cizimTemizle();
             
-            botHareket();
-            coinleriGuncelle();
-            skorGuncelle();
+            nesneleriGuncelle();
+            botlariGuncelle();
+            skorVeCarismaKontrol();
 
-            // Karakterleri ve coinleri çiz
+            // Çizim
+            nesneler.forEach(nesneCiz);
+            botRakipler.forEach(bot => nesneCiz({...bot, tip: 'bot'})); // Botları çiz
             karakterCiz(oyuncu);
-            karakterCiz(bot);
-            coinler.forEach(coinCiz);
             
-            // Süre göstergesi
-            ctx.fillStyle = '#fff';
-            ctx.font = '16px Arial';
-            ctx.fillText(`Süre: ${kalanSure} sn`, canvas.width / 2, 20);
 
             requestAnimationFrame(oyunCevrimi);
         }
         
         // === OYUN BAŞLATMA VE BİTİRME ===
         
-        function zamanlayiciBaslat() {
-            kalanSure = OYUN_SURESI;
-            mesajElement.textContent = `Oyun başladı! ${kalanSure} saniyeniz var.`;
-            
-            sureSayaci = setInterval(() => {
-                kalanSure--;
-                mesajElement.textContent = `Kalan Süre: ${kalanSure} sn`;
-                
-                if (kalanSure <= 0) {
-                    clearInterval(sureSayaci);
-                    oyunuBitir();
-                }
-            }, 1000);
-        }
-
         function oyunuBaslat() {
             if (oyunDurumu === 'oynuyor') return;
             
             // Sıfırla
             oyuncu.skor = 0;
-            bot.skor = 0;
-            coinler = [];
+            puanSayaci = 0;
+            zorlukSeviyesi = 1;
+            nesneler = [];
+            botRakipler = [];
             oyuncuSkorElement.textContent = 0;
-            botSkorElement.textContent = 0;
+            seviyeGostergeElement.textContent = 1;
+            mesajElement.textContent = `BAŞLADI! Hayatta Kal...`;
             
             oyunDurumu = 'oynuyor';
-            baslatDugmesi.textContent = "OYNUYOR...";
+            baslatDugmesi.textContent = "ARENA AKTİF";
             baslatDugmesi.disabled = true;
             
-            zamanlayiciBaslat();
-            oyunCevrimi(); // Oyun döngüsünü başlat
+            oyunCevrimi(); 
         }
 
-        function oyunuBitir() {
+        function oyunuBitir(sebep) {
             oyunDurumu = 'bitti';
-            baslatDugmesi.textContent = "TEKRAR BAŞLAT";
+            baslatDugmesi.textContent = "TEKRAR DENE";
             baslatDugmesi.disabled = false;
             
-            let sonucMesaji;
-            if (oyuncu.skor > bot.skor) {
-                sonucMesaji = `KAZANDIN! Skorun: ${oyuncu.skor}.`;
-                mesajElement.style.color = '#4CAF50';
-            } else if (bot.skor > oyuncu.skor) {
-                sonucMesaji = `KAYBETTİN! Bot'un skoru: ${bot.skor}.`;
-                mesajElement.style.color = '#F44336';
-            } else {
-                sonucMesaji = `BERABERE! İkinizin de skoru ${oyuncu.skor}.`;
-                mesajElement.style.color = '#2196F3';
-            }
-            
-            mesajElement.textContent = sonucMesaji;
+            mesajElement.style.color = '#CF6679'; // Kırmızımsı
+            mesajElement.innerHTML = `${sebep}<br>Nihai Skor: ${oyuncu.skor} | Seviye: ${zorlukSeviyesi}`;
         }
         
         baslatDugmesi.addEventListener('click', oyunuBaslat);
