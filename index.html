@@ -1,33 +1,35 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="az">
 <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
+    crossorigin="anonymous"></script>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hafıza Oyunu</title>
+    <title>Kart Oyunu</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div id="user-info">
-            <p>Kullanıcı bilgileri alınıyor...</p>
+            <p>İstifadəçi məlumatları yüklənir...</p>
         </div>
 
         <div id="game-area" class="hidden">
-            <h2>Hafıza Oyunu</h2>
+            <h2>Yaddaş Oyunu</h2>
             <div class="game-info">
-                <p>Hamle: <span id="moves">0</span></p>
-                <p>Eşleşen: <span id="matched">0</span>/8</p>
+                <p>Hərəkət: <span id="moves">0</span></p>
+                <p>Uyğun: <span id="matched">0</span>/8</p>
             </div>
             <div id="memory-board"></div>
-            <button id="restart-button">Yeniden Başla</button>
+            <button id="restart-button">Yenidən Başla</button>
         </div>
 
         <div id="error-area" class="hidden">
-            <p>Lütfen bu uygulamayı Telegram içinden açın.</p>
+            <p>Zəhmət olmasa bu tətbiqə Telegram daxilindən daxil olun.</p>
         </div>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="script.js"></script>
-</body>
 </html>
