@@ -85,10 +85,10 @@ html, body {
     color: var(--text-color);
 }
 
-/* Oyun Məlumatı (Grid 2x2) */
+/* Oyun Məlumatı (Grid 3x2 - Online sayğac üçün yeniləndi) */
 .game-info {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* 3 sütun */
     gap: 8px 0;
     text-align: center;
     background-color: rgba(52, 152, 219, 0.08);
@@ -195,7 +195,7 @@ html, body {
     max-width: 250px;
 }
 
-/* Oyun Bitdi Paneli Düymələri */
+/* Oyun Bitdi Paneli */
 #ad-container {
     position: fixed;
     top: 0;
@@ -219,6 +219,34 @@ html, body {
     box-shadow: var(--shadow);
     display: flex; 
     flex-direction: column; 
+}
+
+/* Reklam Çərçivəsi üçün Əlavə Stil */
+#ad-content {
+    margin: 15px 0;
+    padding: 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    background-color: var(--bg-color);
+    max-width: 300px; /* Reklamın genişliyini məhdudlaşdırın */
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode #ad-content {
+    background-color: #1a1a1a; /* Dark modda daha tünd fon */
+    border-color: var(--primary-color);
+}
+
+.ad-iframe-container {
+    min-height: 100px; /* Reklam yüklənənə qədər yer ayırın */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .button-group {
@@ -254,3 +282,22 @@ html, body {
 }
 
 .hidden { display: none !important; }
+
+/* Pop-up Animasiyası */
+#ad-container.show {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#game-completed-ad {
+    animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
