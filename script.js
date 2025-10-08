@@ -7,29 +7,27 @@ let firstCard, secondCard;
 let moves = 0;
 let matchedPairs = 0;
 let level = 1;
-let totalPairs = 8; // İlk səviyyə üçün 8 cüt (16 kart)
+let totalPairs = 8; // İlk seviye için 8 çift
 
-// Emoji dəstləri
+// Emoji setleri
 const emojiSets = [
     ['🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵'],
     ['🦉', '🐸', '🐧', '🐨', '🐼', '🦘', '🐬', '🐠', '🦀', '🐙'],
     ['🍎', '🍌', '🍒', '🍓', '🍊', '🍋', '🍉', '🍇', '🍍', '🥝']
 ];
 
-// Cari səviyyə üçün emojiləri al
+// Seviyeye göre emojileri al
 function getEmojisForLevel(level) {
-    // Hər səviyyədə daha çox emoji istifadə et
-    const startIndex = (level - 1) * 4;
-    const endIndex = 6 + (level - 1) * 2; // Hər səviyyədə 2 yeni emoji əlavə et
+    const endIndex = 6 + (level - 1) * 2; // Her seviyede 2 yeni emoji ekle
     return [...emojiSets[level - 1]].slice(0, endIndex);
 }
 
-// Səhifə yüklənəndə oyunu başlat
-document.addEventListener('DOMContentLoaded', function () {
-    // Telegram Web App obyektini alırıq
+// Sayfa yüklendiğinde oyunu başlat
+document.addEventListener('DOMContentLoaded', function() {
+    // Telegram Web App kontrolü
     const tg = window.Telegram && window.Telegram.WebApp;
-
-    // Elementləri seçirik
+    
+    // Elementleri seç
     const userInfoDiv = document.getElementById('user-info');
     const gameAreaDiv = document.getElementById('game-area');
     const errorAreaDiv = document.getElementById('error-area');
@@ -37,28 +35,35 @@ document.addEventListener('DOMContentLoaded', function () {
     const restartButton = document.getElementById('restart-button');
     const movesDisplay = document.getElementById('moves');
     const matchedDisplay = document.getElementById('matched');
-    const levelDisplay = document.getElementById('level-display');
+    const levelDisplay = document.getElementById('level');
     const totalPairsDisplay = document.getElementById('total-pairs');
     
-    // Oyun sahəsini göstər
+    // Oyun alanını göster
     if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
     
-    // Telegram məlumatlarını yoxla
+    // Telegram kullanıcı bilgilerini kontrol et
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
         if (userInfoDiv) {
-            userInfoDiv.innerHTML = `Xoş gəlmisiniz, ${user.first_name || 'İstifadəçi'}!`;
-            userInfoDiv.classList.remove('hidden');
+            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
         }
     } else if (errorAreaDiv) {
         errorAreaDiv.classList.remove('hidden');
     }
     
-    // Oyun dəyişənləri
-    let hasFlippedCard = false;
+    // Oyun alanını göster
+    if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
     
-    // Oyunu başlat
-    initGame();
+    // Telegram kullanıcı bilgilerini kontrol et
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const user = tg.initDataUnsafe.user;
+        if (userInfoDiv) {
+            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
+            userInfoDiv.classList.remove('hidden');
+        }
+    } else if (errorAreaDiv) {
+        errorAreaDiv.classList.remove('hidden');
+    }
 
     // Oyunu başlat
     function initGame() {
@@ -100,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="front"></div>
                 <div class="back">${emoji}</div>
             `;
+            
             card.addEventListener('click', flipCard);
             memoryBoard.appendChild(card);
             cards.push(card);
@@ -109,12 +115,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Oyunu başlat
     initGame();
     
-    // Yeniden başlat butonuna tıklama olayı
+    // Yeniden başlat butonunu ayarla
     if (restartButton) {
-        restartButton.addEventListener('click', initGame);
+        restartButton.addEventListener('click', function() {
+            initGame();
+        });
     }
 
-    // Kart çevirme işlemiəliyyatı
+    // Kart çevirmə əməliyyatı
     function flipCard() {
         if (lockBoard) return;
         if (this === firstCard) return;
