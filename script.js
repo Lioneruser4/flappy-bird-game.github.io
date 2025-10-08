@@ -24,16 +24,44 @@ document.addEventListener('DOMContentLoaded', function() {
     movesDisplay = document.getElementById('moves');
     matchedDisplay = document.getElementById('matched');
     const totalPairsDisplay = document.getElementById('total-pairs');
+    profileBg = document.getElementById('profile-bg');
     
     // Toplam eşleşme sayısını göster
     if (totalPairsDisplay) totalPairsDisplay.textContent = totalPairs;
     
-    // Hata mesajını gizle
-    if (errorAreaDiv) errorAreaDiv.classList.add('hidden');
+    // Telegram WebApp kontrolü
+    const tg = window.Telegram && window.Telegram.WebApp;
     
-    // Oyun alanını göster ve oyunu başlat
-    if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
-    startGame();
+    // Oyunu başlat
+    initGame();
+    
+    // Telegram kullanıcı bilgilerini yükle
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const user = tg.initDataUnsafe.user;
+        if (userInfoDiv) {
+            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
+            userInfoDiv.classList.remove('hidden');
+            
+            // Profil fotoğrafını ayarla
+            if (user.photo_url && profileBg) {
+                profileBg.style.backgroundImage = `url('${user.photo_url}')`;
+                profileBg.classList.add('loaded');
+            }
+            
+            // Telegram butonlarını göster
+            if (tg.MainButton) {
+                tg.MainButton.setText('OYUNA BAŞLA').show();
+                tg.MainButton.onClick(function() {
+                    tg.MainButton.hide();
+                    startGame();
+                });
+            }
+        }
+    } else {
+        // Telegram dışındaki tarayıcılar için
+        if (errorAreaDiv) errorAreaDiv.classList.add('hidden');
+        startGame();
+    }
     
     // Oyunu başlat
     function startGame() {
