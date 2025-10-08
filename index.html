@@ -3,147 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Canlı TV İzle</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927" crossorigin="anonymous"></script>
+    <title>Mobil Coin Avcısı</title>
+    
     <style>
-        * {
+        body {
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        header {
-            background: #1e88e5;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        header h1 {
-            font-size: 2.2rem;
-            margin: 0;
-        }
-        
-        .channel-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-        
-        .channel-btn {
-            background: white;
-            border: 2px solid #1e88e5;
-            border-radius: 8px;
-            padding: 15px 25px;
-            text-decoration: none;
-            color: #1e88e5;
-            font-weight: 500;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            text-align: center;
-            min-width: 200px;
-            display: inline-block;
-            cursor: pointer;
-        }
-        
-        .channel-btn:hover {
-            background: #1e88e5;
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        
-        .section-title {
-            text-align: center;
-            margin: 30px 0 20px;
-            color: #333;
-            font-size: 1.5rem;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .section-title:after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: #1e88e5;
-            margin: 10px auto 0;
-        }
-        
-        footer {
-            background: #333;
+            background-color: #333;
             color: #fff;
-            padding: 30px 0 15px;
-            margin-top: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
             text-align: center;
+            user-select: none; /* Mobil tarayıcılarda seçimi engeller */
+        }
+
+        /* Oyun Alanı (Canvas) */
+        #oyunAlani {
+            border: 3px solid #FFC107; /* Altın sarısı çerçeve */
+            background-color: #1a1a1a;
+            touch-action: none; /* Dokunmatik kaydırmayı engeller */
+        }
+
+        /* Skor ve Mesaj Alanı */
+        .kontrol-paneli {
+            width: 300px;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #222;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2em;
+        }
+
+        #mesaj {
+            color: #4CAF50;
+            font-weight: bold;
+            margin-top: 15px;
         }
         
-        @media (max-width: 768px) {
-            .channel-list {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .channel-btn {
-                width: 90%;
-                max-width: 300px;
-            }
-            
-            header h1 {
-                font-size: 1.8rem;
-            }
+        button {
+            padding: 10px 20px;
+            background-color: #03A9F4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
         }
+        
+        button:active {
+            opacity: 0.8;
+        }
+        
     </style>
 </head>
 <body>
-    <!-- Başlık -->
-    <header>
-        <div class="container">
-            <h1>Canlı TV İzle</h1>
-        </div>
-    </header>
 
-    <div class="container">
-        <!-- Türk Kanalları -->
-        <h2 class="section-title">Türk Kanalları</h2>
-        <div class="channel-list">
-            <a href="https://www.trt1.com.tr/canli-yayin" class="channel-btn" target="_blank">TRT 1</a>
-            <a href="https://www.showtv.com.tr/canli-yayin/1" class="channel-btn" target="_blank">Show TV</a>
-            <a href="https://www.atv.com.tr/canli-yayin" class="channel-btn" target="_blank">ATV</a>
-        </div>
-        
-        <!-- Azerbaycan Kanalları -->
-        <h2 class="section-title">Azerbaycan Kanalları</h2>
-        <div class="channel-list">
-            <a href="https://www.trtavaz.com.tr/canli" class="channel-btn" target="_blank">TRT Azerbaycan</a>
-            <a href="https://xezerxeber.az/canli-yayim" class="channel-btn" target="_blank">Xəzər TV</a>
-        </div>
+    <div class="kontrol-paneli">
+        <span>Siz: <span id="oyuncuSkor">0</span></span>
+        <span>Bot: <span id="botSkor">0</span></span>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 Canlı TV İzle. Tüm hakları saklıdır.</p>
-        </div>
-    </footer>
+    <canvas id="oyunAlani" width="300" height="500"></canvas>
+    
+    <button id="baslatDugmesi">OYUNU BAŞLAT</button>
+
+    <div id="mesaj">Hazır! Başlat düğmesine basın.</div>
+
+    <script>
+        // === HTML5 CANVAS VE OYUN AYARLARI ===
+        const canvas = document.getElementById('oyunAlani');
+        const ctx = canvas.getContext('2d');
+        const oyuncuSkorElement = document.getElementById('oyuncuSkor');
+        const botSkorElement = document.getElementById('botSkor');
+        const mesajElement = document.getElementById('mesaj');
+        const baslatDugmesi = document.getElementById('baslatDugmesi');
+
+        let oyunDurumu = 'hazir';
+        let oyuncu = { x: canvas.width / 4, y: 450, boyut: 30, skor: 0, renk: '#4CAF50' }; // Yeşil
+        let bot = { x: canvas.width * 3 / 4, y: 450, boyut: 30, skor: 0, renk: '#F44336' }; // Kırmızı
+        let coinler = [];
+        let coinSayaci = 0; // Coinlerin yaratılma hızını kontrol etmek için
+        const oyunHizi = 1;
+        const botHizi = 2; // Bot sizden biraz daha hızlı olsun
+        const OYUN_SURESI = 60; // Saniye
+        let kalanSure = OYUN_SURESI;
+        let sureSayaci; // setInterval için
+
+        // === TEMEL OYUN FONKSİYONLARI ===
+
+        function cizimTemizle() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function karakterCiz(karakter) {
+            ctx.fillStyle = karakter.renk;
+            ctx.fillRect(karakter.x - karakter.boyut / 2, karakter.y - karakter.boyut / 2, karakter.boyut, karakter.boyut);
+            ctx.strokeStyle = '#fff';
+            ctx.strokeRect(karakter.x - karakter.boyut / 2, karakter.y - karakter.boyut / 2, karakter.boyut, karakter.boyut);
+        }
+
+        function coinCiz(coin) {
+            ctx.fillStyle = '#FFEB3B'; // Sarı
+            ctx.beginPath();
+            ctx.arc(coin.x, coin.y, coin.boyut, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function coinYarat() {
+            // Coinleri rastgele bir x pozisyonunda yarat
+            const x = Math.random() * (canvas.width - 20) + 10;
+            coinler.push({ x: x, y: 0, boyut: 8, hiz: Math.random() * 1.5 + 1 });
+        }
+
+        function coinleriGuncelle() {
+            for (let i = 0; i < coinler.length; i++) {
+                coinler[i].y += coinler[i].hiz * oyunHizi;
+
+                // Ekranın altından çıkan coinleri kaldır
+                if (coinler[i].y > canvas.height) {
+                    coinler.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function carpismaKontrol(karakter, coin) {
+            const dx = karakter.x - coin.x;
+            const dy = karakter.y - coin.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            return distance < (karakter.boyut / 2 + coin.boyut);
+        }
+
+        function skorGuncelle() {
+            for (let i = 0; i < coinler.length; i++) {
+                const coin = coinler[i];
+
+                // Oyuncu Çarpışması
+                if (carpismaKontrol(oyuncu, coin)) {
+                    oyuncu.skor += 1;
+                    oyuncuSkorElement.textContent = oyuncu.skor;
+                    coinler.splice(i, 1);
+                    i--;
+                    continue; // Bot kontrolüne geçmeden döngüden çık
+                }
+
+                // Bot Çarpışması
+                if (carpismaKontrol(bot, coin)) {
+                    bot.skor += 1;
+                    botSkorElement.textContent = bot.skor;
+                    coinler.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+        
+        // === BOT MANTIĞI ===
+        function botHareket() {
+            if (coinler.length === 0) return;
+
+            // Bota en yakın coin'i bul
+            let hedefCoin = coinler[0];
+            let minDistance = Infinity;
+
+            for (const coin of coinler) {
+                const distance = Math.abs(bot.x - coin.x);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    hedefCoin = coin;
+                }
+            }
+
+            // Hedefe doğru hareket et
+            if (hedefCoin) {
+                if (bot.x < hedefCoin.x) {
+                    bot.x += botHizi;
+                } else if (bot.x > hedefCoin.x) {
+                    bot.x -= botHizi;
+                }
+            }
+            // Alan dışına çıkmasını engelle
+            bot.x = Math.max(bot.boyut / 2, Math.min(canvas.width - bot.boyut / 2, bot.x));
+        }
+
+        // === MOBİL KONTROL (KAYDIRMA) ===
+
+        function handleTouchMove(e) {
+            if (oyunDurumu !== 'oynuyor') return;
+            // Dokunmatik X koordinatını al
+            const touchX = e.touches[0].clientX;
+            // Canvas'ın sayfadaki konumunu al
+            const rect = canvas.getBoundingClientRect();
+            // X pozisyonunu Canvas koordinatına dönüştür
+            let newX = touchX - rect.left;
+            
+            // Karakterin ortasını dokunulan yere ayarla, sınırları kontrol et
+            oyuncu.x = Math.max(oyuncu.boyut / 2, Math.min(canvas.width - oyuncu.boyut / 2, newX));
+            
+            e.preventDefault(); // Sayfanın kaymasını engelle
+        }
+
+        canvas.addEventListener('touchmove', handleTouchMove, false);
+
+        // === OYUN DÖNGÜSÜ ===
+
+        function oyunCevrimi() {
+            if (oyunDurumu !== 'oynuyor') return;
+
+            // Coin yaratma
+            coinSayaci++;
+            if (coinSayaci % 30 === 0) { // Her 30 frame'de bir (yaklaşık yarım saniye)
+                coinYarat();
+            }
+
+            cizimTemizle();
+            
+            botHareket();
+            coinleriGuncelle();
+            skorGuncelle();
+
+            // Karakterleri ve coinleri çiz
+            karakterCiz(oyuncu);
+            karakterCiz(bot);
+            coinler.forEach(coinCiz);
+            
+            // Süre göstergesi
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px Arial';
+            ctx.fillText(`Süre: ${kalanSure} sn`, canvas.width / 2, 20);
+
+            requestAnimationFrame(oyunCevrimi);
+        }
+        
+        // === OYUN BAŞLATMA VE BİTİRME ===
+        
+        function zamanlayiciBaslat() {
+            kalanSure = OYUN_SURESI;
+            mesajElement.textContent = `Oyun başladı! ${kalanSure} saniyeniz var.`;
+            
+            sureSayaci = setInterval(() => {
+                kalanSure--;
+                mesajElement.textContent = `Kalan Süre: ${kalanSure} sn`;
+                
+                if (kalanSure <= 0) {
+                    clearInterval(sureSayaci);
+                    oyunuBitir();
+                }
+            }, 1000);
+        }
+
+        function oyunuBaslat() {
+            if (oyunDurumu === 'oynuyor') return;
+            
+            // Sıfırla
+            oyuncu.skor = 0;
+            bot.skor = 0;
+            coinler = [];
+            oyuncuSkorElement.textContent = 0;
+            botSkorElement.textContent = 0;
+            
+            oyunDurumu = 'oynuyor';
+            baslatDugmesi.textContent = "OYNUYOR...";
+            baslatDugmesi.disabled = true;
+            
+            zamanlayiciBaslat();
+            oyunCevrimi(); // Oyun döngüsünü başlat
+        }
+
+        function oyunuBitir() {
+            oyunDurumu = 'bitti';
+            baslatDugmesi.textContent = "TEKRAR BAŞLAT";
+            baslatDugmesi.disabled = false;
+            
+            let sonucMesaji;
+            if (oyuncu.skor > bot.skor) {
+                sonucMesaji = `KAZANDIN! Skorun: ${oyuncu.skor}.`;
+                mesajElement.style.color = '#4CAF50';
+            } else if (bot.skor > oyuncu.skor) {
+                sonucMesaji = `KAYBETTİN! Bot'un skoru: ${bot.skor}.`;
+                mesajElement.style.color = '#F44336';
+            } else {
+                sonucMesaji = `BERABERE! İkinizin de skoru ${oyuncu.skor}.`;
+                mesajElement.style.color = '#2196F3';
+            }
+            
+            mesajElement.textContent = sonucMesaji;
+        }
+        
+        baslatDugmesi.addEventListener('click', oyunuBaslat);
+
+    </script>
+
 </body>
 </html>
