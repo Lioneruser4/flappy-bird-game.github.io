@@ -1,45 +1,86 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="az">
 <head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
     crossorigin="anonymous"></script>
-    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hafıza Oyunu</title>
+    <title>Kart Oyunu</title>
     <link rel="stylesheet" href="style-new.css">
 </head>
 <body>
-    <div id="profile-bg"></div>
+    <!-- Telegram profil resmi için arka plan -->
+    <div id="profile-bg" class="profile-bg"></div>
     
     <div class="container">
-        <div id="user-info" class="hidden"></div>
-        
+        <div id="user-info">
+            <!-- Telegram kullanıcı adı buraya eklenecek -->
+        </div>
+
         <div id="game-area" class="hidden">
             <div class="game-header">
-                <h1>Hafıza Oyunu</h1>
-                <div class="game-info">
-                    <div>Hamle: <span id="moves">0</span></div>
-                    <div>Eşleşen: <span id="matched">0</span>/<span id="total-pairs">8</span></div>
-                    <div>Seviye: <span id="level">1</span></div>
-                </div>
+                <h2>Yaddaş Oyunu</h2>
+                <p id="level-display" class="level-display">Səviyyə: 1</p>
             </div>
-            
-            <div id="memory-board" class="memory-board"></div>
-            
-            <button id="restart-button" class="game-button">Yeniden Başlat</button>
+            <div class="game-info">
+                <p>Hərəkət: <span id="moves">0</span></p>
+                <p>Uyğun: <span id="matched">0</span>/<span id="total-pairs">8</span></p>
+            </div>
+            <div id="memory-board"></div>
+            <button id="restart-button">Yenidən Başla</button>
+        </div>
+
+        <div id="error-area" class="hidden">
+            <p>Zəhmət olmasa bu tətbiqə Telegram daxilindən daxil olun.</p>
         </div>
         
-        <div id="error-area" class="error-message hidden">
-            <p>Oyun yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.</p>
+        <!-- Reklam üçün div -->
+        <div id="ad-container" class="hidden">
+            <div id="game-completed-ad">
+                <h3>Təbriklər! Səviyyəni tamamladınız! 🎉</h3>
+                <div id="ad-content"></div>
+            </div>
         </div>
     </div>
-    
-    <div id="ad-container" class="hidden">
-        <div id="ad-content"></div>
-    </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="script.js"></script>
-</body>
+    <script>
+        // Check if we're in Telegram WebView
+        const isTelegram = window.Telegram && window.Telegram.WebApp;
+        
+        // Show game immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show game area
+            document.getElementById('game-area').classList.remove('hidden');
+            
+            // Load the game script
+            const gameScript = document.createElement('script');
+            gameScript.src = 'script.js';
+            document.body.appendChild(gameScript);
+            
+            // Load Telegram WebApp script if in Telegram
+            if (isTelegram) {
+                const tgScript = document.createElement('script');
+                tgScript.src = 'https://telegram.org/js/telegram-web-app.js';
+                tgScript.onload = function() {
+                    // Show Telegram user info
+                    const tg = window.Telegram.WebApp;
+                    tg.expand();
+                    
+                    const user = tg.initDataUnsafe?.user;
+                    if (user) {
+                        const userInfo = document.getElementById('user-info');
+                        userInfo.innerHTML = `<p>Hoş geldin, ${user.first_name || 'Oyuncu'}!</p>`;
+                        
+                        // Set profile photo as background if available
+                        if (user.photo_url) {
+                            const bg = document.getElementById('profile-bg');
+                            bg.style.backgroundImage = `url('${user.photo_url}')`;
+                            bg.classList.add('loaded');
+                        }
+                    }
+                };
+                document.body.appendChild(tgScript);
+            }
+        });
+    </script>
 </html>
