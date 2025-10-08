@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Web Oyunu</title>
+    <title>Hafıza Oyunu</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="container">
         <div id="user-info">
             <p>Kullanıcı bilgileri alınıyor...</p>
         </div>
 
-        <hr>
-
         <div id="game-area" class="hidden">
-            <h2>Tıklama Oyunu</h2>
-            <p>Butona olabildiğince çok tıkla!</p>
-            <p>Skorun: <span id="score">0</span></p>
-            <button id="click-button">Tıkla!</button>
+            <h2>Hafıza Oyunu</h2>
+            <div class="game-info">
+                <p>Hamle: <span id="moves">0</span></p>
+                <p>Eşleşen: <span id="matched">0</span>/8</p>
+            </div>
+            <div id="memory-board"></div>
+            <button id="restart-button">Yeniden Başla</button>
         </div>
 
         <div id="error-area" class="hidden">
