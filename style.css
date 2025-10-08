@@ -85,10 +85,10 @@ html, body {
     color: var(--text-color);
 }
 
-/* Oyun Məlumatı (Grid 3x2 - Online sayğac üçün yeniləndi) */
+/* Oyun Məlumatı (Grid 3x2) */
 .game-info {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 sütun */
+    grid-template-columns: repeat(3, 1fr); 
     gap: 8px 0;
     text-align: center;
     background-color: rgba(52, 152, 219, 0.08);
@@ -137,9 +137,7 @@ html, body {
 
 .card.matched {
     cursor: default;
-    /* Kartın açıq qalmasını təmin edir */
     transform: rotateY(180deg); 
-    /* Gecikməsiz animasiyanı tətbiq edir */
     animation: match-pulse 0.5s ease-out; 
     border: 3px solid var(--success-color);
 }
@@ -221,27 +219,26 @@ html, body {
     flex-direction: column; 
 }
 
-/* Reklam Çərçivəsi üçün Əlavə Stil */
+/* Reklam Çərçivəsi üçün Düzəliş */
 #ad-content {
     margin: 15px 0;
-    padding: 10px;
-    border: 1px solid var(--primary-color);
-    border-radius: 8px;
-    background-color: var(--bg-color);
-    max-width: 300px; /* Reklamın genişliyini məhdudlaşdırın */
+    padding: 0; /* Reklam mətni silindiyi üçün padding sıfırlandı */
+    border: none; /* Çərçivə sıfırlandı */
+    background-color: transparent; 
+    max-width: 300px; 
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: none;
 }
 
 .dark-mode #ad-content {
-    background-color: #1a1a1a; /* Dark modda daha tünd fon */
-    border-color: var(--primary-color);
+    background-color: transparent; 
+    border-color: transparent;
 }
 
 .ad-iframe-container {
-    min-height: 100px; /* Reklam yüklənənə qədər yer ayırın */
+    min-height: 100px; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -250,7 +247,6 @@ html, body {
 }
 
 .button-group {
-    /* Əsas düyməni yuxarıda, ikincini aşağıda və mərkəzdə göstərir */
     display: flex; 
     flex-direction: column; 
     align-items: center; 
@@ -259,13 +255,11 @@ html, body {
     margin-top: 15px;
 }
 
-/* Birinci (Əsas - Növbəti Səviyyə) düyməni böyük saxlayırıq */
 .button-group .primary-action {
     max-width: 250px; 
     margin: 0;
 }
 
-/* İkinci (Əlavə - Təkrar Oyna) düyməni kiçildirik */
 .button-group .secondary-action {
     background: none;
     color: var(--primary-color);
