@@ -7,7 +7,8 @@ let firstCard, secondCard;
 let moves = 0;
 let matchedPairs = 0;
 let level = 1;
-let totalPairs = 8; // İlk seviye için 8 çift
+let totalPairs = 8;
+let gameActive = false;
 
 // Emoji setleri
 const emojiSets = [
@@ -16,14 +17,63 @@ const emojiSets = [
     ['🍎', '🍌', '🍒', '🍓', '🍊', '🍋', '🍉', '🍇', '🍍', '🥝']
 ];
 
-// Seviyeye göre emojileri al
-function getEmojisForLevel(level) {
-    const endIndex = 6 + (level - 1) * 2; // Her seviyede 2 yeni emoji ekle
-    return [...emojiSets[level - 1]].slice(0, endIndex);
-}
-
 // Sayfa yüklendiğinde oyunu başlat
 document.addEventListener('DOMContentLoaded', function() {
+    // Elementleri seç
+    const userInfoDiv = document.getElementById('user-info');
+    const gameAreaDiv = document.getElementById('game-area');
+    const errorAreaDiv = document.getElementById('error-area');
+    const memoryBoard = document.getElementById('memory-board');
+    const restartButton = document.getElementById('restart-button');
+    const movesDisplay = document.getElementById('moves');
+    const matchedDisplay = document.getElementById('matched');
+    const levelDisplay = document.getElementById('level');
+    const totalPairsDisplay = document.getElementById('total-pairs');
+    const profileBg = document.getElementById('profile-bg');
+    
+    // Telegram WebApp kontrolü
+    const tg = window.Telegram && window.Telegram.WebApp;
+    
+    // Oyunu başlat
+    initGame();
+    
+    // Telegram kullanıcı bilgilerini yükle
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const user = tg.initDataUnsafe.user;
+        if (userInfoDiv) {
+            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
+            userInfoDiv.classList.remove('hidden');
+            
+            // Profil fotoğrafını ayarla
+            if (user.photo_url) {
+                profileBg.style.backgroundImage = `url('${user.photo_url}')`;
+                profileBg.classList.add('loaded');
+            }
+        }
+        
+        // Telegram butonlarını göster
+        tg.MainButton.setText('OYUNA BAŞLA').show();
+        tg.MainButton.onClick(() => {
+            tg.MainButton.hide();
+            startGame();
+        });
+    } else {
+        // Telegram dışındaki tarayıcılar için
+        if (errorAreaDiv) errorAreaDiv.classList.add('hidden');
+        startGame();
+    }
+    
+    // Oyunu başlat
+    function startGame() {
+        if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
+        initGame();
+    }
+    
+    // Seviyeye göre emojileri al
+    function getEmojisForLevel(level) {
+        const endIndex = 6 + (level - 1) * 2;
+        return [...emojiSets[level - 1]].slice(0, endIndex);
+    }
     // Telegram Web App kontrolü
     const tg = window.Telegram && window.Telegram.WebApp;
     
