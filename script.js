@@ -23,7 +23,7 @@ const ALL_EMOJIS = [
     '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
     '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
     '🥝', '🍍', '🥥', '🥑', '🚗', '🚕', '🚌', '🚓', '🚑', '🚒', 
-    '🚚', '🚢', '🚀', '🚁', '🚂', '🛸', '⌚', '📱', '💻', '🖥️', 
+    '🚚', '🚢', '🚀', '🚁', '🚂', '⌚', '📱', '💻', '🖥️', 
     '🔑', '🔒', '🔓', '🎲', '🧩', '🎈', '🎁', '🎂', '👑', '💍',
     '🌞', '🌛', '⭐', '🌈', '🔥', '💧', '🌿', '🍄', '🔔', '📚',
     '🔬', '🔭', '💰', '💳', '📧', '💡', '📌', '📎', '💉', '💊' 
@@ -32,12 +32,11 @@ const ALL_EMOJIS = [
 // DOM elementləri və Səslər
 let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon;
 let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
-// YENİ: Online İstifadəçi elementi
 let onlineUsersDisplay; 
 
-// YENİ: PubNub Dəyişənləri
+// PubNub Dəyişənləri
 let pubnub;
-const PUBNUB_CHANNEL = 'memory_game_online'; // Kanal adı
+const PUBNUB_CHANNEL = 'memory_game_online'; 
 
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elementlərini Seç
@@ -51,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
     finalScoreDisplay = document.getElementById('final-score');
     currentLevelDisplay = document.getElementById('current-level');
     themeIcon = document.getElementById('theme-icon');
-    // YENİ: Online İstifadəçi elementini seç
     onlineUsersDisplay = document.getElementById('online-users');
     
     // Səs elementlərini seç
@@ -62,7 +60,10 @@ document.addEventListener('DOMContentLoaded', function() {
     gameoverSound = document.getElementById('gameover-sound');
 
     // Düymə hadisələri
-    document.getElementById('restart-button').addEventListener('click', initGame);
+    document.getElementById('restart-button').addEventListener('click', function() {
+        level = 1; // Baş düymə hər zaman 1-ci səviyyədən başlasın
+        initGame();
+    });
     document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
 
     // Tema rejimini yoxla
@@ -71,13 +72,11 @@ document.addEventListener('DOMContentLoaded', function() {
         themeIcon.textContent = '☀️';
     }
     
-    // YENİ: PubNub bağlantısını başlat
     initPubNub();
-
     startGame();
 });
 
-// YENİ: PubNub Bağlantısı və Canlı Sayğac Məntiqi
+// PubNub Bağlantısı və Canlı Sayğac Məntiqi
 function initPubNub() {
     // AÇARLARI BURAYA DAXİL EDİN (PubNub Hesabınızdan Aldığınız Açarlar)
     pubnub = new PubNub({
@@ -90,13 +89,11 @@ function initPubNub() {
     pubnub.addListener({
         presence: function(presenceEvent) {
             if (presenceEvent.channel === PUBNUB_CHANNEL) {
-                // Kanaldakı online istifadəçi sayını yenilə
                 onlineUsersDisplay.textContent = presenceEvent.occupancy;
             }
         }
     });
 
-    // Kanala abunə ol (Presence aktivləşdirilmiş vəziyyətdə)
     pubnub.subscribe({
         channels: [PUBNUB_CHANNEL],
         withPresence: true 
@@ -113,7 +110,7 @@ function initPubNub() {
 }
 
 
-// Gecikməsiz Səs Oynatma Funksiyası (Audio Elementinin Klonlanması)
+// Gecikməsiz Səs Oynatma Funksiyası
 function playSound(audioElement) {
     if (!audioElement) return;
     const clone = audioElement.cloneNode();
@@ -139,7 +136,6 @@ function initGame() {
     memoryBoard.innerHTML = '';
     moves = 0;
     matchedPairs = 0;
-    // Xal yalnız level 1-dən başlananda sıfırlansın
     if (level === 1) score = 0; 
     timeElapsed = 0;
     lockBoard = false;
@@ -154,7 +150,7 @@ function initGame() {
     matchedDisplay.textContent = matchedPairs;
     currentLevelDisplay.textContent = `(Səviyyə ${level})`;
     timerDisplay.textContent = formatTime(timeElapsed);
-    timerDisplay.style.color = 'inherit'; // Rəngi sıfırla
+    timerDisplay.style.color = 'inherit'; 
     
     createCards();
     startTimer();
@@ -296,11 +292,12 @@ function handleGameOver(isSuccess) {
     const finalMessage = document.querySelector('.final-message');
     const nextLevelBtn = document.getElementById('next-level');
     const restartLevelBtn = document.getElementById('restart-level');
-    const adContent = document.getElementById('ad-content'); // Reklam içeriği div'i
+    const adContent = document.getElementById('ad-content'); 
 
     if (isSuccess) {
         playSound(winSound);
         
+        // MAKSİMUM SƏVİYYƏ MƏNTİQİ DƏYİŞDİRİLDİ
         if (level < MAX_LEVEL) {
             adTitle.textContent = 'Təbriklər! 🎉 Səviyyə Keçildi!';
             finalMessage.textContent = `Növbəti səviyyədə ${totalPairs + 2} cütlük olacaq.`;
@@ -312,28 +309,27 @@ function handleGameOver(isSuccess) {
                 adContainer.classList.remove('show'); 
                 adContainer.classList.add('hidden');
                 level++; 
-                initGame(); 
+                initGame(); // Yeni səviyyə, yeni kart sayı
             };
             nextLevelBtn.style.display = 'block'; 
-
-            // İkinci düymə: Təkrar Oyna
             restartLevelBtn.style.display = 'block';
 
         } else {
+            // MAX_LEVEL-də qalırıq, sadəcə emojiləri yeniləyirik
             adTitle.textContent = 'Oyun Bitdi! 🏆 Ən Yüksək Nəticə!';
-            finalMessage.textContent = `Bütün səviyyələri ${score} xalla tamamladınız.`;
+            finalMessage.textContent = `Bütün çətinlikləri ${score} xalla tamamladınız. Yenidən oyna!`;
             
-            // Əsas düymə: Yenidən Başla
-            nextLevelBtn.textContent = 'Yenidən Başla';
+            // Əsas düymə: Təkrar Oyna (Eyni Səviyyə)
+            nextLevelBtn.textContent = 'Eyni Səviyyəni Yenidən Başla'; 
             nextLevelBtn.onclick = null;
             nextLevelBtn.onclick = function() { 
                 adContainer.classList.remove('show'); 
                 adContainer.classList.add('hidden');
-                level = 1; 
+                // level dəyişmir (MAX_LEVEL-də qalır), sadəcə yeni emojilər yüklənir
                 initGame(); 
             }; 
 
-            // İkinci düyməni (Təkrar Oyna) gizlədirik
+            // İkinci düyməni də (Təkrar Oyna) həmin funksiyanı etsin, ya da gizlədək.
             restartLevelBtn.style.display = 'none'; 
         }
     }
@@ -346,11 +342,10 @@ function handleGameOver(isSuccess) {
     };
 
     // ------------------------------------------------------------------
-    // ⭐ REKLAM KODU ƏLAVƏSİ ⭐
+    // ⭐ REKLAM KODU ƏLAVƏSİ VƏ MƏTN SİLİNDİ ⭐
     // ------------------------------------------------------------------
     adContent.innerHTML = `
         <div class="ad-iframe-container">
-            <p style="margin-bottom: 10px; font-weight: 600; color: var(--text-color);">Reklam:</p>
             <script type='text/javascript' src='//pl27810690.effectivegatecpm.com/3f/56/0c/3f560cd28640fec16294d033439790e5.js'></script>
         </div>
     `;
