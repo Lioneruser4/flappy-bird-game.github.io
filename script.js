@@ -60,8 +60,12 @@ let currentEmojis = [];
 // DOM elementləri
 let memoryBoard, movesDisplay, matchedDisplay, restartButton, gameAreaDiv, userInfoDiv, profileBg, errorAreaDiv;
 
+// Hata ayıklama için konsol çıktısı ekle
+console.log('Script yüklendi, oyun başlatılıyor...');
+
 // Sayfa yüklendiğinde oyunu başlat
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM yüklendi, oyun başlatılıyor...');
     // Elementleri seç
     userInfoDiv = document.getElementById('user-info');
     gameAreaDiv = document.getElementById('game-area');
@@ -78,9 +82,24 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Telegram WebApp kontrolü
     const tg = window.Telegram && window.Telegram.WebApp;
+    console.log('Telegram WebApp kontrolü:', tg ? 'Bulundu' : 'Bulunamadı');
     
-    // Oyunu başlat
-    initGame();
+    try {
+        // Oyunu başlat
+        console.log('Oyun başlatılıyor...');
+        initGame();
+        // Oyun alanını göster
+        if (gameAreaDiv) {
+            gameAreaDiv.classList.remove('hidden');
+            console.log('Oyun alanı gösteriliyor');
+        }
+    } catch (error) {
+        console.error('Oyun başlatılırken hata oluştu:', error);
+        if (errorAreaDiv) {
+            errorAreaDiv.classList.remove('hidden');
+            errorAreaDiv.innerHTML += `<p>Hata detayı: ${error.message}</p>`;
+        }
+    }
     
     // Telegram kullanıcı bilgilerini yükle
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
