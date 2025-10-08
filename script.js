@@ -1,71 +1,20 @@
-// Oyun dəyişənləri
+// Oyun değişkenleri
 let cards = [];
 let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard, secondCard;
 let moves = 0;
 let matchedPairs = 0;
-let totalPairs = 6; // Başlanğıc cüt sayı
-let currentLevel = 1;
-let usedEmojis = [];
+const totalPairs = 6; // 12 kart (6 çift)
 
-// Geniş emoji dəsti
-const allEmojis = [
-    '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', '🦉', '🐸',
-    '🐔', '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄',
-    '🐝', '🐛', '🦋', '🐌', '🐞', '🐜', '🦗', '🕷', '🦂', '🐢', '🐍', '🦎',
-    '🐙', '🦑', '🦐', '🦞', '🦀', '🐡', '🐠', '🐟', '🐬', '🐳', '🐋', '🦈',
-    '🐅', '🐆', '🦓', '🦍', '🦧', '🐘', '🦛', '🦏', '🐪', '🐫', '🦒', '🦘',
-    '🦬', '🐃', '🐂', '🐄', '🐎', '🐖', '🐏', '🐑', '🦙', '🐐', '🦌', '🐕',
-    '🐩', '🐈', '🐓', '🦚', '🦜', '🦢', '🦩', '🕊', '🐇', '🦝', '🦨', '🦡',
-    '🦔', '🐁', '🐀', '🐿', '🦥', '🦦', '🦫', '🦨', '🦘', '🦡', '🐾', '🦃',
-    '🦤', '🦚', '🦜', '🦢', '🦩', '🦚', '🦜', '🐦', '🐧', '🐓', '🦃', '🦤',
-    '🦅', '🦉', '🦚', '🦜', '🦢', '🦩', '🦚', '🦜', '🐦', '🐧', '🐓', '🦃',
-    '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑',
-    '🥭', '🍍', '🥥', '🥝', '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶', '🫑',
-    '🌽', '🥕', '🫛', '🥐', '🍞', '🥖', '🥨', '🧀', '🥚', '🍳', '🧈', '🥞',
-    '🧇', '🥓', '🥩', '🍗', '🍖', '🦴', '🌭', '🍔', '🍟', '🍕', '🫓', '🥪',
-    '🥙', '🧆', '🌮', '🌯', '🫔', '🥗', '🥘', '🫕', '🥫', '🍝', '🍜', '🍲',
-    '🍛', '🍣', '🍱', '🥟', '🦪', '🍤', '🍙', '🍚', '🍘', '🍥', '🥠', '🥮',
-    '🍢', '🍡', '🍧', '🍨', '🍦', '🥧', '🧁', '🍰', '🎂', '🍮', '🍭', '🍬',
-    '🍫', '🍿', '🍩', '🍪', '🌰', '🥜', '🍯', '🥛', '🍼', '🫖', '☕', '🍵',
-    '🧃', '🥤', '🧋', '🍶', '🍺', '🍻', '🥂', '🍷', '🥃', '🍸', '🍹', '🧉',
-    '🍾', '🧊', '🥄', '🍴', '🍽', '🥣', '🥡', '🥢', '🧂', '⚽', '🏀', '🏈',
-    '⚾', '🥎', '🎾', '🏐', '🏉', '🥏', '🎱', '🪀', '🏓', '🏸', '🏒', '🏑',
-    '🥍', '🏏', '🪃', '🥅', '⛳', '🪁', '🏹', '🎣', '🤿', '🥊', '🥋', '🎽',
-    '🛹', '🛼', '🛷', '⛸', '🥌', '🎯', '🎮', '🎲', '🎰', '🎳', '🎪', '🛝',
-    '🎡', '🎢', '🎠', '🚂', '🚃', '🚄', '🚅', '🚆', '🚇', '🚈', '🚉', '✈️',
-    '🚁', '🚤', '⛵', '⛴', '🚢', '🚗', '🚕', '🚙', '🚌', '🚎', '🏎', '🚓',
-    '🚑', '🚒', '🚐', '🛻', '🚚', '🚛', '🚜', '🛵', '🏍', '🛺', '🚲', '🛴',
-    '🚡', '🚠', '🚟', '🚝', '🚄', '🚅', '🚈', '🚂', '🚃', '🚋', '🚌', '🚍',
-    '🚎', '🚐', '🚑', '🚒', '🚓', '🚕', '🚗', '🚙', '🚚', '🚛', '🚜', '🏎',
-    '🏍', '🛵', '🚲', '🛴', '🛹', '🚏', '🛣', '🛤', '⛽', '🚨', '🚥', '🚦',
-    '🚧', '⚓', '⛵', '🛶', '🚤', '🛳', '⛴', '🛥', '🚢', '✈️', '🛩', '🚁',
-    '🚟', '🚠', '🚡', '🛰', '🚀', '🛸', '🛎', '🧳', '⌛', '⏳', '⌚', '⏰',
-    '🌍', '🌎', '🌏', '🌐', '🗺', '🗾', '🧭', '🏔', '⛰', '🌋', '🗻', '🏕',
-    '🏖', '🏜', '🏝', '🏞', '🏟', '🏛', '🏗', '🏘', '🏚', '🏠', '🏡', '🏢',
-    '🏣', '🏤', '🏥', '🏦', '🏨', '🏩', '🏪', '🏫', '🏬', '🏭', '🏯', '🏰',
-    '💒', '🗼', '🗽', '⛪', '🕌', '🛕', '🕍', '⛩', '🕋', '⛲', '⛺', '🌁',
-    '🌃', '🏙', '🌄', '🌅', '🌆', '🌇', '🌉', '🎠', '🎡', '🎢', '💈', '🎪'
-];
+// Emoji seti (12 farklı emoji)
+const emojis = ['🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', '🦉', '🐸'];
 
-// Təsadüfi emojiləri seç
-function getRandomEmojis(count) {
-    const shuffled = [...allEmojis].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, Math.min(count, allEmojis.length));
-}
-
-let currentEmojis = [];
-
-// DOM elementləri
+// DOM elementleri
 let memoryBoard, movesDisplay, matchedDisplay, restartButton, gameAreaDiv, userInfoDiv, profileBg, errorAreaDiv;
-
-// Hata ayıklama için konsol çıktısı ekle
-console.log('Script yüklendi, oyun başlatılıyor...');
 
 // Sayfa yüklendiğinde oyunu başlat
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM yüklendi, oyun başlatılıyor...');
     // Elementleri seç
     userInfoDiv = document.getElementById('user-info');
     gameAreaDiv = document.getElementById('game-area');
@@ -82,30 +31,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Telegram WebApp kontrolü
     const tg = window.Telegram && window.Telegram.WebApp;
-    console.log('Telegram WebApp kontrolü:', tg ? 'Bulundu' : 'Bulunamadı');
     
-    try {
-        // Oyunu başlat
-        console.log('Oyun başlatılıyor...');
-        initGame();
-        // Oyun alanını göster
-        if (gameAreaDiv) {
-            gameAreaDiv.classList.remove('hidden');
-            console.log('Oyun alanı gösteriliyor');
-        }
-    } catch (error) {
-        console.error('Oyun başlatılırken hata oluştu:', error);
-        if (errorAreaDiv) {
-            errorAreaDiv.classList.remove('hidden');
-            errorAreaDiv.innerHTML += `<p>Hata detayı: ${error.message}</p>`;
-        }
-    }
+    // Oyunu başlat
+    initGame();
     
     // Telegram kullanıcı bilgilerini yükle
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
         const user = tg.initDataUnsafe.user;
         if (userInfoDiv) {
-            userInfoDiv.innerHTML = `Xoş gəlmisiniz, ${user.first_name || 'İstifadəçi'}!`;
+            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
             userInfoDiv.classList.remove('hidden');
             
             // Profil fotoğrafını ayarla
@@ -176,10 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
             card.dataset.emoji = emoji;
             card.dataset.index = index;
             
-            card.innerHTML = `
+            card.innerHTML = '
                 <div class="front"></div>
-                <div class="back">${emoji}</div>
-            `;
+                <div class="back">' + emoji + '</div>
+            ';
             
             card.addEventListener('click', flipCard);
             memoryBoard.appendChild(card);
@@ -222,13 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Tüm eşleşmeler tamamlandı mı?
             if (matchedPairs === totalPairs) {
                 setTimeout(function() {
-                    if (confirm('Təbriklər! Səviyyə ' + currentLevel + ' tamamlandı!\n\nGediş sayı: ' + moves + '\n\nNövbəti səviyyəyə keçmək istəyirsinizmi?')) {
-                        currentLevel++;
-                        initGame();
-                    } else {
-                        currentLevel = 1;
-                        initGame();
-                    }
+                    alert('Tebrikler! Oyunu ' + moves + ' hamlede tamamladınız!');
                 }, 500);
             }
         } else {
@@ -317,19 +245,17 @@ document.addEventListener('DOMContentLoaded', function() {
     function createCards() {
         if (!memoryBoard) return;
         
+        // 12 farklı emojiden 6'sını seç (toplam 12 kart için)
+        const selectedEmojis = emojis.slice(0, totalPairs);
         const gameCards = [];
         
         // Her emojiden 2'şer tane ekle
-        currentEmojis.forEach(emoji => {
+        selectedEmojis.forEach(emoji => {
             gameCards.push(emoji, emoji);
         });
         
         // Kartları karıştır
         shuffleArray(gameCards);
-        
-        // Izgara boyutunu ayarla
-        const gridSize = Math.ceil(Math.sqrt(gameCards.length));
-        memoryBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
         
         // Kartları oluştur ve tahtaya ekle
         gameCards.forEach((emoji, index) => {
