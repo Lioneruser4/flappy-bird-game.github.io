@@ -1,12 +1,19 @@
 
-// Oyun dəyişənləri
+// Oyun değişkenleri
 let cards = [];
 let lockBoard = false;
 let firstCard, secondCard;
 let moves = 0;
 let matchedPairs = 0;
 let level = 1;
-let totalPairs = 8; // İlk səviyyə üçün 8
+let totalPairs = 8; // İlk seviye için 8 çift
+
+// Emoji setleri
+const emojiSets = [
+    ['🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵'],
+    ['🦉', '🐸', '🐧', '🐨', '🐼', '🦘', '🐬', '🐠', '🦀', '🐙'],
+    ['🍎', '🍌', '🍒', '🍓', '🍊', '🍋', '🍉', '🍇', '🍍', '🥝']
+];
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the app based on the environment
