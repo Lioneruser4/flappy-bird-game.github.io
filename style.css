@@ -1,4 +1,15 @@
-/* Genel Stiller */
+/* Əsas Rəng Dəyişənləri */
+:root {
+    --primary-color: #3498db; /* Kartın bağlı rəngi */
+    --secondary-color: #2980b9;
+    --success-color: #2ecc71; /* Eşləşən kart rəngi */
+    --danger-color: #e74c3c;
+    --text-color: #2c3e50;
+    --bg-color: #ecf0f1; /* Açıq boz fon */
+    --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ümumi Stiller */
 * {
     margin: 0;
     padding: 0;
@@ -6,128 +17,100 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-:root {
-    --primary-color: #3498db;
-    --secondary-color: #2980b9;
-    --success-color: #2ecc71;
-    --danger-color: #e74c3c;
-    --text-color: #2c3e50;
-    --bg-color: #f5f7fa;
-    --card-bg: #ffffff;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
 html, body {
     width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     overflow-x: hidden;
+    /* Mobil üçün tam ekran hündürlüyü */
+    height: -webkit-fill-available;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Container */
 .container {
     width: 100%;
-    max-width: 800px;
+    max-width: 500px; /* Mobil ölçüsünə uyğun max-width */
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
     position: relative;
     z-index: 1;
 }
 
-/* Profil Arkaplanı */
-#profile-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    filter: blur(8px) brightness(0.9);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-#profile-bg.loaded {
-    opacity: 1;
-}
-
-/* Oyun Alanı */
+/* Oyun Sahəsi (Mobil görünüş) */
 #game-area {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: white;
     border-radius: 15px;
-    padding: 20px;
+    padding: 15px;
     box-shadow: var(--shadow);
-    backdrop-filter: blur(5px);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Oyun Başlık */
 .game-header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .game-header h1 {
     color: var(--primary-color);
-    margin-bottom: 15px;
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
 }
 
-/* Oyun İstatistikleri */
 .game-info {
     display: flex;
     justify-content: space-around;
-    background-color: rgba(52, 152, 219, 0.1);
-    padding: 12px;
+    background-color: rgba(52, 152, 219, 0.08);
+    padding: 10px;
     border-radius: 10px;
-    margin-bottom: 20px;
     font-weight: 600;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.game-info div {
-    background: white;
-    padding: 8px 15px;
-    border-radius: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    font-size: 16px;
 }
 
 /* Hafıza Tahtası */
 .memory-board {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 8px;
+    padding: 5px 0;
 }
 
-/* Kart Stilleri */
+/* Kart Stilleri - DİQQƏT: Tək Rəng Kart */
 .card {
     aspect-ratio: 1;
-    background: var(--primary-color);
+    background-color: transparent; /* Kartın özü şəffaf olacaq */
     border-radius: 10px;
     cursor: pointer;
     position: relative;
     transform-style: preserve-3d;
-    transition: all 0.5s ease;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Elastik Animasiya */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Kart Çevrilməsi */
 .card.flipped {
     transform: rotateY(180deg);
-    background: white;
 }
 
+/* Eşleşme Animasiyası */
 .card.matched {
-    background: var(--success-color);
     cursor: default;
+    /* Eşləşəndə kiçilmə effekti */
+    animation: match-pulse 0.5s ease-out forwards;
 }
 
+@keyframes match-pulse {
+    0% { transform: scale(1); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
+    50% { transform: scale(1.05); box-shadow: 0 0 20px var(--success-color); }
+    100% { transform: scale(1); background-color: var(--success-color); }
+}
+
+/* Kartın Ön və Arxa Üzü */
 .card .front,
 .card .back {
     position: absolute;
@@ -137,22 +120,29 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 8px;
-    font-size: 2rem;
+    border-radius: 10px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--text-color);
 }
 
+/* Ön Üz - Bağlı kartın rəngi */
 .card .front {
-    background: var(--primary-color);
+    background: var(--primary-color); 
     color: white;
+    /* Kartın bağlı ikən görünüşünü təmin edir */
+    content: ''; 
+    border: 3px solid white;
 }
 
+/* Arxa Üz - Açılmış kartın rəngi və emojisi */
 .card .back {
-    background: white;
+    background: white; 
     transform: rotateY(180deg);
     color: var(--text-color);
 }
 
-/* Butonlar */
+/* Düğmeler */
 .game-button {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
@@ -162,32 +152,17 @@ html, body {
     font-weight: 600;
     border-radius: 30px;
     cursor: pointer;
-    margin: 10px auto;
+    margin: 15px auto 5px;
     display: block;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
 }
 
 .game-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(52, 152, 219, 0.4);
-}
-
-.game-button:active {
-    transform: translateY(0);
-}
-
-/* Hata Mesajı */
-.error-message {
-    background-color: #fde8e8;
-    color: #e74c3c;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    margin-top: 20px;
-    font-weight: 500;
 }
 
 /* Reklam Konteyneri */
@@ -197,14 +172,14 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 #ad-container.show {
@@ -212,50 +187,60 @@ html, body {
     visibility: visible;
 }
 
-#ad-content {
+#game-completed-ad {
     background: white;
     padding: 25px;
     border-radius: 15px;
     width: 90%;
     max-width: 400px;
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    /* Pop-in Animasiyası */
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Kullanıcı Bilgisi */
-#user-info {
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    box-shadow: var(--shadow);
+@keyframes popIn {
+    0% { transform: scale(0.7); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
-/* Responsive Tasarım */
-@media (max-width: 768px) {
-    .memory-board {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .game-info {
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+#next-level {
+    background: linear-gradient(135deg, #2ecc71, #27ae60); /* Yaşıl */
+}
+
+#restart-level {
+    background: linear-gradient(135deg, #e74c3c, #c0392b); /* Qırmızı */
+}
+
+/* Responsive (Mobil) */
+@media (max-width: 600px) {
+    .container {
+        padding: 0;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+        display: flex;
         flex-direction: column;
-        gap: 8px;
+        justify-content: center;
+        align-items: center;
     }
-    
-    .game-info div {
-        width: 100%;
-        text-align: center;
-    }
-}
 
-@media (max-width: 480px) {
-    .memory-board {
-        grid-template-columns: repeat(2, 1fr);
+    #game-area {
+        border-radius: 0;
+        box-shadow: none;
+        padding: 10px;
+        min-height: 100%;
     }
-    
-    .game-header h1 {
-        font-size: 1.5rem;
+
+    .memory-board {
+        grid-template-columns: repeat(4, 1fr); /* 4x3 qalır */
+        gap: 6px;
     }
     
     .card .front,
@@ -264,265 +249,6 @@ html, body {
     }
 }
 
-/* Gizleme Sınıfı */
 .hidden {
     display: none !important;
-}
-
-/* Profile background for Telegram users */
-.profile-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    filter: blur(8px) brightness(0.7);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-.profile-bg.loaded {
-    opacity: 1;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--tg-theme-bg-color, #f4f4f4);
-    height: 100%;
-    min-height: -webkit-fill-available;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    position: relative;
-}
-
-#game-area {
-    background-color: white;
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-    height: 100%;
-    max-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-}
-
-.game-header {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.game-header h2 {
-    color: #2c3e50;
-    margin-bottom: 5px;
-}
-
-.game-info {
-    display: flex;
-    justify-content: space-around;
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 10px 0;
-    font-weight: 600;
-}
-
-#memory-board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    padding: 5px;
-    -webkit-overflow-scrolling: touch;
-}
-
-.card {
-    aspect-ratio: 1;
-    background-color: var(--tg-theme-button-color, #3498db);
-    border-radius: 8px;
-    cursor: pointer;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.5s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    color: white;
-}
-
-.card.flipped {
-    transform: rotateY(180deg);
-    background-color: white;
-    color: #2c3e50;
-}
-
-.card.matched {
-    background-color: #4CAF50;
-    color: white;
-    cursor: default;
-}
-
-.hidden {
-    display: none !important;
-}
-
-#restart-button {
-    background: linear-gradient(135deg, var(--tg-theme-button-color, #3498db), #2980b9);
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    font-size: 16px;
-    border-radius: 30px;
-    cursor: pointer;
-    margin-top: 20px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 300px;
-    display: block;
-    margin: 20px auto 0;
-}
-
-#restart-button:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Ad container styles */
-#ad-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    padding: 15px;
-    box-sizing: border-box;
-}
-
-#game-completed-ad {
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    padding: 25px;
-    border-radius: 15px;
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    border: 1px solid #e0e0e0;
-    animation: popIn 0.3s ease-out;
-}
-
-@keyframes popIn {
-    0% { transform: scale(0.9); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-#game-completed-ad h3 {
-    margin: 0 0 15px 0;
-    color: #2c3e50;
-    font-size: 1.5em;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.1);
-}
-
-#ad-content {
-    margin: 20px 0;
-}
-
-#ad-content iframe {
-    width: 100%;
-    height: 250px;
-    border: none;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.button-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.game-button {
-    border: none;
-    padding: 12px 24px;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    min-width: 160px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: white;
-}
-
-.game-button:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#next-level {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-}
-
-#restart-level {
-    background: linear-gradient(135deg, #e74c3c, #c0392b);
-}
-
-/* Mobile-specific styles */
-@media (max-width: 600px) {
-    body {
-        padding: 0;
-    }
-    
-    #game-area {
-        border-radius: 0;
-        max-width: 100%;
-        padding: 10px;
-        box-shadow: none;
-    }
-    
-    #memory-board {
-        gap: 6px;
-        padding: 5px;
-    }
-    
-    .card {
-        font-size: 20px;
-    }
-    
-    .game-header h2 {
-        font-size: 1.5em;
-    }
-    
-    .game-info {
-        font-size: 16px;
-        padding: 8px;
-    }
-    
-    /* Fix for iOS viewport height */
-    @supports (-webkit-touch-callout: none) {
-        html, body {
-            height: -webkit-fill-available;
-        }
-    }
 }
