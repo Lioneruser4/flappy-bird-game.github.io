@@ -32,6 +32,12 @@ const ALL_EMOJIS = [
 // DOM elementləri və Səslər
 let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon;
 let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
+// YENİ: Online İstifadəçi elementi
+let onlineUsersDisplay; 
+
+// YENİ: PubNub Dəyişənləri
+let pubnub;
+const PUBNUB_CHANNEL = 'memory_game_online'; // Kanal adı
 
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elementlərini Seç
@@ -45,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
     finalScoreDisplay = document.getElementById('final-score');
     currentLevelDisplay = document.getElementById('current-level');
     themeIcon = document.getElementById('theme-icon');
+    // YENİ: Online İstifadəçi elementini seç
+    onlineUsersDisplay = document.getElementById('online-users');
     
     // Səs elementlərini seç
     flipSound = document.getElementById('flip-sound');
@@ -63,8 +71,47 @@ document.addEventListener('DOMContentLoaded', function() {
         themeIcon.textContent = '☀️';
     }
     
+    // YENİ: PubNub bağlantısını başlat
+    initPubNub();
+
     startGame();
 });
+
+// YENİ: PubNub Bağlantısı və Canlı Sayğac Məntiqi
+function initPubNub() {
+    // AÇARLARI BURAYA DAXİL EDİN (PubNub Hesabınızdan Aldığınız Açarlar)
+    pubnub = new PubNub({
+        publishKey: 'YOUR_PUB_KEY', // <-- Bunu öz açarınızla əvəz edin
+        subscribeKey: 'YOUR_SUB_KEY', // <-- Bunu öz açarınızla əvəz edin
+        userId: 'user-' + Math.random().toString(36).substring(2, 9) // Hər istifadəçi üçün unikal ID
+    });
+
+    // İstifadəçi (Presence) dəyişikliklərini dinlə
+    pubnub.addListener({
+        presence: function(presenceEvent) {
+            if (presenceEvent.channel === PUBNUB_CHANNEL) {
+                // Kanaldakı online istifadəçi sayını yenilə
+                onlineUsersDisplay.textContent = presenceEvent.occupancy;
+            }
+        }
+    });
+
+    // Kanala abunə ol (Presence aktivləşdirilmiş vəziyyətdə)
+    pubnub.subscribe({
+        channels: [PUBNUB_CHANNEL],
+        withPresence: true 
+    });
+    
+    // İlk yüklənmədə cari online sayını al
+    pubnub.hereNow({
+        channels: [PUBNUB_CHANNEL]
+    }, function(status, response) {
+        if (response && response.channels && response.channels[PUBNUB_CHANNEL]) {
+            onlineUsersDisplay.textContent = response.channels[PUBNUB_CHANNEL].occupancy;
+        }
+    });
+}
+
 
 // Gecikməsiz Səs Oynatma Funksiyası (Audio Elementinin Klonlanması)
 function playSound(audioElement) {
@@ -111,6 +158,7 @@ function initGame() {
     
     createCards();
     startTimer();
+    adContainer.classList.remove('show');
     adContainer.classList.add('hidden');
 }
 
@@ -247,7 +295,8 @@ function handleGameOver(isSuccess) {
     const adTitle = document.getElementById('ad-title');
     const finalMessage = document.querySelector('.final-message');
     const nextLevelBtn = document.getElementById('next-level');
-    const restartLevelBtn = document.getElementById('restart-level'); // Yenilənmiş düymə
+    const restartLevelBtn = document.getElementById('restart-level');
+    const adContent = document.getElementById('ad-content'); // Reklam içeriği div'i
 
     if (isSuccess) {
         playSound(winSound);
@@ -258,7 +307,13 @@ function handleGameOver(isSuccess) {
 
             // Əsas düymə: Növbəti Səviyyə
             nextLevelBtn.textContent = `Növbəti Səviyyə (${level + 1})`;
-            nextLevelBtn.onclick = function() { level++; initGame(); };
+            nextLevelBtn.onclick = null; 
+            nextLevelBtn.onclick = function() { 
+                adContainer.classList.remove('show'); 
+                adContainer.classList.add('hidden');
+                level++; 
+                initGame(); 
+            };
             nextLevelBtn.style.display = 'block'; 
 
             // İkinci düymə: Təkrar Oyna
@@ -268,23 +323,35 @@ function handleGameOver(isSuccess) {
             adTitle.textContent = 'Oyun Bitdi! 🏆 Ən Yüksək Nəticə!';
             finalMessage.textContent = `Bütün səviyyələri ${score} xalla tamamladınız.`;
             
-            // Əsas düymə: Yenidən Başla (Çünki başqa level yoxdur)
+            // Əsas düymə: Yenidən Başla
             nextLevelBtn.textContent = 'Yenidən Başla';
-            nextLevelBtn.onclick = function() { level = 1; initGame(); }; 
+            nextLevelBtn.onclick = null;
+            nextLevelBtn.onclick = function() { 
+                adContainer.classList.remove('show'); 
+                adContainer.classList.add('hidden');
+                level = 1; 
+                initGame(); 
+            }; 
 
-            // İkinci düyməni (Təkrar Oyna) gizlədirik, çünki əsas düymə eyni funksiyanı yerinə yetirir
+            // İkinci düyməni (Təkrar Oyna) gizlədirik
             restartLevelBtn.style.display = 'none'; 
         }
-    } 
+    }
     
+    // Təkrar Oyna düyməsinin hadisəsi
     document.getElementById('restart-level').onclick = function() {
+        adContainer.classList.remove('show'); 
+        adContainer.classList.add('hidden');
         initGame(); // Cari səviyyəni yenidən başlat
     };
 
-    // Reklam bloku (Placeholder)
-    document.getElementById('ad-content').innerHTML = `
+    // ------------------------------------------------------------------
+    // ⭐ REKLAM KODU ƏLAVƏSİ ⭐
+    // ------------------------------------------------------------------
+    adContent.innerHTML = `
         <div class="ad-iframe-container">
-            <p>Reklamınız burada görünəcək.</p>
+            <p style="margin-bottom: 10px; font-weight: 600; color: var(--text-color);">Reklam:</p>
+            <script type='text/javascript' src='//pl27810690.effectivegatecpm.com/3f/56/0c/3f560cd28640fec16294d033439790e5.js'></script>
         </div>
     `;
 
