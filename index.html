@@ -2,32 +2,35 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Hafıza Oyunu</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="profile-bg"></div>
+    
     <div class="container">
-        <div id="user-info">
-            <p>Kullanıcı bilgileri alınıyor...</p>
-        </div>
-
+        <div id="user-info" class="hidden"></div>
+        
         <div id="game-area" class="hidden">
-            <h2>Hafıza Oyunu</h2>
-            <div class="game-info">
-                <p>Hamle: <span id="moves">0</span></p>
-                <p>Eşleşen: <span id="matched">0</span>/8</p>
+            <div class="game-header">
+                <h1>Hafıza Oyunu</h1>
+                <div class="game-info">
+                    <div>Hamle: <span id="moves">0</span></div>
+                    <div>Eşleşen: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
+                </div>
             </div>
-            <div id="memory-board"></div>
-            <button id="restart-button">Yeniden Başla</button>
+            
+            <div id="memory-board" class="memory-board"></div>
+            
+            <button id="restart-button" class="game-button">Yeniden Başlat</button>
         </div>
-
-        <div id="error-area" class="hidden">
-            <p>Lütfen bu uygulamayı Telegram içinden açın.</p>
+        
+        <div id="error-area" class="error-message hidden">
+            <p>Oyun yüklenirken bir hata oluştu. Lütfen Telegram üzerinden açmayı deneyin.</p>
         </div>
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="script.js"></script>
 </body>
-</html>
