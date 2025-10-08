@@ -1,1 +1,56 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--tg-theme-bg-color, #f4f4f4); /* Telegram tema rengini kullanır */
+    color: var(--tg-theme-text-color, #222); /* Telegram tema rengini kullanır */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+}
+
+.container {
+    background-color: var(--tg-theme-secondary-bg-color, #fff);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#user-info h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+#user-info p {
+    font-size: 14px;
+    color: #888;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: #eee;
+    margin: 20px 0;
+}
+
+#click-button {
+    background-color: var(--tg-theme-button-color, #007bff); /* Telegram buton rengi */
+    color: var(--tg-theme-button-text-color, #fff); /* Telegram buton yazı rengi */
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+#click-button:active {
+    transform: scale(0.95);
+}
+
+.hidden {
+    display: none;
+}
 
