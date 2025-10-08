@@ -12,13 +12,13 @@ let score = 0;
 
 // Vaxt Dəyişənləri
 let timerInterval;
-let timeElapsed = 0; // Vaxt sayğacı limitsiz işləyəcək
+let timeElapsed = 0; 
 
 // Xal Dəyişənləri
 const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
 
-// Emoji hovuzu (50 fərqli emoji) - Hər səviyyədə fərqli emojilər seçiləcək
+// Emoji hovuzu (70 fərqli emoji) - Hər səviyyədə təsadüfi seçiləcək
 const ALL_EMOJIS = [
     '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
     '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
@@ -81,7 +81,7 @@ function startGame() {
 
 // Oyunu sıfırla və başla
 function initGame() {
-    clearInterval(timerInterval); // Əvvəlki sayğacı dayandır
+    clearInterval(timerInterval);
 
     // Səviyyəyə görə kart sayını təyin et
     if (level === 1) totalPairs = 6; // 12 kart
@@ -92,7 +92,7 @@ function initGame() {
     memoryBoard.innerHTML = '';
     moves = 0;
     matchedPairs = 0;
-    // Xal yalnız səviyyə 1-dən başlananda sıfırlansın, yoxsa cari xal saxlanılacaq
+    // Xal yalnız level 1-dən başlananda sıfırlansın
     if (level === 1) score = 0; 
     timeElapsed = 0;
     lockBoard = false;
@@ -106,16 +106,16 @@ function initGame() {
     document.getElementById('total-pairs').textContent = totalPairs;
     matchedDisplay.textContent = matchedPairs;
     currentLevelDisplay.textContent = `(Səviyyə ${level})`;
-    timerDisplay.textContent = formatTime(timeElapsed); // Vaxt sıfırlanır
+    timerDisplay.textContent = formatTime(timeElapsed);
+    timerDisplay.style.color = 'inherit'; // Rəngi sıfırla
     
     createCards();
     startTimer();
-    adContainer.classList.add('hidden'); // Reklamı gizlət
+    adContainer.classList.add('hidden');
 }
 
-// Limitsiz Vaxt Sayğacı (Sadəcə irəli sayır)
+// Limitsiz Vaxt Sayğacı 
 function startTimer() {
-    // Limitsiz vaxt üçün hər saniyə sadəcə artır
     timerInterval = setInterval(() => {
         timeElapsed++;
         timerDisplay.textContent = formatTime(timeElapsed);
@@ -137,9 +137,9 @@ function createCards() {
     else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
     else if (totalPairs === 10) memoryBoard.classList.add('grid-4x5');
     
-    // YENİ EMOJİ MƏNTİQİ: Hər səviyyədə təsadüfi yeni emojilər
-    const shuffledEmojis = shuffleArray([...ALL_EMOJIS]); // Bütün emojiləri qarışdır
-    const selectedEmojis = shuffledEmojis.slice(0, totalPairs); // Tələb olunan qədərini seç
+    // EMOJİ MƏNTİQİ: Hər səviyyədə təsadüfi yeni emojilər
+    const shuffledEmojis = shuffleArray([...ALL_EMOJIS]);
+    const selectedEmojis = shuffledEmojis.slice(0, totalPairs); 
     const gameCards = selectedEmojis.flatMap(emoji => [emoji, emoji]);
     shuffleArray(gameCards);
     
@@ -163,7 +163,6 @@ function flipCard() {
     if (this === firstCard) return;
     if (this.classList.contains('flipped')) return;
 
-    // Kart çevrilmə səsi
     playSound(flipSound);
 
     this.classList.add('flipped');
@@ -186,7 +185,6 @@ function checkForMatch() {
     const isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
     
     if (isMatch) {
-        // Xal əlavə et
         score += SCORE_MATCH;
         scoreDisplay.textContent = score;
 
@@ -197,10 +195,9 @@ function checkForMatch() {
         
         if (matchedPairs === totalPairs) {
             clearInterval(timerInterval);
-            handleGameOver(true); // Səviyyə bitdi
+            handleGameOver(true);
         }
     } else {
-        // Xal çıxar
         score += SCORE_MISMATCH;
         if (score < 0) score = 0; 
         scoreDisplay.textContent = score;
@@ -240,7 +237,7 @@ function resetBoard() {
     secondCard = null;
 }
 
-// Game Over (Səviyyə Bitdi)
+// Oyun Bitdi Paneli
 function handleGameOver(isSuccess) {
     lockBoard = true;
 
@@ -250,23 +247,33 @@ function handleGameOver(isSuccess) {
     const adTitle = document.getElementById('ad-title');
     const finalMessage = document.querySelector('.final-message');
     const nextLevelBtn = document.getElementById('next-level');
+    const restartLevelBtn = document.getElementById('restart-level'); // Yenilənmiş düymə
 
     if (isSuccess) {
         playSound(winSound);
         
         if (level < MAX_LEVEL) {
-            // SƏVİYYƏ ARTIRMA DÜZƏLİŞİ
             adTitle.textContent = 'Təbriklər! 🎉 Səviyyə Keçildi!';
-            finalMessage.textContent = `Növbəti səviyyədə ${totalPairs + 2} cütlük (${totalPairs * 2 + 4} kart) olacaq.`;
+            finalMessage.textContent = `Növbəti səviyyədə ${totalPairs + 2} cütlük olacaq.`;
 
+            // Əsas düymə: Növbəti Səviyyə
             nextLevelBtn.textContent = `Növbəti Səviyyə (${level + 1})`;
             nextLevelBtn.onclick = function() { level++; initGame(); };
-            nextLevelBtn.style.display = 'inline-block';
+            nextLevelBtn.style.display = 'block'; 
+
+            // İkinci düymə: Təkrar Oyna
+            restartLevelBtn.style.display = 'block';
+
         } else {
             adTitle.textContent = 'Oyun Bitdi! 🏆 Ən Yüksək Nəticə!';
-            finalMessage.textContent = `Bütün səviyyələri ${score} xalla tamamladınız. Vaxt: ${formatTime(timeElapsed)}.`;
+            finalMessage.textContent = `Bütün səviyyələri ${score} xalla tamamladınız.`;
+            
+            // Əsas düymə: Yenidən Başla (Çünki başqa level yoxdur)
             nextLevelBtn.textContent = 'Yenidən Başla';
             nextLevelBtn.onclick = function() { level = 1; initGame(); }; 
+
+            // İkinci düyməni (Təkrar Oyna) gizlədirik, çünki əsas düymə eyni funksiyanı yerinə yetirir
+            restartLevelBtn.style.display = 'none'; 
         }
     } 
     
