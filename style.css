@@ -14,7 +14,7 @@
 .dark-mode {
     --bg-color: #1a1a1a;
     --text-color: #f0f0f0;
-    --primary-color: #bb86fc; /* Lila tonu */
+    --primary-color: #bb86fc; 
     --secondary-color: #3700b3;
     --card-bg: #2c2c2c;
     --shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
@@ -25,7 +25,6 @@
 .dark-mode .card .back { background: var(--card-bg); color: var(--text-color); }
 .dark-mode .game-info { background-color: rgba(187, 134, 252, 0.1); }
 .dark-mode h1, .dark-mode h3 { color: var(--primary-color); }
-
 
 /* Ümumi Stiller */
 * {
@@ -67,7 +66,7 @@ html, body {
     transition: background-color 0.3s;
 }
 
-/* Başlıq və Tema Düyməsi */
+/* Başlıq və Düymə */
 .game-header { text-align: center; margin-bottom: 15px; position: relative; }
 .game-header h1 { color: var(--primary-color); font-size: 1.8rem; margin-bottom: 5px; }
 
@@ -85,12 +84,13 @@ html, body {
     transition: transform 0.2s;
     color: var(--text-color);
 }
-.theme-toggle-button:hover { transform: scale(1.1); }
 
-/* Oyun Məlumatı */
+/* Oyun Məlumatı (4 element üçün) */
 .game-info {
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* İki sütunlu mobil üçün daha yaxşı yerləşmə */
+    gap: 8px 0;
+    text-align: center;
     background-color: rgba(52, 152, 219, 0.08);
     padding: 10px;
     border-radius: 10px;
@@ -105,9 +105,9 @@ html, body {
 }
 
 /* Seviyyəyə uyğun grid layoutları */
-.memory-board.grid-4x3 { grid-template-columns: repeat(4, 1fr); } /* 12 kart */
-.memory-board.grid-4x4 { grid-template-columns: repeat(4, 1fr); } /* 16 kart */
-.memory-board.grid-4x5 { grid-template-columns: repeat(4, 1fr); } /* 20 kart */
+.memory-board.grid-4x3 { grid-template-columns: repeat(4, 1fr); }
+.memory-board.grid-4x4 { grid-template-columns: repeat(4, 1fr); }
+.memory-board.grid-4x5 { grid-template-columns: repeat(4, 1fr); } 
 
 /* Kart Stilleri */
 .card {
@@ -125,12 +125,26 @@ html, body {
     transform: rotateY(180deg);
 }
 
-.card.matched {
-    cursor: default;
-    /* matched kartlarda animasiyanı saxlayıb, həmişə açıq saxlayırıq */
-    transform: rotateY(180deg);
+/* Kart Eşləşmə Animasiyası */
+@keyframes match-pulse {
+    0% { transform: scale(1) rotateY(180deg); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
+    50% { 
+        transform: scale(1.05) rotateY(180deg); 
+        box-shadow: 0 0 20px var(--success-color), 0 0 30px var(--success-color); 
+    }
+    100% { transform: scale(1) rotateY(180deg); }
 }
 
+.card.matched {
+    cursor: default;
+    /* Kartın açıq qalmasını təmin edir */
+    transform: rotateY(180deg); 
+    /* Gecikməsiz animasiyanı tətbiq edir */
+    animation: match-pulse 0.5s ease-out; 
+    border: 3px solid var(--success-color);
+}
+
+/* Kartın Ön və Arxa Üzü */
 .card .front,
 .card .back {
     position: absolute;
@@ -163,7 +177,7 @@ html, body {
     font-size: 1.5rem; 
 }
 
-/* Düymələr */
+/* Düymələr, Reklam və Panel stilləri eyni qalır */
 .game-button {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
@@ -181,61 +195,4 @@ html, body {
     max-width: 250px;
 }
 
-/* Reklam və Panel */
-#ad-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    backdrop-filter: blur(5px);
-}
-
-#game-completed-ad {
-    background-color: var(--card-bg);
-    padding: 30px;
-    border-radius: 15px;
-    text-align: center;
-    max-width: 90%;
-    box-shadow: var(--shadow);
-}
-
-#ad-content {
-    margin: 15px 0;
-}
-
-.ad-iframe-container {
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 15px;
-}
-
-.button-group {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.button-group .game-button {
-    margin: 10px 0;
-    width: 100%;
-    max-width: 180px;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* Mobil Uyğunluq */
-@media (max-width: 600px) {
-    .memory-board.grid-4x5 .card .front,
-    .memory-board.grid-4x5 .card .back {
-        font-size: 1.2rem;
-    }
-}
+.hidden { display: none !important; }
