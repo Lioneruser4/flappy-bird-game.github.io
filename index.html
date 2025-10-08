@@ -1,36 +1,48 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="az">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hafıza Oyunu X</title>
+    <title>Yaddaş Oyunu X</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="profile-bg"></div>
+    <div id="profile-bg" class="hidden"></div> 
     
     <div class="container">
-        <div id="user-info" class="hidden"></div>
+        <div id="user-info" class="hidden"></div> 
+        <div id="error-area" class="error-message hidden"></div>
         
-        <div id="game-area" class="hidden">
+        <div id="game-area">
             <div class="game-header">
-                <h1>Hafıza Oyunu X BETA </h1>
+                <h1>Yaddaş Oyunu X BETA 🧠</h1>
                 <div class="game-info">
-                    <div>Hamle: <span id="moves">0</span></div>
-                    <div>Eşleşen: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
+                    <div>Hərəkət: <span id="moves">0</span></div>
+                    <div>Cütlük: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
                 </div>
             </div>
             
             <div id="memory-board" class="memory-board"></div>
             
-            <button id="restart-button" class="game-button">Yeniden Başlat</button>
+            <button id="restart-button" class="game-button">Yenidən Başla</button>
         </div>
         
-        <div id="error-area" class="error-message hidden">
-            <p>Oyun yüklenirken bir hata oluştu. Lütfen Telegram üzerinden açmayı deneyin.</p>
+        <div id="ad-container" class="hidden">
+            <div id="game-completed-ad">
+                <h3>Təbriklər! 🎉</h3>
+                <p>Oyunu <span id="final-moves">0</span> hərəkətdə bitirdiniz!</p>
+                
+                <div id="ad-content">
+                    </div>
+                
+                <div class="button-group">
+                    <button id="next-level" class="game-button">Növbəti Səviyyə</button>
+                    <button id="restart-level" class="game-button">Yenidən Başla</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="script.js"></script>
 </body>
+</html>
