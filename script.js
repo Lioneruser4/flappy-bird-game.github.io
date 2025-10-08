@@ -7,19 +7,29 @@ let firstCard, secondCard;
 let moves = 0;
 let matchedPairs = 0;
 let level = 1;
-let totalPairs = 8;
-let gameActive = false;
+let totalPairs = 8; // İlk səviyyə üçün 8 cüt (16 kart)
 
-// Emoji setleri
+// Emoji dəstləri
 const emojiSets = [
     ['🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵'],
     ['🦉', '🐸', '🐧', '🐨', '🐼', '🦘', '🐬', '🐠', '🦀', '🐙'],
     ['🍎', '🍌', '🍒', '🍓', '🍊', '🍋', '🍉', '🍇', '🍍', '🥝']
 ];
 
-// Sayfa yüklendiğinde oyunu başlat
-document.addEventListener('DOMContentLoaded', function() {
-    // Elementleri seç
+// Cari səviyyə üçün emojiləri al
+function getEmojisForLevel(level) {
+    // Hər səviyyədə daha çox emoji istifadə et
+    const startIndex = (level - 1) * 4;
+    const endIndex = 6 + (level - 1) * 2; // Hər səviyyədə 2 yeni emoji əlavə et
+    return [...emojiSets[level - 1]].slice(0, endIndex);
+}
+
+// Səhifə yüklənəndə oyunu başlat
+document.addEventListener('DOMContentLoaded', function () {
+    // Telegram Web App obyektini alırıq
+    const tg = window.Telegram && window.Telegram.WebApp;
+
+    // Elementləri seçirik
     const userInfoDiv = document.getElementById('user-info');
     const gameAreaDiv = document.getElementById('game-area');
     const errorAreaDiv = document.getElementById('error-area');
@@ -27,93 +37,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const restartButton = document.getElementById('restart-button');
     const movesDisplay = document.getElementById('moves');
     const matchedDisplay = document.getElementById('matched');
-    const levelDisplay = document.getElementById('level');
+    const levelDisplay = document.getElementById('level-display');
     const totalPairsDisplay = document.getElementById('total-pairs');
-    const profileBg = document.getElementById('profile-bg');
     
-    // Telegram WebApp kontrolü
-    const tg = window.Telegram && window.Telegram.WebApp;
+    // Oyun sahəsini göstər
+    if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
+    
+    // Telegram məlumatlarını yoxla
+    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const user = tg.initDataUnsafe.user;
+        if (userInfoDiv) {
+            userInfoDiv.innerHTML = `Xoş gəlmisiniz, ${user.first_name || 'İstifadəçi'}!`;
+            userInfoDiv.classList.remove('hidden');
+        }
+    } else if (errorAreaDiv) {
+        errorAreaDiv.classList.remove('hidden');
+    }
+    
+    // Oyun dəyişənləri
+    let hasFlippedCard = false;
     
     // Oyunu başlat
     initGame();
-    
-    // Telegram kullanıcı bilgilerini yükle
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const user = tg.initDataUnsafe.user;
-        if (userInfoDiv) {
-            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
-            userInfoDiv.classList.remove('hidden');
-            
-            // Profil fotoğrafını ayarla
-            if (user.photo_url) {
-                profileBg.style.backgroundImage = `url('${user.photo_url}')`;
-                profileBg.classList.add('loaded');
-            }
-        }
-        
-        // Telegram butonlarını göster
-        tg.MainButton.setText('OYUNA BAŞLA').show();
-        tg.MainButton.onClick(() => {
-            tg.MainButton.hide();
-            startGame();
-        });
-    } else {
-        // Telegram dışındaki tarayıcılar için
-        if (errorAreaDiv) errorAreaDiv.classList.add('hidden');
-        startGame();
-    }
-    
-    // Oyunu başlat
-    function startGame() {
-        if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
-        initGame();
-    }
-    
-    // Seviyeye göre emojileri al
-    function getEmojisForLevel(level) {
-        const endIndex = 6 + (level - 1) * 2;
-        return [...emojiSets[level - 1]].slice(0, endIndex);
-    }
-    // Telegram Web App kontrolü
-    const tg = window.Telegram && window.Telegram.WebApp;
-    
-    // Elementleri seç
-    const userInfoDiv = document.getElementById('user-info');
-    const gameAreaDiv = document.getElementById('game-area');
-    const errorAreaDiv = document.getElementById('error-area');
-    const memoryBoard = document.getElementById('memory-board');
-    const restartButton = document.getElementById('restart-button');
-    const movesDisplay = document.getElementById('moves');
-    const matchedDisplay = document.getElementById('matched');
-    const levelDisplay = document.getElementById('level');
-    const totalPairsDisplay = document.getElementById('total-pairs');
-    
-    // Oyun alanını göster
-    if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
-    
-    // Telegram kullanıcı bilgilerini kontrol et
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const user = tg.initDataUnsafe.user;
-        if (userInfoDiv) {
-            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
-        }
-    } else if (errorAreaDiv) {
-        errorAreaDiv.classList.remove('hidden');
-    }
-    
-    // Oyun alanını göster
-    if (gameAreaDiv) gameAreaDiv.classList.remove('hidden');
-    
-    // Telegram kullanıcı bilgilerini kontrol et
-    if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const user = tg.initDataUnsafe.user;
-        if (userInfoDiv) {
-            userInfoDiv.innerHTML = `Hoş geldiniz, ${user.first_name || 'Kullanıcı'}!`;
-            userInfoDiv.classList.remove('hidden');
-        }
-    } else if (errorAreaDiv) {
-        errorAreaDiv.classList.remove('hidden');
-    }
 
     // Oyunu başlat
     function initGame() {
@@ -155,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="front"></div>
                 <div class="back">${emoji}</div>
             `;
-            
             card.addEventListener('click', flipCard);
             memoryBoard.appendChild(card);
             cards.push(card);
@@ -165,14 +109,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Oyunu başlat
     initGame();
     
-    // Yeniden başlat butonunu ayarla
+    // Yeniden başlat butonuna tıklama olayı
     if (restartButton) {
-        restartButton.addEventListener('click', function() {
-            initGame();
-        });
+        restartButton.addEventListener('click', initGame);
     }
 
-    // Kart çevirmə əməliyyatı
+    // Kart çevirme işlemiəliyyatı
     function flipCard() {
         if (lockBoard) return;
         if (this === firstCard) return;
