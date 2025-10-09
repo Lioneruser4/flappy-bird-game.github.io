@@ -1,4 +1,4 @@
-// OYUN DƏYİŞƏNLƏRİ
+// Oyun dəyişənləri
 let cards = [];
 let hasFlippedCard = false;
 let lockBoard = false;
@@ -10,30 +10,36 @@ let level = 1;
 const MAX_LEVEL = 3; 
 let score = 0;
 
-// VAQT VƏ XAL DƏYİŞƏNLƏRİ
+// Vaxt Dəyişənləri
 let timerInterval;
 let timeElapsed = 0; 
+
+// Xal Dəyişənləri
 const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
 
-// EMOJİ HOVUZU 
+// Emoji hovuzu (70 fərqli emoji) - Hər səviyyədə təsadüfi seçiləcək
 const ALL_EMOJIS = [
-    '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
-    '🥝', '🍍', '🥥', '🥑', '🚗', '🚕', '🚌', '🚓', '🚑', '🚒', '🚚', '🚢', '🚀', '🚁', '🚂', '⌚', '📱', '💻', '🖥️', 
-    '🔑', '🔒', '🔓', '🎲', '🧩', '🎈', '🎁', '🎂', '👑', '💍','🌞', '🌛', '⭐', '🌈', '🔥', '💧', '🌿', '🍄', '🔔', '📚',
+    '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
+    '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
+    '🥝', '🍍', '🥥', '🥑', '🚗', '🚕', '🚌', '🚓', '🚑', '🚒', 
+    '🚚', '🚢', '🚀', '🚁', '🚂', '⌚', '📱', '💻', '🖥️', 
+    '🔑', '🔒', '🔓', '🎲', '🧩', '🎈', '🎁', '🎂', '👑', '💍',
+    '🌞', '🌛', '⭐', '🌈', '🔥', '💧', '🌿', '🍄', '🔔', '📚',
     '🔬', '🔭', '💰', '💳', '📧', '💡', '📌', '📎', '💉', '💊' 
 ];
 
-// DOM ELEMENTLƏRİ VƏ SƏSLƏR
-let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon, gameArea;
+// DOM elementləri və Səslər
+let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon;
 let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
 let onlineUsersDisplay; 
+
+// PubNub Dəyişənləri
 let pubnub;
 const PUBNUB_CHANNEL = 'memory_game_online'; 
 
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elementlərini Seç
-    gameArea = document.getElementById('game-area'); 
     memoryBoard = document.getElementById('memory-board');
     movesDisplay = document.getElementById('moves');
     matchedDisplay = document.getElementById('matched');
@@ -46,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     themeIcon = document.getElementById('theme-icon');
     onlineUsersDisplay = document.getElementById('online-users');
     
-    // ⭐ KRİTİK SƏS DÜZƏLİŞİ: Səs elementlərinin yükləndiyini yoxla
+    // Səs elementlərini seç
     flipSound = document.getElementById('flip-sound');
     matchSound = document.getElementById('match-sound');
     mismatchSound = document.getElementById('mismatch-sound');
@@ -55,70 +61,104 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Düymə hadisələri
     document.getElementById('restart-button').addEventListener('click', function() {
-        level = 1; 
+        level = 1; // Baş düymə hər zaman 1-ci səviyyədən başlasın
         initGame();
     });
     document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
 
+    // Tema rejimini yoxla
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
         themeIcon.textContent = '☀️';
     }
     
-    initPubNub(); 
+    initPubNub();
     startGame();
 });
 
-// PubNub və Səs funksiyaları eyni qalır
-
+// PubNub Bağlantısı və Canlı Sayğac Məntiqi
 function initPubNub() {
-    // PubNub AÇARLARI BURAYA DAXİL EDİN
+    // AÇARLARI BURAYA DAXİL EDİN (PubNub Hesabınızdan Aldığınız Açarlar)
     pubnub = new PubNub({
-        publishKey: 'YOUR_PUB_KEY', 
-        subscribeKey: 'YOUR_SUB_KEY', 
-        userId: 'user-' + Math.random().toString(36).substring(2, 9) 
+        publishKey: 'YOUR_PUB_KEY', // <-- Bunu öz açarınızla əvəz edin
+        subscribeKey: 'YOUR_SUB_KEY', // <-- Bunu öz açarınızla əvəz edin
+        userId: 'user-' + Math.random().toString(36).substring(2, 9) // Hər istifadəçi üçün unikal ID
     });
-    // ... (PubNub məntiqi) ...
-    pubnub.subscribe({ channels: [PUBNUB_CHANNEL], withPresence: true });
-    pubnub.hereNow({ channels: [PUBNUB_CHANNEL] }, function(status, response) {
-        if (response && response.channels && response.channels[PUBNUB_CHANNEL] && onlineUsersDisplay) {
+
+    // İstifadəçi (Presence) dəyişikliklərini dinlə
+    pubnub.addListener({
+        presence: function(presenceEvent) {
+            if (presenceEvent.channel === PUBNUB_CHANNEL) {
+                onlineUsersDisplay.textContent = presenceEvent.occupancy;
+            }
+        }
+    });
+
+    pubnub.subscribe({
+        channels: [PUBNUB_CHANNEL],
+        withPresence: true 
+    });
+    
+    // İlk yüklənmədə cari online sayını al
+    pubnub.hereNow({
+        channels: [PUBNUB_CHANNEL]
+    }, function(status, response) {
+        if (response && response.channels && response.channels[PUBNUB_CHANNEL]) {
             onlineUsersDisplay.textContent = response.channels[PUBNUB_CHANNEL].occupancy;
         }
     });
 }
 
-// SƏS GECİKMƏSİNİN HƏLLİ
+
+// Gecikməsiz Səs Oynatma Funksiyası
 function playSound(audioElement) {
     if (!audioElement) return;
-    const clone = audioElement.cloneNode(); 
+    const clone = audioElement.cloneNode();
     clone.volume = 0.5;
-    clone.play().catch(e => console.error("Səs oynatıla bilmədi:", e));
+    clone.play();
 }
 
-function startGame() { initGame(); }
+// Oyunu Başlat
+function startGame() {
+    initGame();
+}
 
+// Oyunu sıfırla və başla
 function initGame() {
     clearInterval(timerInterval);
-    if (level === 1) totalPairs = 6;
-    else if (level === 2) totalPairs = 8;
-    else if (level >= MAX_LEVEL) totalPairs = 10;
-    
-    memoryBoard.innerHTML = ''; cards = []; moves = 0; matchedPairs = 0;
-    if (level === 1) score = 0; 
-    timeElapsed = 0; lockBoard = false; hasFlippedCard = false; firstCard = null; secondCard = null;
 
-    movesDisplay.textContent = moves; scoreDisplay.textContent = score;
+    // Səviyyəyə görə kart sayını təyin et
+    if (level === 1) totalPairs = 6; // 12 kart
+    else if (level === 2) totalPairs = 8; // 16 kart
+    else if (level >= MAX_LEVEL) totalPairs = 10; // 20 kart (Maksimum)
+    
+    // Sıfırlamalar
+    memoryBoard.innerHTML = '';
+    moves = 0;
+    matchedPairs = 0;
+    if (level === 1) score = 0; 
+    timeElapsed = 0;
+    lockBoard = false;
+    hasFlippedCard = false;
+    firstCard = null;
+    secondCard = null;
+
+    // DOM yeniləmələri
+    movesDisplay.textContent = moves;
+    scoreDisplay.textContent = score;
     document.getElementById('total-pairs').textContent = totalPairs;
     matchedDisplay.textContent = matchedPairs;
     currentLevelDisplay.textContent = `(Səviyyə ${level})`;
     timerDisplay.textContent = formatTime(timeElapsed);
+    timerDisplay.style.color = 'inherit'; 
     
     createCards();
     startTimer();
-
-    gameArea.style.display = 'block'; adContainer.style.display = 'none'; 
+    adContainer.classList.remove('show');
+    adContainer.classList.add('hidden');
 }
 
+// Limitsiz Vaxt Sayğacı 
 function startTimer() {
     timerInterval = setInterval(() => {
         timeElapsed++;
@@ -126,23 +166,28 @@ function startTimer() {
     }, 1000);
 }
 
+// Vaxtı Dəqiqə:Saniyə formatına çevirir
 function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
     const seconds = (totalSeconds % 60).toString().padStart(2, '0');
     return `${minutes}:${seconds}`;
 }
 
+// Kartları yarat
 function createCards() {
+    // Kart qrafikini və ölçülərini səviyyəyə görə təyin et
     memoryBoard.className = 'memory-board';
     if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
     else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
     else if (totalPairs === 10) memoryBoard.classList.add('grid-4x5');
     
+    // EMOJİ MƏNTİQİ: Hər səviyyədə təsadüfi yeni emojilər
     const shuffledEmojis = shuffleArray([...ALL_EMOJIS]);
     const selectedEmojis = shuffledEmojis.slice(0, totalPairs); 
     const gameCards = selectedEmojis.flatMap(emoji => [emoji, emoji]);
     shuffleArray(gameCards);
     
+    // Kart elementlərini yarat
     gameCards.forEach((emoji, index) => {
         const card = document.createElement('div');
         card.classList.add('card');
@@ -156,6 +201,7 @@ function createCards() {
     });
 }
 
+// Kart çevirmə əməliyyatı
 function flipCard() {
     if (lockBoard) return;
     if (this === firstCard) return;
@@ -178,62 +224,66 @@ function flipCard() {
     checkForMatch();
 }
 
+// Eşləşməni yoxla
 function checkForMatch() {
     const isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
     
     if (isMatch) {
-        score += SCORE_MATCH; scoreDisplay.textContent = score;
-        playSound(matchSound); disableCards();
-        matchedPairs++; matchedDisplay.textContent = `${matchedPairs}/${totalPairs}`;
+        score += SCORE_MATCH;
+        scoreDisplay.textContent = score;
+
+        playSound(matchSound);
+        disableCards();
+        matchedPairs++;
+        matchedDisplay.textContent = `${matchedPairs}/${totalPairs}`;
         
         if (matchedPairs === totalPairs) {
             clearInterval(timerInterval);
-            setTimeout(() => { handleGameOver(true); }, 600); 
+            handleGameOver(true);
         }
     } else {
-        score += SCORE_MISMATCH; if (score < 0) score = 0; scoreDisplay.textContent = score;
+        score += SCORE_MISMATCH;
+        if (score < 0) score = 0; 
+        scoreDisplay.textContent = score;
+
         playSound(mismatchSound);
-        firstCard.classList.add('shake');
-        secondCard.classList.add('shake');
-        
-        // Kartları çevirmədən əvvəl kilidi aktivləşdiririk
-        lockBoard = true; 
-        setTimeout(() => {
-            firstCard.classList.remove('shake');
-            secondCard.classList.remove('shake');
-            unflipCards();
-        }, 1000); // 1 saniyə gözləmə
+        unflipCards();
     }
 }
 
+// Eşləşən kartları qeyd et və açıq saxla (Animasiya ilə)
 function disableCards() {
     firstCard.classList.add('matched');
     secondCard.classList.add('matched');
+    
     firstCard.removeEventListener('click', flipCard);
     secondCard.removeEventListener('click', flipCard);
+    
     resetBoard();
 }
 
+// Eşləşməyən kartları geri çevir
 function unflipCards() {
-    firstCard.classList.remove('flipped');
-    secondCard.classList.remove('flipped');
-    resetBoard();
+    lockBoard = true;
+    
+    setTimeout(() => {
+        firstCard.classList.remove('flipped');
+        secondCard.classList.remove('flipped');
+        resetBoard();
+    }, 1000);
 }
 
+// Oyun lövhəsini sıfırla
 function resetBoard() {
     hasFlippedCard = false;
-    lockBoard = false; // ⭐ KRİTİK DÜZƏLİŞ: Məhz burda kilidi açırıq
+    lockBoard = false;
     firstCard = null;
     secondCard = null;
 }
 
-// OYUN BİTDİ SAHƏSİ (Reklamın dərhal yüklənməsi)
+// Oyun Bitdi Paneli
 function handleGameOver(isSuccess) {
     lockBoard = true;
-    playSound(winSound);
-
-    gameArea.style.display = 'none'; 
-    adContainer.style.display = 'block'; 
 
     finalMovesDisplay.textContent = moves;
     finalScoreDisplay.textContent = score;
@@ -244,42 +294,67 @@ function handleGameOver(isSuccess) {
     const restartLevelBtn = document.getElementById('restart-level');
     const adContent = document.getElementById('ad-content'); 
 
-    if (level < MAX_LEVEL) {
-        adTitle.textContent = 'Təbriklər! 🎉 Səviyyə Keçildi!';
-        finalMessage.textContent = `Xal: ${score} | Növbəti səviyyədə ${totalPairs + 2} cütlük olacaq.`;
-        nextLevelBtn.textContent = `Növbəti Səviyyə (${level + 1})`;
-        restartLevelBtn.style.display = 'block';
-    } else {
-        adTitle.textContent = 'Oyun Bitdi! 🏆 Ən Yüksək Nəticə!';
-        finalMessage.textContent = `Bütün çətinlikləri ${score} xalla tamamladınız. Yenidən oyna!`;
-        nextLevelBtn.textContent = 'Eyni Səviyyəni Yenidən Başla'; 
-        restartLevelBtn.style.display = 'none'; 
+    if (isSuccess) {
+        playSound(winSound);
+        
+        // MAKSİMUM SƏVİYYƏ MƏNTİQİ DƏYİŞDİRİLDİ
+        if (level < MAX_LEVEL) {
+            adTitle.textContent = 'Təbriklər! 🎉 Səviyyə Keçildi!';
+            finalMessage.textContent = `Növbəti səviyyədə ${totalPairs + 2} cütlük olacaq.`;
+
+            // Əsas düymə: Növbəti Səviyyə
+            nextLevelBtn.textContent = `Növbəti Səviyyə (${level + 1})`;
+            nextLevelBtn.onclick = null; 
+            nextLevelBtn.onclick = function() { 
+                adContainer.classList.remove('show'); 
+                adContainer.classList.add('hidden');
+                level++; 
+                initGame(); // Yeni səviyyə, yeni kart sayı
+            };
+            nextLevelBtn.style.display = 'block'; 
+            restartLevelBtn.style.display = 'block';
+
+        } else {
+            // MAX_LEVEL-də qalırıq, sadəcə emojiləri yeniləyirik
+            adTitle.textContent = 'Oyun Bitdi! 🏆 Ən Yüksək Nəticə!';
+            finalMessage.textContent = `Bütün çətinlikləri ${score} xalla tamamladınız. Yenidən oyna!`;
+            
+            // Əsas düymə: Təkrar Oyna (Eyni Səviyyə)
+            nextLevelBtn.textContent = 'Eyni Səviyyəni Yenidən Başla'; 
+            nextLevelBtn.onclick = null;
+            nextLevelBtn.onclick = function() { 
+                adContainer.classList.remove('show'); 
+                adContainer.classList.add('hidden');
+                // level dəyişmir (MAX_LEVEL-də qalır), sadəcə yeni emojilər yüklənir
+                initGame(); 
+            }; 
+
+            // İkinci düyməni də (Təkrar Oyna) həmin funksiyanı etsin, ya da gizlədək.
+            restartLevelBtn.style.display = 'none'; 
+        }
     }
     
-    nextLevelBtn.onclick = function() { if (level < MAX_LEVEL) { level++; } initGame(); };
-    restartLevelBtn.onclick = function() { initGame(); };
-
-    // REKLAM HƏLLİ
-    adContent.innerHTML = ''; 
-    const adContainerDiv = document.createElement('div');
-    adContainerDiv.className = 'ad-iframe-container';
-    adContainerDiv.style.cssText = 'text-align: center; margin: 20px 0;';
-
-    const loadAdScript = (src) => {
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = src;
-        const div = document.createElement('div');
-        div.style.marginBottom = '20px';
-        div.appendChild(script);
-        adContainerDiv.appendChild(div);
+    // Təkrar Oyna düyməsinin hadisəsi
+    document.getElementById('restart-level').onclick = function() {
+        adContainer.classList.remove('show'); 
+        adContainer.classList.add('hidden');
+        initGame(); // Cari səviyyəni yenidən başlat
     };
 
-    loadAdScript('//pl27817770.effectivegatecpm.com/5d/b8/3f/5db83f02b180dc8f2699fba7459b6382.js');
-    loadAdScript('//pl27817788.effectivegatecpm.com/91/a1/d1/91a1d1bda43a3aa15888917200b9e931.js');
-    adContent.appendChild(adContainerDiv);
+    // ------------------------------------------------------------------
+    // ⭐ REKLAM KODU ƏLAVƏSİ VƏ MƏTN SİLİNDİ ⭐
+    // ------------------------------------------------------------------
+    adContent.innerHTML = `
+        <div class="ad-iframe-container">
+            <script type='text/javascript' src='//pl27810690.effectivegatecpm.com/3f/56/0c/3f560cd28640fec16294d033439790e5.js'></script>
+        </div>
+    `;
+
+    adContainer.classList.remove('hidden');
+    adContainer.classList.add('show');
 }
 
+// Dizi qarışdırma funksiyası
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -288,6 +363,7 @@ function shuffleArray(array) {
     return array;
 }
 
+// Gece/Gündüz Rejimi
 function toggleDarkMode() {
     const isDark = document.body.classList.toggle('dark-mode');
     if (isDark) {
