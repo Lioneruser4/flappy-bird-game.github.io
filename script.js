@@ -10,7 +10,7 @@ let level = 1;
 const MAX_LEVEL = 3; 
 let score = 0;
 
-// VAQLT VƏ XAL DƏYİŞƏNLƏRİ
+// VAQT VƏ XAL DƏYİŞƏNLƏRİ
 let timerInterval;
 let timeElapsed = 0; 
 const SCORE_MATCH = 100;
@@ -31,8 +31,6 @@ const ALL_EMOJIS = [
 let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon, gameArea;
 let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
 let onlineUsersDisplay; 
-
-// PUBNUB DƏYİŞƏNLƏRİ (Online İstifadəçi Sayı üçün)
 let pubnub;
 const PUBNUB_CHANNEL = 'memory_game_online'; 
 
@@ -60,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Düymə hadisələri
     document.getElementById('restart-button').addEventListener('click', function() {
-        level = 1; // Tam sıfırlama
+        level = 1; 
         initGame();
     });
     document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
@@ -71,15 +69,15 @@ document.addEventListener('DOMContentLoaded', function() {
         themeIcon.textContent = '☀️';
     }
     
-    initPubNub();
+    initPubNub(); // PUBNUB AÇARLARINIZI YAZMAĞI UNUTMAYIN
     startGame();
 });
 
 function initPubNub() {
     // PubNub AÇARLARI BURAYA DAXİL EDİN
     pubnub = new PubNub({
-        publishKey: 'YOUR_PUB_KEY', // <-- ZƏHMƏT OLMASA BUNU DƏYİŞDİRİN
-        subscribeKey: 'YOUR_SUB_KEY', // <-- ZƏHMƏT OLMASA BUNU DƏYİŞDİRİN
+        publishKey: 'YOUR_PUB_KEY', 
+        subscribeKey: 'YOUR_SUB_KEY', 
         userId: 'user-' + Math.random().toString(36).substring(2, 9) 
     });
 
@@ -105,12 +103,12 @@ function initPubNub() {
     });
 }
 
-// ⭐ SƏS GECİKMƏSİNİN HƏLLİ (Audio Klonlama) ⭐
+// SƏS GECİKMƏSİNİN HƏLLİ
 function playSound(audioElement) {
     if (!audioElement) return;
     const clone = audioElement.cloneNode(); 
     clone.volume = 0.5;
-    clone.play().catch(e => console.error("Səs oynatıla bilmədi:", e)); // Xəta tutucusu
+    clone.play().catch(e => console.error("Səs oynatıla bilmədi:", e));
 }
 
 function startGame() {
@@ -120,7 +118,6 @@ function startGame() {
 function initGame() {
     clearInterval(timerInterval);
 
-    // Səviyyəyə görə cütlük sayını təyin et
     if (level === 1) totalPairs = 6;
     else if (level === 2) totalPairs = 8;
     else if (level >= MAX_LEVEL) totalPairs = 10;
@@ -130,7 +127,7 @@ function initGame() {
     cards = []; 
     moves = 0;
     matchedPairs = 0;
-    if (level === 1) score = 0; // İlk səviyyədə xal sıfırlanır
+    if (level === 1) score = 0; 
     timeElapsed = 0;
     lockBoard = false;
     hasFlippedCard = false;
@@ -148,7 +145,7 @@ function initGame() {
     createCards();
     startTimer();
 
-    // ⭐ GÖRÜNMƏ MƏNTİQİ: OYUN GÖRÜNÜR, REKLAM GİZLƏNİR ⭐
+    // GÖRÜNMƏ MƏNTİQİ: OYUN GÖRÜNÜR, REKLAM GİZLƏNİR 
     gameArea.style.display = 'block'; 
     adContainer.style.display = 'none'; 
 }
@@ -167,13 +164,11 @@ function formatTime(totalSeconds) {
 }
 
 function createCards() {
-    // Kart lövhəsi klasslarını təyin et
     memoryBoard.className = 'memory-board';
     if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
     else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
     else if (totalPairs === 10) memoryBoard.classList.add('grid-4x5');
     
-    // Kartları yarat və qarışdır
     const shuffledEmojis = shuffleArray([...ALL_EMOJIS]);
     const selectedEmojis = shuffledEmojis.slice(0, totalPairs); 
     const gameCards = selectedEmojis.flatMap(emoji => [emoji, emoji]);
@@ -239,7 +234,6 @@ function checkForMatch() {
         scoreDisplay.textContent = score;
 
         playSound(mismatchSound);
-        // Səhv kartlar üçün titrəmə animasiyası
         firstCard.classList.add('shake');
         secondCard.classList.add('shake');
         
@@ -296,7 +290,6 @@ function handleGameOver(isSuccess) {
     const restartLevelBtn = document.getElementById('restart-level');
     const adContent = document.getElementById('ad-content'); 
 
-    // Məlumatların yenilənməsi
     if (level < MAX_LEVEL) {
         adTitle.textContent = 'Təbriklər! 🎉 Səviyyə Keçildi!';
         finalMessage.textContent = `Xal: ${score} | Növbəti səviyyədə ${totalPairs + 2} cütlük olacaq.`;
@@ -310,7 +303,6 @@ function handleGameOver(isSuccess) {
         restartLevelBtn.style.display = 'none'; 
     }
     
-    // Düymə Hadisələri
     nextLevelBtn.onclick = function() { 
         if (level < MAX_LEVEL) {
             level++;
@@ -322,8 +314,7 @@ function handleGameOver(isSuccess) {
         initGame(); 
     };
 
-    // ------------------------------------------------------------------
-    // ⭐ KRİTİK REKLAM HƏLLİ: SCRIPT ELEMENTLƏRİNİN DÜZGÜN YÜKLƏNMƏSİ ⭐
+    // KRİTİK REKLAM HƏLLİ: SCRIPT ELEMENTLƏRİNİN DÜZGÜN YÜKLƏNMƏSİ
     adContent.innerHTML = ''; 
 
     const adContainerDiv = document.createElement('div');
@@ -351,10 +342,8 @@ function handleGameOver(isSuccess) {
     adContainerDiv.appendChild(div2);
 
     adContent.appendChild(adContainerDiv);
-    // ------------------------------------------------------------------
 }
 
-// Dizi qarışdırma funksiyası
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -363,7 +352,6 @@ function shuffleArray(array) {
     return array;
 }
 
-// Gece/Gündüz Rejimi
 function toggleDarkMode() {
     const isDark = document.body.classList.toggle('dark-mode');
     if (isDark) {
