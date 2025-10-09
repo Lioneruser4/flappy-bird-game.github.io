@@ -1,5 +1,6 @@
 /* GLOBAL VƏ TƏMİZLƏMƏ */
 :root {
+    /* Ən son seçdiyiniz rənglər */
     --primary-color: #007BFF; /* Mavi */
     --secondary-color: #FF5722; /* Qırmızımtıl/Narıncı */
     --background-light: #f4f4f9;
@@ -10,7 +11,7 @@
     --text-color-dark: #f0f0f0;
 }
 
-/* ⭐ ƏSAS DÜZƏLİŞ: TAM EKRAN VƏ RESPONSİV HƏLL ⭐ */
+/* ⭐ ƏSAS HƏLL: TAM EKRAN VƏ ÇÖKMƏNİN QARŞISINI ALMAQ ⭐ */
 html, body {
     height: 100vh; /* Ekranın Tam Hündürlüyü */
     width: 100vw;  /* Ekranın Tam Eni */
@@ -34,15 +35,15 @@ body.dark-mode {
     color: var(--text-color-dark);
 }
 
-/* Əsas Konteyner (Ekranın Tam Sahəsi) */
+/* Əsas Konteyner (Tam Ekranı Tutur) */
 .container {
     width: 100%;
     min-height: 100vh;
-    padding: 20px 10px; /* Mobil üçün daha az padding */
+    padding: 20px 10px;
     background-color: var(--background-light);
     box-sizing: border-box;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* İçindəki elementləri üst-üstə düzür */
     align-items: center;
 }
 
@@ -50,16 +51,15 @@ body.dark-mode .container {
     background-color: #1e1e1e;
 }
 
-/* OYUN SAHƏSİ VƏ REKLAM SAHƏSİ */
-
+/* OYUN VƏ REKLAM SAHƏLƏRİ */
 #game-area, #ad-container {
     width: 100%;
-    max-width: 700px; /* Kontentin maksimum eni */
+    max-width: 700px; /* Kontenti mərkəzləşdirir */
     padding: 0;
     margin: 0 auto;
 }
 
-/* Oyun Header */
+/* Oyun Header və Info */
 .game-header {
     text-align: center;
     margin-bottom: 20px;
@@ -67,11 +67,21 @@ body.dark-mode .container {
     width: 100%;
 }
 
-/* ⭐ YENİ YER: Gece/Gündüz düyməsi */
+.game-info {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-bottom: 2px solid var(--secondary-color);
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Gece/Gündüz düyməsi */
 .theme-toggle-button {
     position: absolute;
     top: 5px;
-    left: 5px; /* Sola Köçürülür */
+    left: 5px;
     background: var(--background-light);
     border: 2px solid var(--secondary-color);
     color: var(--secondary-color);
@@ -97,22 +107,16 @@ body.dark-mode .theme-toggle-button {
     gap: 10px; 
     margin: 0 auto;
     padding: 10px 0;
-    width: 100%; /* Əsas elementlər tam eni tutmalıdır */
+    width: 100%;
 }
 
-.grid-4x3, .grid-4x4 {
-    grid-template-columns: repeat(4, 1fr);
-    max-width: 500px;
-}
-
-.grid-4x5 {
-    grid-template-columns: repeat(5, 1fr);
-    max-width: 600px;
-}
+.grid-4x3 { grid-template-columns: repeat(4, 1fr); max-width: 500px; }
+.grid-4x4 { grid-template-columns: repeat(4, 1fr); max-width: 600px; }
+.grid-4x5 { grid-template-columns: repeat(5, 1fr); max-width: 700px; }
 
 /* KARTLAR */
 .card {
-    height: 85px; /* Mobil üçün optimallaşdırılmış ölçü */
+    height: 85px; 
     perspective: 1000px; 
     cursor: pointer;
     border-radius: 10px; 
@@ -122,13 +126,11 @@ body.dark-mode .theme-toggle-button {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* ⭐ YENİ ANİMASİYA: Seçildikdə yüngülcə böyümə */
 .card.flipped:not(.matched) {
     box-shadow: 0 0 15px var(--secondary-color);
     transform: scale(1.05); 
 }
 
-/* Kart üzü və arxası */
 .front, .back {
     width: 100%;
     height: 100%;
@@ -139,45 +141,64 @@ body.dark-mode .theme-toggle-button {
     justify-content: center;
     align-items: center;
     font-size: 3em; 
-    transition: transform 0.6s; /* Rəng keçidlərini ləğv et, yalnız çevirmə */
+    transition: transform 0.6s;
 }
 
-/* Kart arxası (Gizli vəziyyət) */
 .front {
     background-color: var(--primary-color);
     border: 4px solid var(--secondary-color);
     transform: rotateY(0deg);
 }
 
-/* Kart üzü (Emoji) */
 .back {
     background-color: var(--card-face-light);
     transform: rotateY(180deg);
 }
 
-/* ⭐ YENİ ANİMASİYA: Eşləşmə Partlayışı (FadeOut + Kiçilmə) */
-.card.matched {
-    cursor: default;
-    animation: matchExplode 0.5s ease-out forwards;
-}
+.card.flipped .front { transform: rotateY(180deg); }
+.card.flipped .back { transform: rotateY(360deg); }
 
-@keyframes matchExplode {
-    0% { opacity: 1; transform: scale(1); box-shadow: 0 0 20px var(--secondary-color); }
-    50% { opacity: 0.7; transform: scale(1.1); }
-    100% { opacity: 0; transform: scale(0.1); } /* Partlayaraq yoxa çıxma */
-}
+/* Animasiyalar */
+.card.matched { animation: matchExplode 0.5s ease-out forwards; }
+.card.shake { animation: shake 0.3s ease-in-out; }
 
-/* ... (Qalan CSS Kodları) ... */
+/* düymələr */
+.game-button {
+    padding: 12px 25px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: bold;
+}
+.game-button:active { transform: scale(0.98); }
+.primary-action { background-color: var(--primary-color); color: white; }
+.secondary-action { background-color: var(--secondary-color); color: white; }
+
+/* REKLAM KONTEYNERİ (Görünmə Məsələsi Həll Edildi) */
+#ad-container {
+    /* JS tərəfindən idarə olunur (display: none/block) */
+    text-align: center;
+    padding: 40px 20px;
+    border: 2px solid var(--secondary-color);
+    border-radius: 10px;
+    background-color: var(--card-face-light);
+    box-shadow: 0 0 20px rgba(255, 87, 34, 0.3);
+    transition: all 0.5s ease-in-out;
+}
 
 /* KEYFRAMES */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-}
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
+@keyframes matchExplode { 0% { opacity: 1; transform: scale(1); box-shadow: 0 0 20px var(--secondary-color); } 50% { opacity: 0.7; transform: scale(1.1); } 100% { opacity: 0; transform: scale(0.1); } }
+@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
 
-@keyframes pulse {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.05); }
+/* Mobil Cihazlar Üçün Uyğunlaşma */
+@media (max-width: 600px) {
+    .container { padding: 10px 5px; }
+    .memory-board { width: 100%; padding: 5px; gap: 5px; }
+    .card { height: 80px; }
+    .front, .back { font-size: 2.8em; }
+    .game-button { padding: 10px 15px; font-size: 1em; }
 }
