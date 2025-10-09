@@ -16,7 +16,7 @@ let timeElapsed = 0;
 const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
 
-// EMOJİ HOVUZU (70 fərqli emoji)
+// EMOJİ HOVUZU 
 const ALL_EMOJIS = [
     '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
     '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         themeIcon.textContent = '☀️';
     }
     
-    initPubNub(); // PUBNUB AÇARLARINIZI YAZMAĞI UNUTMAYIN
+    initPubNub(); 
     startGame();
 });
 
@@ -122,7 +122,6 @@ function initGame() {
     else if (level === 2) totalPairs = 8;
     else if (level >= MAX_LEVEL) totalPairs = 10;
     
-    // Sıfırlamalar
     memoryBoard.innerHTML = '';
     cards = []; 
     moves = 0;
@@ -223,7 +222,6 @@ function checkForMatch() {
         
         if (matchedPairs === totalPairs) {
             clearInterval(timerInterval);
-            // Partlayış animasiyasının bitməsini gözləyirik
             setTimeout(() => {
                 handleGameOver(true);
             }, 600); 
@@ -272,7 +270,7 @@ function resetBoard() {
     secondCard = null;
 }
 
-// OYUN BİTDİ SAHƏSİ (Reklamın daxil edilməsi)
+// OYUN BİTDİ SAHƏSİ (Reklamın dərhal yüklənməsi)
 function handleGameOver(isSuccess) {
     lockBoard = true;
     playSound(winSound);
@@ -314,32 +312,25 @@ function handleGameOver(isSuccess) {
         initGame(); 
     };
 
-    // KRİTİK REKLAM HƏLLİ: SCRIPT ELEMENTLƏRİNİN DÜZGÜN YÜKLƏNMƏSİ
+    // ⭐ KRİTİK REKLAM HƏLLİ: SCRIPT ELEMENTLƏRİNİN DÜZGÜN YÜKLƏNMƏSİ ⭐
     adContent.innerHTML = ''; 
 
     const adContainerDiv = document.createElement('div');
     adContainerDiv.className = 'ad-iframe-container';
     adContainerDiv.style.cssText = 'text-align: center; margin: 20px 0;';
 
-    // 1. Birinci Banner
-    const script1 = document.createElement('script');
-    script1.type = 'text/javascript';
-    script1.src = '//pl27817770.effectivegatecpm.com/5d/b8/3f/5db83f02b180dc8f2699fba7459b6382.js';
-    
-    const div1 = document.createElement('div');
-    div1.style.marginBottom = '20px';
-    div1.appendChild(script1);
-    adContainerDiv.appendChild(div1);
+    const loadAdScript = (src) => {
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = src;
+        const div = document.createElement('div');
+        div.style.marginBottom = '20px';
+        div.appendChild(script);
+        adContainerDiv.appendChild(div);
+    };
 
-    // 2. İkinci Banner
-    const script2 = document.createElement('script');
-    script2.type = 'text/javascript';
-    script2.src = '//pl27817788.effectivegatecpm.com/91/a1/d1/91a1d1bda43a3aa15888917200b9e931.js';
-    
-    const div2 = document.createElement('div');
-    div2.style.marginBottom = '20px';
-    div2.appendChild(script2);
-    adContainerDiv.appendChild(div2);
+    loadAdScript('//pl27817770.effectivegatecpm.com/5d/b8/3f/5db83f02b180dc8f2699fba7459b6382.js');
+    loadAdScript('//pl27817788.effectivegatecpm.com/91/a1/d1/91a1d1bda43a3aa15888917200b9e931.js');
 
     adContent.appendChild(adContainerDiv);
 }
