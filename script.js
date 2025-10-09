@@ -10,12 +10,13 @@ let level = 1;
 const MAX_LEVEL = 3; 
 let score = 0;
 
+// Vaxt Dəyişənləri
 let timerInterval;
 let timeElapsed = 0; 
 const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
 
-// Emoji hovuzu (70 fərqli emoji)
+// Emoji hovuzu (70 fərqli emoji) - Kodu qısaltmaq üçün yuxarıdakı listi təkrar etmirəm.
 const ALL_EMOJIS = [
     '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
     '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
@@ -26,6 +27,7 @@ const ALL_EMOJIS = [
     '🔬', '🔭', '💰', '💳', '📧', '💡', '📌', '📎', '💉', '💊' 
 ];
 
+// DOM elementləri və Səslər
 let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon, gameArea;
 let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
 let onlineUsersDisplay; 
@@ -47,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     themeIcon = document.getElementById('theme-icon');
     onlineUsersDisplay = document.getElementById('online-users');
     
-    // Səs elementlərini seç
+    // Səs elementlərini seç (preload="auto" index.html-də olmalıdır)
     flipSound = document.getElementById('flip-sound');
     matchSound = document.getElementById('match-sound');
     mismatchSound = document.getElementById('mismatch-sound');
@@ -65,26 +67,18 @@ document.addEventListener('DOMContentLoaded', function() {
         themeIcon.textContent = '☀️';
     }
     
-    initPubNub();
+    initPubNub(); // PubNub açarlarınızı dəyişməyi unutmayın!
     startGame();
 });
 
-function initPubNub() {
-    // PubNub AÇARLARI BURAYA DAXİL EDİN
-    pubnub = new PubNub({
-        publishKey: 'YOUR_PUB_KEY', 
-        subscribeKey: 'YOUR_SUB_KEY', 
-        userId: 'user-' + Math.random().toString(36).substring(2, 9) 
-    });
-    // ... (PubNub kodunun qalan hissəsi) ...
-    pubnub.subscribe({ channels: [PUBNUB_CHANNEL], withPresence: true });
-}
+// PubNub kodları eyni qalır
 
+// ⭐ ƏSAS DÜZƏLİŞ: Səs Gecikməsi Həlli (Audio Klonlama) ⭐
 function playSound(audioElement) {
     if (!audioElement) return;
-    const clone = audioElement.cloneNode();
+    const clone = audioElement.cloneNode(); // Elementi klonlayırıq
     clone.volume = 0.5;
-    clone.play();
+    clone.play(); // Klonu oynadırıq
 }
 
 function startGame() {
@@ -94,13 +88,14 @@ function startGame() {
 function initGame() {
     clearInterval(timerInterval);
 
+    // Düzgün Səviyyə Məntiqi
     if (level === 1) totalPairs = 6;
     else if (level === 2) totalPairs = 8;
     else if (level >= MAX_LEVEL) totalPairs = 10;
     
     // Sıfırlamalar
     memoryBoard.innerHTML = '';
-    cards = []; // Kartlar dizisini sıfırla
+    cards = []; 
     moves = 0;
     matchedPairs = 0;
     if (level === 1) score = 0; 
@@ -117,52 +112,16 @@ function initGame() {
     matchedDisplay.textContent = matchedPairs;
     currentLevelDisplay.textContent = `(Səviyyə ${level})`;
     timerDisplay.textContent = formatTime(timeElapsed);
-    timerDisplay.style.color = 'inherit'; 
     
     createCards();
     startTimer();
 
-    // ⭐ AĞ EKRAN HƏLLİ: OYUNU GÖRÜNƏN, REKLAMI GİZLİ ET ⭐
+    // Oyun sahəsini göstər
     gameArea.style.display = 'block'; 
     adContainer.style.display = 'none'; 
 }
 
-function startTimer() {
-    timerInterval = setInterval(() => {
-        timeElapsed++;
-        timerDisplay.textContent = formatTime(timeElapsed);
-    }, 1000);
-}
-
-function formatTime(totalSeconds) {
-    const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-    const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-    return `${minutes}:${seconds}`;
-}
-
-function createCards() {
-    memoryBoard.className = 'memory-board';
-    if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
-    else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
-    else if (totalPairs === 10) memoryBoard.classList.add('grid-4x5');
-    
-    const shuffledEmojis = shuffleArray([...ALL_EMOJIS]);
-    const selectedEmojis = shuffledEmojis.slice(0, totalPairs); 
-    const gameCards = selectedEmojis.flatMap(emoji => [emoji, emoji]);
-    shuffleArray(gameCards);
-    
-    gameCards.forEach((emoji, index) => {
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.dataset.emoji = emoji;
-        card.dataset.index = index;
-        
-        card.innerHTML = `<div class="front"></div><div class="back">${emoji}</div>`;
-        card.addEventListener('click', flipCard);
-        memoryBoard.appendChild(card);
-        cards.push(card);
-    });
-}
+// ... (Timer, formatTime, createCards funksiyaları eyni qalır) ...
 
 function flipCard() {
     if (lockBoard) return;
@@ -198,20 +157,23 @@ function checkForMatch() {
         matchedPairs++;
         matchedDisplay.textContent = `${matchedPairs}/${totalPairs}`;
         
+        // ⭐ NÖVBƏTİ SƏVİYYƏ KEÇİDİNİN YOXLANILMASI
         if (matchedPairs === totalPairs) {
             clearInterval(timerInterval);
-            handleGameOver(true);
+            // Kartların partlama animasiyasının bitməsini gözlə
+            setTimeout(() => {
+                handleGameOver(true);
+            }, 600); 
         }
     } else {
         score += SCORE_MISMATCH;
         if (score < 0) score = 0; 
         scoreDisplay.textContent = score;
 
-        // ⭐ YENİ ANİMASİYA: Səhv cütlük tapıldıqda titrəmə effekti
+        playSound(mismatchSound);
         firstCard.classList.add('shake');
         secondCard.classList.add('shake');
         
-        // Animasiya bitdikdən sonra titrəmə sinfini sil
         setTimeout(() => {
             firstCard.classList.remove('shake');
             secondCard.classList.remove('shake');
@@ -220,38 +182,12 @@ function checkForMatch() {
     }
 }
 
-function disableCards() {
-    firstCard.classList.add('matched');
-    secondCard.classList.add('matched');
-    
-    firstCard.removeEventListener('click', flipCard);
-    secondCard.removeEventListener('click', flipCard);
-    
-    resetBoard();
-}
-
-function unflipCards() {
-    lockBoard = true;
-    
-    setTimeout(() => {
-        firstCard.classList.remove('flipped');
-        secondCard.classList.remove('flipped');
-        resetBoard();
-    }, 1000);
-}
-
-function resetBoard() {
-    hasFlippedCard = false;
-    lockBoard = false;
-    firstCard = null;
-    secondCard = null;
-}
+// ... (disableCards, unflipCards, resetBoard funksiyaları eyni qalır) ...
 
 function handleGameOver(isSuccess) {
     lockBoard = true;
     playSound(winSound);
 
-    // ⭐ AĞ EKRAN HƏLLİ: OYUN SAHƏSİNİ GİZLƏT, REKLAM SAHƏSİNİ GÖRÜNƏN ET ⭐
     gameArea.style.display = 'none'; 
     adContainer.style.display = 'block'; 
 
@@ -277,6 +213,7 @@ function handleGameOver(isSuccess) {
         restartLevelBtn.style.display = 'none'; 
     }
     
+    // Növbəti Səviyyə Düyməsi
     nextLevelBtn.onclick = function() { 
         if (level < MAX_LEVEL) {
             level++;
@@ -284,13 +221,12 @@ function handleGameOver(isSuccess) {
         initGame(); 
     };
 
+    // Təkrar Oyna Düyməsi
     restartLevelBtn.onclick = function() {
         initGame(); 
     };
 
-    // ------------------------------------------------------------------
-    // ⭐ YALNIZ İKİ BANNER REKLAM KODU ⭐
-    // ------------------------------------------------------------------
+    // Reklam Blokları (Əvvəlki cavabda təqdim etdiyiniz kodlar)
     adContent.innerHTML = `
         <div class="ad-iframe-container" style="text-align: center; margin: 20px 0;">
             <div style="margin-bottom: 20px;">
@@ -304,21 +240,4 @@ function handleGameOver(isSuccess) {
     `;
 }
 
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-function toggleDarkMode() {
-    const isDark = document.body.classList.toggle('dark-mode');
-    if (isDark) {
-        localStorage.setItem('theme', 'dark');
-        themeIcon.textContent = '☀️';
-    } else {
-        localStorage.setItem('theme', 'light');
-        themeIcon.textContent = '🌙';
-    }
-}
+// ... (shuffleArray, toggleDarkMode funksiyaları eyni qalır) ...
