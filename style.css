@@ -1,7 +1,7 @@
 /* GLOBAL VƏ TƏMİZLƏMƏ */
 :root {
-    --primary-color: #007BFF; /* Mavi */
-    --secondary-color: #FF5722; /* Qırmızımtıl/Narıncı */
+    --primary-color: #007BFF; 
+    --secondary-color: #FF5722; 
     --background-light: #f4f4f9;
     --background-dark: #121212;
     --card-face-light: #ffffff;
@@ -10,58 +10,46 @@
     --text-color-dark: #f0f0f0;
 }
 
-/* ⭐ KRİTİK HƏLL: MÜTLƏQ TAM EKRAN (Mobil Oyun Görünüşü) ⭐ */
-html, body {
-    height: 100vh; /* Tam Hündürlük */
-    width: 100vw;  /* Tam En */
+/* ⭐ KRİTİK HƏLL: MÜTLƏQ TAM EKRAN (HTML və BODY Səviyyəsində) ⭐ */
+html {
+    height: 100%;
+    width: 100%;
+}
+body {
+    height: 100%; 
+    width: 100%; 
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
     transition: background-color 0.3s, color 0.3s;
-    overflow-x: hidden; /* Üfüqi sürüşməni ləğv edir */
-    touch-action: manipulation; /* Mobil performans üçün */
-}
-
-body {
-    background-color: var(--background-light);
-    color: var(--text-color-light);
+    overflow-x: hidden;
+    min-height: 100vh; /* ZƏMANƏT OLARAQ TAM HÜNDÜRLÜK */
+    min-width: 100vw;  /* ZƏMANƏT OLARAQ TAM EN */
+    
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Kontenti yuxarıdan başla */
-    padding-top: 5px; 
+    align-items: flex-start;
+    padding-top: 0; 
     box-sizing: border-box;
-    min-height: 100vh;
+    position: relative; 
 }
 
 /* Dark Mode Teması */
-body.dark-mode {
-    background-color: var(--background-dark);
-    color: var(--text-color-dark);
-}
-body.dark-mode .theme-toggle-button {
-    background: #1e1e1e;
-    color: var(--primary-color);
-}
-body.dark-mode .back {
-    background-color: var(--card-face-dark);
-    color: var(--text-color-dark);
-}
-body.dark-mode #ad-container {
-    background-color: var(--card-face-dark);
-    box-shadow: 0 0 20px rgba(255, 87, 34, 0.5);
-}
+body.dark-mode { background-color: var(--background-dark); color: var(--text-color-dark); }
+body.dark-mode .theme-toggle-button { background: #1e1e1e; color: var(--primary-color); }
+body.dark-mode .back { background-color: var(--card-face-dark); color: var(--text-color-dark); }
+body.dark-mode #ad-container { background-color: var(--card-face-dark); box-shadow: 0 0 20px rgba(255, 87, 34, 0.5); }
 
-/* Əsas Konteyner (Tam Ekranı Məcbur tutur) */
+/* Əsas Konteyner */
 .container {
     width: 100%;
-    min-height: 100vh;
-    padding: 0 10px; 
+    min-height: 100vh; 
+    padding: 10px; 
     background-color: transparent; 
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: background-color 0.3s;
     box-shadow: none; 
     border-radius: 0;
 }
@@ -69,64 +57,21 @@ body.dark-mode #ad-container {
 /* OYUN VƏ REKLAM SAHƏLƏRİ */
 #game-area, #ad-container {
     width: 100%;
-    /* Max-width-i qaldırırıq ki, tam eni tutsun */
+    max-width: 500px; 
     padding: 0;
     margin: 0 auto;
 }
 
 /* Oyun Header və Info */
-.game-header {
-    text-align: center;
-    margin-bottom: 20px;
-    position: relative;
-    width: 100%;
-}
-.game-header h1 {
-    font-size: 1.8em;
-    color: var(--primary-color);
-    margin: 10px 0;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.game-info {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    border-bottom: 2px solid var(--secondary-color);
-    margin-bottom: 20px;
-    font-weight: bold;
-    font-size: 1.1em;
-    width: 95%; 
-    max-width: 400px;
-}
-.game-info span {
-    color: var(--primary-color);
-}
-
-/* Gece/Gündüz düyməsi */
-.theme-toggle-button {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    background: var(--background-light);
-    border: 2px solid var(--secondary-color);
-    color: var(--secondary-color);
-    font-size: 1.5em;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+.game-header { text-align: center; margin-bottom: 20px; position: relative; width: 100%; }
+.game-header h1 { font-size: 1.8em; color: var(--primary-color); margin: 10px 0; }
+.game-info { display: flex; justify-content: space-around; padding: 10px 0; border-bottom: 2px solid var(--secondary-color); margin-bottom: 20px; font-weight: bold; font-size: 1.1em; width: 95%; max-width: 400px; }
+.theme-toggle-button { position: absolute; top: 15px; left: 15px; background: var(--background-light); border: 2px solid var(--secondary-color); color: var(--secondary-color); font-size: 1.5em; cursor: pointer; border-radius: 50%; width: 40px; height: 40px; line-height: 40px; padding: 0; z-index: 10; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
 
 /* KART LÖVHƏSİ */
 .memory-board {
     display: grid;
-    gap: 8px; /* Boşluqları azaldırıq */
+    gap: 8px; /* Boşluq azaldılıb */
     margin: 0 auto;
     padding: 10px 0;
     width: 95%; 
@@ -139,7 +84,7 @@ body.dark-mode #ad-container {
 
 /* KARTLAR */
 .card {
-    height: 70px; /* ⭐ KART HÜNDÜRLÜYÜ AZALIB */
+    height: 70px; /* Hündürlük azaldılıb */
     perspective: 1000px; 
     cursor: pointer;
     border-radius: 8px; 
@@ -149,13 +94,6 @@ body.dark-mode #ad-container {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Seçilmə animasiyası */
-.card.flipped:not(.matched) {
-    box-shadow: 0 0 15px var(--secondary-color);
-    transform: scale(1.05); 
-}
-
-/* Kart üzü və arxası */
 .front, .back {
     width: 100%;
     height: 100%;
@@ -165,46 +103,15 @@ body.dark-mode #ad-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.2em; /* ⭐ EMOJİ ÖLÇÜSÜ AZALIB */
+    font-size: 2.2em; /* Emoji ölçüsü azaldılıb */
     transition: transform 0.6s;
 }
 
-.front {
-    background-color: var(--primary-color);
-    border: 3px solid var(--secondary-color);
-    transform: rotateY(0deg);
-}
+.front { background-color: var(--primary-color); border: 3px solid var(--secondary-color); transform: rotateY(0deg); }
 .card.flipped .front { transform: rotateY(180deg); }
 .card.flipped .back { transform: rotateY(360deg); }
-
-/* Animasiyalar */
-.card.matched { 
-    cursor: default;
-    animation: matchExplode 0.5s ease-out forwards; 
-}
+.card.matched { cursor: default; animation: matchExplode 0.5s ease-out forwards; }
 .card.shake { animation: shake 0.3s ease-in-out; }
-
-/* düymələr */
-.game-button {
-    padding: 12px 25px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s, transform 0.1s;
-    font-weight: bold;
-}
-.game-button:active { transform: scale(0.98); }
-.primary-action { background-color: var(--primary-color); color: white; }
-.secondary-action { background-color: var(--secondary-color); color: white; }
-.button-group {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    width: 100%;
-}
 
 /* REKLAM KONTEYNERİ */
 #ad-container {
@@ -216,7 +123,7 @@ body.dark-mode #ad-container {
     box-shadow: 0 0 20px rgba(255, 87, 34, 0.3);
     transition: all 0.5s ease-in-out;
     width: 95%; 
-    max-width: none; 
+    max-width: 500px; 
 }
 #ad-container h3 {
     color: var(--primary-color);
@@ -224,16 +131,11 @@ body.dark-mode #ad-container {
     animation: pulse 1s infinite alternate;
 }
 
-/* KEYFRAMES */
-@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
-@keyframes matchExplode { 0% { opacity: 1; transform: scale(1); box-shadow: 0 0 20px var(--secondary-color); } 50% { opacity: 0.7; transform: scale(1.1); } 100% { opacity: 0; transform: scale(0.1); } }
-@keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
-
 /* Mobil Cihazlar Üçün Uyğunlaşma */
 @media (max-width: 600px) {
-    body { padding-top: 5px; }
     .container { padding: 0; }
-    .memory-board { width: 98%; gap: 5px; }
+    #game-area, #ad-container { max-width: 100%; } 
+    .memory-board { width: 100%; gap: 5px; }
     .card { height: 60px; }
     .front, .back { font-size: 2em; }
 }
