@@ -18,7 +18,7 @@ let timeElapsed = 0;
 const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
 
-// Emoji hovuzu (70 fərqli emoji) - Hər səviyyədə təsadüfi seçiləcək
+// Emoji hovuzu (70 fərqli emoji)
 const ALL_EMOJIS = [
     '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
     '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
@@ -40,7 +40,7 @@ const PUBNUB_CHANNEL = 'memory_game_online';
 
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elementlərini Seç
-    gameArea = document.getElementById('game-area'); // Yeni: Oyun Sahəsi
+    gameArea = document.getElementById('game-area'); 
     memoryBoard = document.getElementById('memory-board');
     movesDisplay = document.getElementById('moves');
     matchedDisplay = document.getElementById('matched');
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Düymə hadisələri
     document.getElementById('restart-button').addEventListener('click', function() {
-        level = 1; // Baş düymə hər zaman 1-ci səviyyədən başlasın
+        level = 1; 
         initGame();
     });
     document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
@@ -77,13 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
     startGame();
 });
 
-// PubNub Bağlantısı və Canlı Sayğac Məntiqi
 function initPubNub() {
-    // AÇARLARI BURAYA DAXİL EDİN
+    // PubNub AÇARLARI BURAYA DAXİL EDİN
     pubnub = new PubNub({
-        publishKey: 'YOUR_PUB_KEY', // <-- Bunu öz açarınızla əvəz edin
-        subscribeKey: 'YOUR_SUB_KEY', // <-- Bunu öz açarınızla əvəz edin
-        userId: 'user-' + Math.random().toString(36).substring(2, 9) // Hər istifadəçi üçün unikal ID
+        publishKey: 'YOUR_PUB_KEY', // ZƏHMƏT OLMASA BUNU DƏYİŞDİRİN
+        subscribeKey: 'YOUR_SUB_KEY', // ZƏHMƏT OLMASA BUNU DƏYİŞDİRİN
+        userId: 'user-' + Math.random().toString(36).substring(2, 9) 
     });
 
     pubnub.addListener({
@@ -108,8 +107,6 @@ function initPubNub() {
     });
 }
 
-
-// Gecikməsiz Səs Oynatma Funksiyası
 function playSound(audioElement) {
     if (!audioElement) return;
     const clone = audioElement.cloneNode();
@@ -117,7 +114,6 @@ function playSound(audioElement) {
     clone.play();
 }
 
-// Oyunu Başlat
 function startGame() {
     initGame();
 }
@@ -154,11 +150,10 @@ function initGame() {
     startTimer();
 
     // OYUNU GÖRÜNƏN, REKLAMI GİZLİ ET
-    gameArea.classList.remove('hidden');
-    adContainer.classList.add('hidden');
+    gameArea.style.display = 'block'; 
+    adContainer.style.display = 'none'; 
 }
 
-// Limitsiz Vaxt Sayğacı 
 function startTimer() {
     timerInterval = setInterval(() => {
         timeElapsed++;
@@ -166,15 +161,14 @@ function startTimer() {
     }, 1000);
 }
 
-// Vaxtı Dəqiqə:Saniyə formatına çevirir
 function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
     const seconds = (totalSeconds % 60).toString().padStart(2, '0');
     return `${minutes}:${seconds}`;
 }
 
-// Kartları yarat
 function createCards() {
+    // Kart yaratma kodunun qalan hissəsi
     memoryBoard.className = 'memory-board';
     if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
     else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
@@ -198,7 +192,6 @@ function createCards() {
     });
 }
 
-// Kart çevirmə əməliyyatı
 function flipCard() {
     if (lockBoard) return;
     if (this === firstCard) return;
@@ -221,7 +214,6 @@ function flipCard() {
     checkForMatch();
 }
 
-// Eşləşməni yoxla
 function checkForMatch() {
     const isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
     
@@ -248,7 +240,6 @@ function checkForMatch() {
     }
 }
 
-// Eşləşən kartları qeyd et və açıq saxla (Animasiya ilə)
 function disableCards() {
     firstCard.classList.add('matched');
     secondCard.classList.add('matched');
@@ -259,7 +250,6 @@ function disableCards() {
     resetBoard();
 }
 
-// Eşləşməyən kartları geri çevir
 function unflipCards() {
     lockBoard = true;
     
@@ -270,7 +260,6 @@ function unflipCards() {
     }, 1000);
 }
 
-// Oyun lövhəsini sıfırla
 function resetBoard() {
     hasFlippedCard = false;
     lockBoard = false;
@@ -284,8 +273,8 @@ function handleGameOver(isSuccess) {
     playSound(winSound);
 
     // OYUN SAHƏSİNİ GİZLƏT, REKLAM SAHƏSİNİ GÖRÜNƏN ET
-    gameArea.classList.add('hidden');
-    adContainer.classList.remove('hidden');
+    gameArea.style.display = 'none'; 
+    adContainer.style.display = 'block'; 
 
     finalMovesDisplay.textContent = moves;
     finalScoreDisplay.textContent = score;
@@ -309,11 +298,10 @@ function handleGameOver(isSuccess) {
         restartLevelBtn.style.display = 'none'; 
     }
     
-    // NÖVBƏTİ SƏVİYYƏ DÜYMƏSİNİN HADİSƏSİ (Pop-under açılır və oyun başlayır)
+    // NÖVBƏTİ SƏVİYYƏ DÜYMƏSİNİN HADİSƏSİ (Pop-under SİLİNDİ, Yalnız yeni səviyyə başlayır)
     nextLevelBtn.onclick = function() { 
-        // POP-UNDER/YÖNLƏNDİRMƏ REKLAMI YENİ PƏNCƏRƏDƏ AÇILIR
-        window.open('https://www.effectivegatecpm.com/wdznna3e2d?key=a54007a9d8c91e5fa15cc9207dc46158', '_blank');
-
+        // ❌ Smartlink (Pop-under) kodu SİLİNDİ.
+        
         // Səviyyəni artır (maksimuma çatmayıbsa)
         if (level < MAX_LEVEL) {
             level++;
@@ -321,33 +309,22 @@ function handleGameOver(isSuccess) {
         initGame(); 
     };
 
-    // TƏKRAR OYNA DÜYMƏSİNİN HADİSƏSİ (Pop-under yoxdur, eyni səviyyə)
+    // TƏKRAR OYNA DÜYMƏSİNİN HADİSƏSİ
     restartLevelBtn.onclick = function() {
-        initGame(); // Cari səviyyəni yenidən başlat
+        initGame(); 
     };
 
     // ------------------------------------------------------------------
-    // ⭐ BÜTÜN REKLAMLAR BURAYA YÜKLƏNİR ⭐
-    // ad-content div-i artıq görünən olduğundan, reklamlar da görünəcək.
+    // ⭐ YALNIZ YENİ İKİ BANNER REKLAM KODU BURADA YÜKLƏNİR ⭐
     // ------------------------------------------------------------------
     adContent.innerHTML = `
         <div class="ad-iframe-container" style="text-align: center; margin: 20px 0;">
             <div style="margin-bottom: 20px;">
-                <script async="async" data-cfasync="false" src="//pl27817674.effectivegatecpm.com/aeee703d4f892137e0308b64e60939dc/invoke.js"></script>
-                <div id="container-aeee703d4f892137e0308b64e60939dc"></div>
+                <script type='text/javascript' src='//pl27817770.effectivegatecpm.com/5d/b8/3f/5db83f02b180dc8f2699fba7459b6382.js'></script>
             </div>
             
             <div style="margin-bottom: 20px;">
-                <script type="text/javascript">
-                    atOptions = {
-                        'key' : '080b9af8a83e0f0b44862a9951f6118f',
-                        'format' : 'iframe',
-                        'height' : 250,
-                        'width' : 300,
-                        'params' : {}
-                    };
-                </script>
-                <script type="text/javascript" src="//www.highperformanceformat.com/080b9af8a83e0f0b44862a9951f6118f/invoke.js"></script>
+                <script type='text/javascript' src='//pl27817788.effectivegatecpm.com/91/a1/d1/91a1d1bda43a3aa15888917200b9e931.js'></script>
             </div>
         </div>
     `;
