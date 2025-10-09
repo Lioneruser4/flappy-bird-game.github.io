@@ -1,8 +1,7 @@
 /* GLOBAL VƏ TƏMİZLƏMƏ */
 :root {
-    /* Ən son seçilmiş rənglər */
-    --primary-color: #007BFF; /* Mavi */
-    --secondary-color: #FF5722; /* Qırmızımtıl/Narıncı */
+    --primary-color: #007BFF; 
+    --secondary-color: #FF5722; 
     --background-light: #f4f4f9;
     --background-dark: #121212;
     --card-face-light: #ffffff;
@@ -11,15 +10,16 @@
     --text-color-dark: #f0f0f0;
 }
 
-/* ⭐ ƏSAS HƏLL: TAM EKRAN VƏ RESPONSİV HƏLL (Bütün Cihazlar Üçün) ⭐ */
+/* ⭐ KRİTİK HƏLL: MÜTLƏQ TAM EKRAN (Mobil Oyun Görünüşü) ⭐ */
 html, body {
-    height: 100vh; /* Ekranın Tam Hündürlüyü */
-    width: 100vw;  /* Ekranın Tam Eni */
+    height: 100vh; 
+    width: 100vw;  
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
     transition: background-color 0.3s, color 0.3s;
-    overflow-x: hidden; /* Üfüqi sürüşməni ləğv etmək üçün kritikdir */
+    overflow-x: hidden;
+    touch-action: manipulation; 
 }
 
 body {
@@ -27,227 +27,112 @@ body {
     color: var(--text-color-light);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 5px; /* Minimal yuxarı boşluq */
+    box-sizing: border-box;
+    min-height: 100vh;
 }
 
-/* Dark Mode Teması */
 body.dark-mode {
     background-color: var(--background-dark);
     color: var(--text-color-dark);
 }
 
-/* Əsas Konteyner (Tam Ekranı Tutur) */
+/* Əsas Konteyner (Tam Ekranı Məcbur tutur) */
 .container {
     width: 100%;
     min-height: 100vh;
-    padding: 20px 10px;
-    background-color: var(--background-light);
+    padding: 0 10px; /* Kenarlarda minimal boşluq */
+    background-color: transparent; 
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: background-color 0.3s;
-}
-
-body.dark-mode .container {
-    background-color: #1e1e1e;
+    box-shadow: none; 
+    border-radius: 0;
 }
 
 /* OYUN VƏ REKLAM SAHƏLƏRİ */
 #game-area, #ad-container {
     width: 100%;
-    max-width: 700px;
+    /* Max-width-i kənarlardakı boş zolaqların qarşısını almaq üçün çıxarırıq */
     padding: 0;
     margin: 0 auto;
 }
 
 /* Oyun Header və Info */
-.game-header {
-    text-align: center;
-    margin-bottom: 20px;
-    position: relative;
-    width: 100%;
-}
-
-.game-header h1 {
-    font-size: 1.8em;
-    color: var(--primary-color);
-    margin: 10px 0;
-}
-
-.game-info {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    border-bottom: 2px solid var(--secondary-color);
-    margin-bottom: 20px;
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-.game-info span {
-    color: var(--primary-color);
-}
-
-/* Gece/Gündüz düyməsi */
-.theme-toggle-button {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    background: var(--background-light);
-    border: 2px solid var(--secondary-color);
-    color: var(--secondary-color);
-    font-size: 1.5em;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    padding: 0;
-    z-index: 10;
-    transition: all 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-body.dark-mode .theme-toggle-button {
-    background: #1e1e1e;
-    color: var(--primary-color);
-}
+.game-header { text-align: center; margin-bottom: 20px; position: relative; width: 100%; }
+.game-header h1 { font-size: 1.8em; color: var(--primary-color); margin: 10px 0; }
+.game-info { display: flex; justify-content: space-around; padding: 10px 0; border-bottom: 2px solid var(--secondary-color); margin-bottom: 20px; font-weight: bold; font-size: 1.1em; width: 95%; max-width: 400px; }
+.theme-toggle-button { position: absolute; top: 5px; left: 5px; background: var(--background-light); border: 2px solid var(--secondary-color); color: var(--secondary-color); font-size: 1.5em; cursor: pointer; border-radius: 50%; width: 40px; height: 40px; line-height: 40px; padding: 0; z-index: 10; transition: all 0.3s; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
 
 /* KART LÖVHƏSİ */
 .memory-board {
     display: grid;
-    gap: 10px; 
+    gap: 8px; /* Boşluqları bir qədər azaldırıq */
     margin: 0 auto;
     padding: 10px 0;
-    width: 100%;
+    width: 95%; 
+    max-width: 500px; 
 }
 
-.grid-4x3 { grid-template-columns: repeat(4, 1fr); max-width: 500px; }
-.grid-4x4 { grid-template-columns: repeat(4, 1fr); max-width: 600px; }
-.grid-4x5 { grid-template-columns: repeat(5, 1fr); max-width: 700px; }
+.grid-4x3 { grid-template-columns: repeat(4, 1fr); }
+.grid-4x4 { grid-template-columns: repeat(4, 1fr); }
+.grid-4x5 { grid-template-columns: repeat(5, 1fr); }
 
 /* KARTLAR */
 .card {
-    height: 85px; 
+    height: 70px; /* ⭐ KART HÜNDÜRLÜYÜNÜ AZALDIRIQ */
     perspective: 1000px; 
     cursor: pointer;
-    border-radius: 10px; 
+    border-radius: 8px; 
     transition: transform 0.2s, box-shadow 0.2s;
     position: relative;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Seçilmə animasiyası */
-.card.flipped:not(.matched) {
-    box-shadow: 0 0 15px var(--secondary-color);
-    transform: scale(1.05); 
-}
-
-/* Kart üzü və arxası */
 .front, .back {
     width: 100%;
     height: 100%;
     position: absolute;
-    border-radius: 10px;
+    border-radius: 8px;
     backface-visibility: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3em; 
+    font-size: 2.2em; /* ⭐ EMOJİ ÖLÇÜSÜNÜ AZALDIRIQ */
     transition: transform 0.6s;
 }
 
-.front {
-    background-color: var(--primary-color);
-    border: 4px solid var(--secondary-color);
-    transform: rotateY(0deg);
-}
-
-.back {
-    background-color: var(--card-face-light);
-    color: var(--text-color-light); /* Dark mode üçün rəngi dəyişir */
-    transform: rotateY(180deg);
-}
-body.dark-mode .back {
-    background-color: var(--card-face-dark);
-    color: var(--text-color-dark);
-}
-
-/* Çevrilmə */
+.front { background-color: var(--primary-color); border: 3px solid var(--secondary-color); transform: rotateY(0deg); }
+.back { background-color: var(--card-face-light); color: var(--text-color-light); transform: rotateY(180deg); }
+body.dark-mode .back { background-color: var(--card-face-dark); color: var(--text-color-dark); }
 .card.flipped .front { transform: rotateY(180deg); }
 .card.flipped .back { transform: rotateY(360deg); }
-
-/* Animasiyalar */
-.card.matched { 
-    cursor: default;
-    animation: matchExplode 0.5s ease-out forwards; 
-}
+.card.matched { cursor: default; animation: matchExplode 0.5s ease-out forwards; }
 .card.shake { animation: shake 0.3s ease-in-out; }
-
-/* düymələr */
-.game-button {
-    padding: 12px 25px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s, transform 0.1s;
-    font-weight: bold;
-}
-.game-button:active { transform: scale(0.98); }
+.game-button { padding: 12px 25px; font-size: 1.2em; border: none; border-radius: 10px; cursor: pointer; margin-top: 20px; transition: background-color 0.3s, transform 0.1s; font-weight: bold; }
 .primary-action { background-color: var(--primary-color); color: white; }
 .secondary-action { background-color: var(--secondary-color); color: white; }
-
-.button-group {
-    margin-top: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-/* REKLAM KONTEYNERİ (Reklam görünəndə düzgün yerləşməsi) */
-#ad-container {
-    text-align: center;
-    padding: 40px 20px;
-    border: 2px solid var(--secondary-color);
-    border-radius: 10px;
-    background-color: var(--card-face-light);
-    box-shadow: 0 0 20px rgba(255, 87, 34, 0.3);
-    transition: all 0.5s ease-in-out;
-    /* JS tərəfindən display: block/none ilə idarə olunur */
-}
-
-body.dark-mode #ad-container {
-    background-color: var(--card-face-dark);
-    box-shadow: 0 0 20px rgba(255, 87, 34, 0.5);
-}
-
-#ad-container h3 {
-    color: var(--primary-color);
-    font-size: 2.2em;
-    animation: pulse 1s infinite alternate;
-}
+.button-group { margin-top: 30px; display: flex; justify-content: center; gap: 15px; width: 100%; }
+#ad-container { text-align: center; padding: 40px 20px; border: 2px solid var(--secondary-color); border-radius: 10px; background-color: var(--card-face-light); box-shadow: 0 0 20px rgba(255, 87, 34, 0.3); transition: all 0.5s ease-in-out; width: 95%; max-width: none; }
 
 /* KEYFRAMES */
 @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
 @keyframes matchExplode { 0% { opacity: 1; transform: scale(1); box-shadow: 0 0 20px var(--secondary-color); } 50% { opacity: 0.7; transform: scale(1.1); } 100% { opacity: 0; transform: scale(0.1); } }
 @keyframes pulse { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
 
-
 /* Mobil Cihazlar Üçün Uyğunlaşma */
 @media (max-width: 600px) {
-    .container { padding: 10px 5px; }
-    .memory-board { width: 100%; padding: 5px; gap: 5px; }
-    .card { height: 75px; }
-    .front, .back { font-size: 2.5em; }
-    .game-button { padding: 10px 15px; font-size: 1em; }
+    body { padding-top: 5px; }
+    .container { padding: 0; }
+    .memory-board { width: 98%; gap: 5px; }
+    .card { height: 60px; /* Mobil cihazda daha kiçik */ }
+    .front, .back { font-size: 2em; }
 }
 
 @media (max-width: 400px) {
-    .card { height: 65px; }
-    .front, .back { font-size: 2em; }
-    .game-info div { font-size: 0.9em; }
+    .card { height: 50px; } /* Çox kiçik ekranlar üçün */
+    .front, .back { font-size: 1.5em; }
 }
