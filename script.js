@@ -10,11 +10,8 @@ let level = 1;
 const MAX_LEVEL = 3; 
 let score = 0;
 
-// Vaxt Dəyişənləri
 let timerInterval;
 let timeElapsed = 0; 
-
-// Xal Dəyişənləri
 const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
 
@@ -29,12 +26,9 @@ const ALL_EMOJIS = [
     '🔬', '🔭', '💰', '💳', '📧', '💡', '📌', '📎', '💉', '💊' 
 ];
 
-// DOM elementləri və Səslər
 let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon, gameArea;
 let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
 let onlineUsersDisplay; 
-
-// PubNub Dəyişənləri
 let pubnub;
 const PUBNUB_CHANNEL = 'memory_game_online'; 
 
@@ -60,14 +54,12 @@ document.addEventListener('DOMContentLoaded', function() {
     winSound = document.getElementById('win-sound');
     gameoverSound = document.getElementById('gameover-sound');
 
-    // Düymə hadisələri
     document.getElementById('restart-button').addEventListener('click', function() {
         level = 1; 
         initGame();
     });
     document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
 
-    // Tema rejimini yoxla
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
         themeIcon.textContent = '☀️';
@@ -80,31 +72,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function initPubNub() {
     // PubNub AÇARLARI BURAYA DAXİL EDİN
     pubnub = new PubNub({
-        publishKey: 'YOUR_PUB_KEY', // ZƏHMƏT OLMASA BUNU DƏYİŞDİRİN
-        subscribeKey: 'YOUR_SUB_KEY', // ZƏHMƏT OLMASA BUNU DƏYİŞDİRİN
+        publishKey: 'YOUR_PUB_KEY', 
+        subscribeKey: 'YOUR_SUB_KEY', 
         userId: 'user-' + Math.random().toString(36).substring(2, 9) 
     });
-
-    pubnub.addListener({
-        presence: function(presenceEvent) {
-            if (presenceEvent.channel === PUBNUB_CHANNEL) {
-                onlineUsersDisplay.textContent = presenceEvent.occupancy;
-            }
-        }
-    });
-
-    pubnub.subscribe({
-        channels: [PUBNUB_CHANNEL],
-        withPresence: true 
-    });
-    
-    pubnub.hereNow({
-        channels: [PUBNUB_CHANNEL]
-    }, function(status, response) {
-        if (response && response.channels && response.channels[PUBNUB_CHANNEL]) {
-            onlineUsersDisplay.textContent = response.channels[PUBNUB_CHANNEL].occupancy;
-        }
-    });
+    // ... (PubNub kodunun qalan hissəsi) ...
+    pubnub.subscribe({ channels: [PUBNUB_CHANNEL], withPresence: true });
 }
 
 function playSound(audioElement) {
@@ -118,7 +91,6 @@ function startGame() {
     initGame();
 }
 
-// Oyunu sıfırla və başla
 function initGame() {
     clearInterval(timerInterval);
 
@@ -128,6 +100,7 @@ function initGame() {
     
     // Sıfırlamalar
     memoryBoard.innerHTML = '';
+    cards = []; // Kartlar dizisini sıfırla
     moves = 0;
     matchedPairs = 0;
     if (level === 1) score = 0; 
@@ -149,7 +122,7 @@ function initGame() {
     createCards();
     startTimer();
 
-    // OYUNU GÖRÜNƏN, REKLAMI GİZLİ ET
+    // ⭐ AĞ EKRAN HƏLLİ: OYUNU GÖRÜNƏN, REKLAMI GİZLİ ET ⭐
     gameArea.style.display = 'block'; 
     adContainer.style.display = 'none'; 
 }
@@ -168,7 +141,6 @@ function formatTime(totalSeconds) {
 }
 
 function createCards() {
-    // Kart yaratma kodunun qalan hissəsi
     memoryBoard.className = 'memory-board';
     if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
     else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
@@ -235,8 +207,16 @@ function checkForMatch() {
         if (score < 0) score = 0; 
         scoreDisplay.textContent = score;
 
-        playSound(mismatchSound);
-        unflipCards();
+        // ⭐ YENİ ANİMASİYA: Səhv cütlük tapıldıqda titrəmə effekti
+        firstCard.classList.add('shake');
+        secondCard.classList.add('shake');
+        
+        // Animasiya bitdikdən sonra titrəmə sinfini sil
+        setTimeout(() => {
+            firstCard.classList.remove('shake');
+            secondCard.classList.remove('shake');
+            unflipCards();
+        }, 350); 
     }
 }
 
@@ -267,12 +247,11 @@ function resetBoard() {
     secondCard = null;
 }
 
-// Oyun Bitdi Paneli (Oyun Sahəsini Reklam Sahəsi ilə Əvəzləyir)
 function handleGameOver(isSuccess) {
     lockBoard = true;
     playSound(winSound);
 
-    // OYUN SAHƏSİNİ GİZLƏT, REKLAM SAHƏSİNİ GÖRÜNƏN ET
+    // ⭐ AĞ EKRAN HƏLLİ: OYUN SAHƏSİNİ GİZLƏT, REKLAM SAHƏSİNİ GÖRÜNƏN ET ⭐
     gameArea.style.display = 'none'; 
     adContainer.style.display = 'block'; 
 
@@ -298,24 +277,19 @@ function handleGameOver(isSuccess) {
         restartLevelBtn.style.display = 'none'; 
     }
     
-    // NÖVBƏTİ SƏVİYYƏ DÜYMƏSİNİN HADİSƏSİ (Pop-under SİLİNDİ, Yalnız yeni səviyyə başlayır)
     nextLevelBtn.onclick = function() { 
-        // ❌ Smartlink (Pop-under) kodu SİLİNDİ.
-        
-        // Səviyyəni artır (maksimuma çatmayıbsa)
         if (level < MAX_LEVEL) {
             level++;
         }
         initGame(); 
     };
 
-    // TƏKRAR OYNA DÜYMƏSİNİN HADİSƏSİ
     restartLevelBtn.onclick = function() {
         initGame(); 
     };
 
     // ------------------------------------------------------------------
-    // ⭐ YALNIZ YENİ İKİ BANNER REKLAM KODU BURADA YÜKLƏNİR ⭐
+    // ⭐ YALNIZ İKİ BANNER REKLAM KODU ⭐
     // ------------------------------------------------------------------
     adContent.innerHTML = `
         <div class="ad-iframe-container" style="text-align: center; margin: 20px 0;">
@@ -330,7 +304,6 @@ function handleGameOver(isSuccess) {
     `;
 }
 
-// Dizi qarışdırma funksiyası
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -339,7 +312,6 @@ function shuffleArray(array) {
     return array;
 }
 
-// Gece/Gündüz Rejimi
 function toggleDarkMode() {
     const isDark = document.body.classList.toggle('dark-mode');
     if (isDark) {
