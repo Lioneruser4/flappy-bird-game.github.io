@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Düymə hadisələri
     document.getElementById('restart-button').addEventListener('click', function() {
         level = 1; // Baş düymə hər zaman 1-ci səviyyədən başlasın
+        // Hangi oyun aktifse onu başlatmalı (şimdilik sadece memory game)
         initGame();
     });
     document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
@@ -73,9 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     initPubNub();
-    // startGame(); <--- ESKİ BAŞLATMA KALDIRILDI
 
-    // ⭐ YENİ EKLEME: OYUN SEÇİM MANTIKLARI BAŞLANGICI ⭐
+    // OYUN SEÇİM MANTIKLARI
     const gameSelection = document.getElementById('gameSelection');
     const memoryGameContainer = document.getElementById('memoryGameContainer');
 
@@ -84,28 +84,26 @@ document.addEventListener('DOMContentLoaded', function() {
         memoryGameContainer.classList.remove('hidden');
         // Oyun başlığını eski haline getir
         document.querySelector('#game-area h1').innerHTML = ` Eyni Emojini Tap <span id="current-level">(Səviyyə ${level})</span>`;
-        startGame(); // Mevcut hafıza oyununu başlatır
+        startGame(); // Hafıza oyununu başlatır
     });
 
     document.getElementById('selectEmojiCrush').addEventListener('click', function() {
         gameSelection.classList.add('hidden');
         memoryGameContainer.classList.remove('hidden');
-        // Yeni oyunu başlatır (Bu fonksiyon emojiCrush.js içinde tanımlanacak)
+        // Yeni oyunu başlatır (emojiCrush.js içinde tanımlı)
         startEmojiCrush();
     });
-    // ⭐ YENİ EKLEME: OYUN SEÇİM MANTIKLARI SONU ⭐
 });
 
-// PubNub Bağlantısı ve Canlı Sayğac Məntiqi
+// PubNub Bağlantısı ve Canlı Sayğac Məntiqi (AYNI KALDI)
 function initPubNub() {
-    // AÇARLARI BURAYA DAXİL EDİN (PubNub Hesabınızdan Aldığınız Açarlar)
+    // ... (PubNub Kodu Aynı Kaldı) ...
     pubnub = new PubNub({
-        publishKey: 'YOUR_PUB_KEY', // <-- Bunu öz açarınızla əvəz edin
-        subscribeKey: 'YOUR_SUB_KEY', // <-- Bunu öz açarınızla əvəz edin
-        userId: 'user-' + Math.random().toString(36).substring(2, 9) // Hər istifadəçi üçün unikal ID
+        publishKey: 'YOUR_PUB_KEY',
+        subscribeKey: 'YOUR_SUB_KEY',
+        userId: 'user-' + Math.random().toString(36).substring(2, 9)
     });
 
-    // İstifadəçi (Presence) dəyişikliklərini dinlə
     pubnub.addListener({
         presence: function(presenceEvent) {
             if (presenceEvent.channel === PUBNUB_CHANNEL) {
@@ -119,7 +117,6 @@ function initPubNub() {
         withPresence: true 
     });
     
-    // İlk yüklənmədə cari online sayını al
     pubnub.hereNow({
         channels: [PUBNUB_CHANNEL]
     }, function(status, response) {
@@ -130,7 +127,7 @@ function initPubNub() {
 }
 
 
-// Gecikməsiz Səs Oynatma Funksiyası
+// Gecikməsiz Səs Oynatma Funksiyası (AYNI KALDI)
 function playSound(audioElement) {
     if (!audioElement) return;
     const clone = audioElement.cloneNode();
@@ -138,21 +135,19 @@ function playSound(audioElement) {
     clone.play();
 }
 
-// Oyunu Başlat (Eski hafıza oyunu başlatma fonksiyonu)
+// Oyunu Başlat (Eyni Emojini Tap)
 function startGame() {
     initGame();
 }
 
-// Oyunu sıfırla və başla
+// Oyunu sıfırla və başla (Eyni Emojini Tap) (AYNI KALDI)
 function initGame() {
     clearInterval(timerInterval);
 
-    // Səviyyəyə görə kart sayını təyin et
-    if (level === 1) totalPairs = 6; // 12 kart
-    else if (level === 2) totalPairs = 8; // 16 kart
-    else if (level >= MAX_LEVEL) totalPairs = 10; // 20 kart (Maksimum)
+    if (level === 1) totalPairs = 6; 
+    else if (level === 2) totalPairs = 8; 
+    else if (level >= MAX_LEVEL) totalPairs = 10; 
     
-    // Sıfırlamalar
     memoryBoard.innerHTML = '';
     moves = 0;
     matchedPairs = 0;
@@ -163,7 +158,6 @@ function initGame() {
     firstCard = null;
     secondCard = null;
 
-    // DOM yeniləmələri
     movesDisplay.textContent = moves;
     scoreDisplay.textContent = score;
     document.getElementById('total-pairs').textContent = totalPairs;
@@ -177,6 +171,8 @@ function initGame() {
     adContainer.classList.remove('show');
     adContainer.classList.add('hidden');
 }
+
+// ... (Geri kalan tüm hafıza oyunu fonksiyonları AYNI KALDI: startTimer, formatTime, createCards, flipCard, checkForMatch, disableCards, unflipCards, resetBoard, handleGameOver, shuffleArray, toggleDarkMode) ...
 
 // Limitsiz Vaxt Sayğacı 
 function startTimer() {
@@ -195,19 +191,16 @@ function formatTime(totalSeconds) {
 
 // Kartları yarat
 function createCards() {
-    // Kart qrafikini və ölçülərini səviyyəyə görə təyin et
     memoryBoard.className = 'memory-board';
     if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
     else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
     else if (totalPairs === 10) memoryBoard.classList.add('grid-4x5');
     
-    // EMOJİ MƏNTİQİ: Hər səviyyədə təsadüfi yeni emojilər
     const shuffledEmojis = shuffleArray([...ALL_EMOJIS]);
     const selectedEmojis = shuffledEmojis.slice(0, totalPairs); 
     const gameCards = selectedEmojis.flatMap(emoji => [emoji, emoji]);
     shuffleArray(gameCards);
     
-    // Kart elementlərini yarat
     gameCards.forEach((emoji, index) => {
         const card = document.createElement('div');
         card.classList.add('card');
@@ -317,53 +310,43 @@ function handleGameOver(isSuccess) {
     if (isSuccess) {
         playSound(winSound);
         
-        // MAKSİMUM SƏVİYYƏ MƏNTİQİ DƏYİŞDİRİLDİ
         if (level < MAX_LEVEL) {
             adTitle.textContent = 'Təbriklər! 🎉 Səviyyə Keçildi!';
             finalMessage.textContent = `Növbəti səviyyədə ${totalPairs + 2} cütlük olacaq.`;
 
-            // Əsas düymə: Növbəti Səviyyə
             nextLevelBtn.textContent = `Növbəti Səviyyə (${level + 1})`;
             nextLevelBtn.onclick = null; 
             nextLevelBtn.onclick = function() { 
                 adContainer.classList.remove('show'); 
                 adContainer.classList.add('hidden');
                 level++; 
-                initGame(); // Yeni səviyyə, yeni kart sayı
+                initGame(); 
             };
             nextLevelBtn.style.display = 'block'; 
             restartLevelBtn.style.display = 'block';
 
         } else {
-            // MAX_LEVEL-də qalırıq, sadəcə emojiləri yeniləyirik
             adTitle.textContent = 'Oyun Bitdi! 🏆 Ən Yüksək Nəticə!';
             finalMessage.textContent = `Bütün çətinlikləri ${score} xalla tamamladınız. Yenidən oyna!`;
             
-            // Əsas düymə: Təkrar Oyna (Eyni Səviyyə)
             nextLevelBtn.textContent = 'Eyni Səviyyəni Yenidən Başla'; 
             nextLevelBtn.onclick = null;
             nextLevelBtn.onclick = function() { 
                 adContainer.classList.remove('show'); 
                 adContainer.classList.add('hidden');
-                // level dəyişmir (MAX_LEVEL-də qalır), sadəcə yeni emojilər yüklənir
                 initGame(); 
             }; 
 
-            // İkinci düyməni də (Təkrar Oyna) həmin funksiyanı etsin, ya da gizlədək.
             restartLevelBtn.style.display = 'none'; 
         }
     }
     
-    // Təkrar Oyna düyməsinin hadisəsi
     document.getElementById('restart-level').onclick = function() {
         adContainer.classList.remove('show'); 
         adContainer.classList.add('hidden');
-        initGame(); // Cari səviyyəni yenidən başlat
+        initGame(); 
     };
 
-    // ------------------------------------------------------------------
-    // ⭐ REKLAM KODU ƏLAVƏSİ VƏ MƏTN SİLİNDİ ⭐
-    // ------------------------------------------------------------------
     adContent.innerHTML = `
         <div class="ad-iframe-container">
             <script type='text/javascript' src='//pl27810690.effectivegatecpm.com/3f/56/0c/3f560cd28640fec16294d033439790e5.js'></script>
@@ -374,7 +357,7 @@ function handleGameOver(isSuccess) {
     adContainer.classList.add('show');
 }
 
-// Dizi qarışdırma funksiyası
+// Dizi qarışdırma funksiyası (AYNI KALDI)
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -383,7 +366,7 @@ function shuffleArray(array) {
     return array;
 }
 
-// Gece/Gündüz Rejimi
+// Gece/Gündüz Rejimi (AYNI KALDI)
 function toggleDarkMode() {
     const isDark = document.body.classList.toggle('dark-mode');
     if (isDark) {
@@ -396,35 +379,34 @@ function toggleDarkMode() {
 }
 
 
-// ⭐ YENİ EKLEME: startEmojiCrush() fonksiyonunun temelini burada tanımlayacağız.
-// BU FONKSİYONUN İÇİNİ AYRI BİR DOSYADA (emojiCrush.js) DOLDURACAĞIZ.
+// YENİ OYUN BAŞLATMA FONKSİYONU (EMOJI CRUSH)
 function startEmojiCrush() {
-    // Hafıza oyunundaki gereksiz bilgileri temizle
+    // Hafıza oyunundaki gereksiz zamanlayıcıyı durdur
     clearInterval(timerInterval);
-    memoryBoard.className = 'memory-board'; // Grid sınıflarını temizle
-
-    // Başlığı Emoji Crush olarak ayarla
+    
+    // Oyun başlığını değiştir
     document.querySelector('#game-area h1').innerHTML = `💥 Emoji Crush <span id="current-level">(Səviyyə 1)</span>`;
     
-    // Game info kısmındaki değişkenleri yeni oyun için ayarla
-    document.getElementById('moves').textContent = '0';
-    document.getElementById('matched').textContent = '0'; // Veya Hamle
-    document.getElementById('total-pairs').textContent = '??'; // Veya süre sınırı
-    document.getElementById('timer').textContent = '00:00'; // Veya kalan hamle
+    // Skor ve hareket alanlarını yeni oyun için hazırla
+    document.getElementById('moves').textContent = '0'; // Hamle Sayısı
+    document.getElementById('matched').textContent = '0'; // Patlama Sayısı (Örn)
+    document.getElementById('total-pairs').textContent = '30'; // Kalan Hamle/Süre
+    document.getElementById('timer').textContent = '00:00'; 
     document.getElementById('score').textContent = '0';
-
-    // Oyun tahtasını yeni oyun için hazırla
+    
+    // Oyun tahtasını temizle ve Crush oyunu için bir alan hazırla
+    memoryBoard.className = 'crush-board';
     memoryBoard.innerHTML = `
-        <div id="emoji-crush-board" class="crush-grid">
-            <h2>Yüklənir...</h2>
-            <p>Emoji Crush (Candy Crush tipli) oyunu çox daha mürəkkəbdir və 
-            <strong>emojiCrush.js</strong> faylındakı kodların tam hazırlanmasını tələb edir.</p>
+        <div id="emoji-crush-grid">
+            <h2>Emoji Crush Yüklənir...</h2>
+            <p>Bu alan, **emojiCrush.js** dosyasındaki kodlarla dolacak.</p>
+            <p><strong>Lütfen 'emojiCrush.js' dosyasını oluşturun.</strong></p>
         </div>
     `;
 
-    // Buraya yeni oyunun mantığını eklememiz veya çağırmamız gerekecek.
-    // Eğer 'emojiCrush.js' dosyası varsa, oradaki bir fonksiyonu çağırın. Örn:
-    // initCrushGame();
-    // Bu kod şimdilik sadece bir yer tutucudur.
+    // Bu noktada, eğer 'emojiCrush.js' dosyası varsa, içerisindeki initCrushGame() 
+    // gibi bir fonksiyonu çağırmanız gerekir.
+    if (typeof initCrushGame === 'function') {
+        initCrushGame();
+    }
 }
-// ⭐ YENİ EKLEME BİTTİ ⭐
