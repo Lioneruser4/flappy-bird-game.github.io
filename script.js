@@ -73,10 +73,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     initPubNub();
-    startGame();
+    // startGame(); <--- ESKİ BAŞLATMA KALDIRILDI
+
+    // ⭐ YENİ EKLEME: OYUN SEÇİM MANTIKLARI BAŞLANGICI ⭐
+    const gameSelection = document.getElementById('gameSelection');
+    const memoryGameContainer = document.getElementById('memoryGameContainer');
+
+    document.getElementById('selectMemoryGame').addEventListener('click', function() {
+        gameSelection.classList.add('hidden');
+        memoryGameContainer.classList.remove('hidden');
+        // Oyun başlığını eski haline getir
+        document.querySelector('#game-area h1').innerHTML = ` Eyni Emojini Tap <span id="current-level">(Səviyyə ${level})</span>`;
+        startGame(); // Mevcut hafıza oyununu başlatır
+    });
+
+    document.getElementById('selectEmojiCrush').addEventListener('click', function() {
+        gameSelection.classList.add('hidden');
+        memoryGameContainer.classList.remove('hidden');
+        // Yeni oyunu başlatır (Bu fonksiyon emojiCrush.js içinde tanımlanacak)
+        startEmojiCrush();
+    });
+    // ⭐ YENİ EKLEME: OYUN SEÇİM MANTIKLARI SONU ⭐
 });
 
-// PubNub Bağlantısı və Canlı Sayğac Məntiqi
+// PubNub Bağlantısı ve Canlı Sayğac Məntiqi
 function initPubNub() {
     // AÇARLARI BURAYA DAXİL EDİN (PubNub Hesabınızdan Aldığınız Açarlar)
     pubnub = new PubNub({
@@ -118,7 +138,7 @@ function playSound(audioElement) {
     clone.play();
 }
 
-// Oyunu Başlat
+// Oyunu Başlat (Eski hafıza oyunu başlatma fonksiyonu)
 function startGame() {
     initGame();
 }
@@ -374,3 +394,37 @@ function toggleDarkMode() {
         themeIcon.textContent = '🌙';
     }
 }
+
+
+// ⭐ YENİ EKLEME: startEmojiCrush() fonksiyonunun temelini burada tanımlayacağız.
+// BU FONKSİYONUN İÇİNİ AYRI BİR DOSYADA (emojiCrush.js) DOLDURACAĞIZ.
+function startEmojiCrush() {
+    // Hafıza oyunundaki gereksiz bilgileri temizle
+    clearInterval(timerInterval);
+    memoryBoard.className = 'memory-board'; // Grid sınıflarını temizle
+
+    // Başlığı Emoji Crush olarak ayarla
+    document.querySelector('#game-area h1').innerHTML = `💥 Emoji Crush <span id="current-level">(Səviyyə 1)</span>`;
+    
+    // Game info kısmındaki değişkenleri yeni oyun için ayarla
+    document.getElementById('moves').textContent = '0';
+    document.getElementById('matched').textContent = '0'; // Veya Hamle
+    document.getElementById('total-pairs').textContent = '??'; // Veya süre sınırı
+    document.getElementById('timer').textContent = '00:00'; // Veya kalan hamle
+    document.getElementById('score').textContent = '0';
+
+    // Oyun tahtasını yeni oyun için hazırla
+    memoryBoard.innerHTML = `
+        <div id="emoji-crush-board" class="crush-grid">
+            <h2>Yüklənir...</h2>
+            <p>Emoji Crush (Candy Crush tipli) oyunu çox daha mürəkkəbdir və 
+            <strong>emojiCrush.js</strong> faylındakı kodların tam hazırlanmasını tələb edir.</p>
+        </div>
+    `;
+
+    // Buraya yeni oyunun mantığını eklememiz veya çağırmamız gerekecek.
+    // Eğer 'emojiCrush.js' dosyası varsa, oradaki bir fonksiyonu çağırın. Örn:
+    // initCrushGame();
+    // Bu kod şimdilik sadece bir yer tutucudur.
+}
+// ⭐ YENİ EKLEME BİTTİ ⭐
