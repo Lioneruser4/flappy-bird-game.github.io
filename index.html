@@ -3,68 +3,54 @@
 <head>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
       crossorigin="anonymous"></script>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title> Oyun Seçimi 🌟 </title>
+    <title>🌟 Eyni Emojini Tap 🌟 </title>
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.5.0.min.js"></script>
 </head>
 <body>
     <div class="container">
-        
-        <div id="gameSelection" class="selection-screen">
-            <h1>Oyun Seçimi 🕹️</h1>
-            <p>Başlamaq üçün bir oyun seçin:</p>
-            <div class="selection-buttons">
-                <button id="selectMemoryGame" class="game-button primary-action">
-                    🌟 Eyni Emojini Tap
+        <div id="game-area">
+            <div class="game-header">
+                <button id="theme-toggle-button" class="theme-toggle-button" title="Gece/Gündüz Rejimi">
+                    <span id="theme-icon">🌙</span>
                 </button>
-                <button id="selectEmojiCrush" class="game-button secondary-action">
-                    💥 Emoji Crush
-                </button>
-            </div>
-        </div>
-        <div id="memoryGameContainer" class="hidden"> 
-            <div id="game-area">
-                <div class="game-header">
-                    <button id="theme-toggle-button" class="theme-toggle-button" title="Gece/Gündüz Rejimi">
-                        <span id="theme-icon">🌙</span>
-                    </button>
-                    
-                    <h1> Eyni Emojini Tap <span id="current-level">(Səviyyə 1)</span></h1>
-                    
-                    <div class="game-info">
-                        <div>Hərəkət: <span id="moves">0</span></div>
-                        <div>Cütlük: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
-                        <div>Vaxt: <span id="timer">00:00</span></div>
-                        <div><span id="online-users">0</span></div> 
-                        <div>Xal: <span id="score">0</span></div>
-                    </div>
+                
+                <h1>  Eyni Emojini Tap <span id="current-level">(Səviyyə 1)</span></h1>
+                
+                <div class="game-info">
+                    <div>Hərəkət: <span id="moves">0</span></div>
+                    <div>Cütlük: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
+                    <div>Vaxt: <span id="timer">00:00</span></div>
+                    <div><span id="online-users">0</span></div> 
+                    <div>Xal: <span id="score">0</span></div>
                 </div>
-                
-                <div id="memory-board" class="memory-board"></div>
-                
-                <button id="restart-button" class="game-button">Yenidən Başla</button>
             </div>
             
-            <div id="ad-container" class="hidden">
-                <div id="game-completed-ad">
-                    <h3 id="ad-title">Təbriklər! 🎉</h3>
-                    <p>Xalınız: <span id="final-score">0</span> | Hərəkət: <span id="final-moves">0</span></p>
-                    <p class="final-message"></p>
-                    
-                    <div id="ad-content">
-                        </div>
-                    
-                    <div class="button-group">
-                        <button id="next-level" class="game-button primary-action">Növbəti Səviyyə</button> 
-                        <button id="restart-level" class="game-button secondary-action">Təkrar Oyna</button>
+            <div id="memory-board" class="memory-board"></div>
+            
+            <button id="restart-button" class="game-button">Yenidən Başla</button>
+        </div>
+        
+        <div id="ad-container" class="hidden">
+            <div id="game-completed-ad">
+                <h3 id="ad-title">Təbriklər! 🎉</h3>
+                <p>Xalınız: <span id="final-score">0</span> | Hərəkət: <span id="final-moves">0</span></p>
+                <p class="final-message"></p>
+                
+                <div id="ad-content">
                     </div>
+                
+                <div class="button-group">
+                    <button id="next-level" class="game-button primary-action">Növbəti Səviyyə</button> 
+                    <button id="restart-level" class="game-button secondary-action">Təkrar Oyna</button>
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 
     <audio id="flip-sound" src="sounds/flip.wav" preload="auto"></audio>
     <audio id="match-sound" src="sounds/match.wav" preload="auto"></audio>
@@ -73,5 +59,5 @@
     <audio id="gameover-sound" src="sounds/gameover.wav" preload="auto"></audio>
 
     <script src="script.js"></script>
-    <script src="emojiCrush.js"></script> </body>
+</body>
 </html>
