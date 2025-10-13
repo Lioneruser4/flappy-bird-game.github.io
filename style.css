@@ -36,7 +36,7 @@
 
 html, body {
     width: 100%;
-    height: 100%;
+    /* height: 100%; */ /* Bu sətir dəyişdirildi ki, hər iki oyun görsənsin */
     font-family: sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -44,8 +44,11 @@ html, body {
     height: -webkit-fill-available;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Üstə yığılma */
     transition: background-color 0.3s;
+    min-height: 100vh; /* Minimum hündürlük əlavə edildi */
+    padding-top: 10px; /* Üst tərəfdə boşluq */
+    padding-bottom: 50px; /* Alt tərəfdə boşluq */
 }
 
 .container {
@@ -53,6 +56,9 @@ html, body {
     max-width: 500px; 
     margin: 0 auto;
     padding: 10px;
+    display: flex; /* Flex əlavə edildi */
+    flex-direction: column; /* Şaquli düzülmə */
+    gap: 30px; /* Oyunlar arasında boşluq */
 }
 
 #game-area {
@@ -222,8 +228,8 @@ html, body {
 /* Reklam Çərçivəsi üçün Düzəliş */
 #ad-content {
     margin: 15px 0;
-    padding: 0; /* Reklam mətni silindiyi üçün padding sıfırlandı */
-    border: none; /* Çərçivə sıfırlandı */
+    padding: 0; 
+    border: none; 
     background-color: transparent; 
     max-width: 300px; 
     width: 100%;
@@ -294,4 +300,82 @@ html, body {
 @keyframes scaleIn {
     from { transform: scale(0.9); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
+}
+
+/* --- EMOJI CRUSH OYUNU ÜÇÜN STİLLƏR --- */
+.crush-section {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    margin-top: 30px; /* Əvvəlki oyundan ayırmaq üçün */
+}
+
+.dark-mode .crush-section { background-color: var(--card-bg); }
+
+.crush-title { 
+    text-align: center; 
+    color: var(--primary-color) !important; 
+    font-size: 1.6rem; 
+    margin-bottom: 20px; 
+}
+
+.crush-game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+.crush-score-board {
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 8px;
+    background-color: var(--bg-color);
+    border-radius: 8px;
+    width: 100%;
+}
+.dark-mode .crush-score-board { 
+    background-color: rgba(187, 134, 252, 0.1);
+    color: var(--text-color);
+}
+
+.crush-grid {
+    width: 95vw; 
+    max-width: 450px; 
+    height: 95vw; 
+    max-height: 450px; 
+    display: flex;
+    flex-wrap: wrap;
+    border: 3px solid var(--primary-color);
+    background-color: #eee;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+.dark-mode .crush-grid {
+    background-color: #444;
+    border-color: var(--primary-color);
+}
+
+.crush-square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+    transition: transform 0.2s ease, opacity 0.5s ease;
+    user-select: none;
+    touch-action: none;
+}
+
+/* Patlama (Explosion) Effekti */
+.is-blank {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.1);
+}
+
+.drag-start {
+    opacity: 0.5;
+    transform: scale(0.9);
 }
