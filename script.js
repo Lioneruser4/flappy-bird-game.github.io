@@ -316,11 +316,11 @@ function handleGameOver(isSuccess) {
 
         } else {
             // MAX_LEVEL-də qalırıq, sadəcə emojiləri yeniləyirik
-            adTitle.textContent = 'Oyun Bitdi! 🏆 Ən Yüksək Nəticə!';
-            finalMessage.textContent = `Bütün çətinlikləri ${score} xalla tamamladınız. Yenidən oyna!`;
+            adTitle.textContent = ' 🏆  Yüksək Nəticə!';
+            finalMessage.textContent = `Bütün çətinlikləri ${score} xalla tamamladınız !`;
             
             // Əsas düymə: Təkrar Oyna (Eyni Səviyyə)
-            nextLevelBtn.textContent = 'Eyni Səviyyəni Yenidən Başla'; 
+            nextLevelBtn.textContent = 'Növbəti Oyun'; 
             nextLevelBtn.onclick = null;
             nextLevelBtn.onclick = function() { 
                 adContainer.classList.remove('show'); 
