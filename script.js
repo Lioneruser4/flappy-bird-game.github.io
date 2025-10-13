@@ -7,7 +7,7 @@ let moves = 0;
 let matchedPairs = 0;
 let totalPairs = 6;
 let level = 1;
-const MAX_LEVEL = 3; 
+const MAX_LEVEL = 1000; 
 let score = 0;
 
 // Vaxt Dəyişənləri
