@@ -1,376 +1,241 @@
-// Oyun dəyişənləri
-let cards = [];
-let hasFlippedCard = false;
-let lockBoard = false;
-let firstCard, secondCard;
-let moves = 0;
-let matchedPairs = 0;
-let totalPairs = 6;
-let level = 1;
-const MAX_LEVEL = 1000; 
-let score = 0;
+const crushGrid = document.getElementById('crush-game-grid');
+const crushScoreDisplay = document.getElementById('crush-score');
+const crushWidth = 8; // 8x8 ölçüsündə oyun sahəsi
+const crushSquareCount = crushWidth * crushWidth;
+const crushSquares = [];
+let crushScore = 0;
 
-// Vaxt Dəyişənləri
-let timerInterval;
-let timeElapsed = 0; 
+let crushEmojiBeingDragged;
+let crushEmojiBeingReplaced;
 
-// Xal Dəyişənləri
-const SCORE_MATCH = 100;
-const SCORE_MISMATCH = -20;
-
-// Emoji hovuzu (70 fərqli emoji) - Hər səviyyədə təsadüfi seçiləcək
-const ALL_EMOJIS = [
-    '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
-    '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
-    '🥝', '🍍', '🥥', '🥑', '🚗', '🚕', '🚌', '🚓', '🚑', '🚒', 
-    '🚚', '🚢', '🚀', '🚁', '🚂', '⌚', '📱', '💻', '🖥️', 
-    '🔑', '🔒', '🔓', '🎲', '🧩', '🎈', '🎁', '🎂', '👑', '💍',
-    '🌞', '🌛', '⭐', '🌈', '🔥', '💧', '🌿', '🍄', '🔔', '📚',
-    '🔬', '🔭', '💰', '💳', '📧', '💡', '📌', '📎', '💉', '💊' 
+// Bütün mövcud emojilərin daha böyük və müxtəlif setini istifadə edirik!
+const crushEmojis = [
+    '😀', '😍', '🤩', '🥳', '😎', '😇', '🤫', '💩',
+    '🍉', '🍍', '🍓', '🍇', '🍒', '🍋', '🥝', '🍎',
+    '🚗', '🚕', '🚌', '🚓', '🚑'
 ];
 
-// DOM elementləri və Səslər
-let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon;
-let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
-let onlineUsersDisplay; 
 
-// PubNub Dəyişənləri
-let pubnub;
-const PUBNUB_CHANNEL = 'memory_game_online'; 
+// 1. Emoji Crush Taxtasını Yaratmaq
+function crushCreateBoard() {
+    const crushSquareSize = crushGrid.clientWidth / crushWidth;
+    crushGrid.style.gridTemplateColumns = `repeat(${crushWidth}, 1fr)`;
+    crushGrid.style.gridTemplateRows = `repeat(${crushWidth}, 1fr)`;
 
-document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elementlərini Seç
-    memoryBoard = document.getElementById('memory-board');
-    movesDisplay = document.getElementById('moves');
-    matchedDisplay = document.getElementById('matched');
-    timerDisplay = document.getElementById('timer');
-    scoreDisplay = document.getElementById('score');
-    adContainer = document.getElementById('ad-container');
-    finalMovesDisplay = document.getElementById('final-moves');
-    finalScoreDisplay = document.getElementById('final-score');
-    currentLevelDisplay = document.getElementById('current-level');
-    themeIcon = document.getElementById('theme-icon');
-    onlineUsersDisplay = document.getElementById('online-users');
-    
-    // Səs elementlərini seç
-    flipSound = document.getElementById('flip-sound');
-    matchSound = document.getElementById('match-sound');
-    mismatchSound = document.getElementById('mismatch-sound');
-    winSound = document.getElementById('win-sound');
-    gameoverSound = document.getElementById('gameover-sound');
+    for (let i = 0; i < crushSquareCount; i++) {
+        const square = document.createElement('div');
+        square.setAttribute('id', 'crush-' + i);
+        square.classList.add('crush-square');
 
-    // Düymə hadisələri
-    document.getElementById('restart-button').addEventListener('click', function() {
-        level = 1; // Baş düymə hər zaman 1-ci səviyyədən başlasın
-        initGame();
-    });
-    document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
+        // Ölçüləri quraşdırın
+        square.style.width = `${crushSquareSize}px`;
+        square.style.height = `${crushSquareSize}px`;
+        square.style.fontSize = `${crushSquareSize * 0.6}px`;
 
-    // Tema rejimini yoxla
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-mode');
-        themeIcon.textContent = '☀️';
+        // Təsadüfi emoji seçin
+        let randomEmoji = Math.floor(Math.random() * crushEmojis.length);
+        square.innerHTML = crushEmojis[randomEmoji];
+
+        // Drag & Drop hadisələrini əlavə edin
+        crushAddEventListeners(square, i);
+
+        crushGrid.appendChild(square);
+        crushSquares.push(square);
     }
-    
-    initPubNub();
-    startGame();
-});
+}
 
-// PubNub Bağlantısı və Canlı Sayğac Məntiqi
-function initPubNub() {
-    // AÇARLARI BURAYA DAXİL EDİN (PubNub Hesabınızdan Aldığınız Açarlar)
-    pubnub = new PubNub({
-        publishKey: 'YOUR_PUB_KEY', // <-- Bunu öz açarınızla əvəz edin
-        subscribeKey: 'YOUR_SUB_KEY', // <-- Bunu öz açarınızla əvəz edin
-        userId: 'user-' + Math.random().toString(36).substring(2, 9) // Hər istifadəçi üçün unikal ID
-    });
+// Mobil və Masaüstü üçün Hadisə Dinləyiciləri
+function crushAddEventListeners(square, id) {
+    square.setAttribute('draggable', true);
 
-    // İstifadəçi (Presence) dəyişikliklərini dinlə
-    pubnub.addListener({
-        presence: function(presenceEvent) {
-            if (presenceEvent.channel === PUBNUB_CHANNEL) {
-                onlineUsersDisplay.textContent = presenceEvent.occupancy;
-            }
+    // Masaüstü
+    square.addEventListener('dragstart', crushDragStart);
+    square.addEventListener('dragover', crushDragOver);
+    square.addEventListener('dragenter', crushDragEnter);
+    square.addEventListener('dragleave', crushDragLeave);
+    square.addEventListener('drop', crushDragDrop);
+    square.addEventListener('dragend', crushDragEnd);
+
+    // Mobil Cihazlar (Touch Events)
+    square.addEventListener('touchstart', crushTouchStart);
+    square.addEventListener('touchmove', crushTouchMove);
+    square.addEventListener('touchend', crushTouchEnd);
+}
+
+// 2. Drag & Drop Məntiqi (Sürüşdürmə)
+
+function crushDragStart() {
+    crushEmojiBeingDragged = this;
+    this.classList.add('drag-start');
+}
+
+function crushDragOver(e) { e.preventDefault(); }
+function crushDragEnter(e) { e.preventDefault(); this.style.opacity = 0.7; }
+function crushDragLeave() { this.style.opacity = 1; }
+function crushDragDrop() {
+    crushEmojiBeingReplaced = this;
+    this.style.opacity = 1;
+}
+
+function crushDragEnd() {
+    this.classList.remove('drag-start');
+
+    if (!crushEmojiBeingReplaced) return;
+
+    const dragId = parseInt(crushEmojiBeingDragged.id.replace('crush-', ''));
+    const replaceId = parseInt(crushEmojiBeingReplaced.id.replace('crush-', ''));
+
+    const validMoves = [
+        dragId - 1, dragId + 1,
+        dragId + crushWidth, dragId - crushWidth
+    ];
+
+    if (validMoves.includes(replaceId)) {
+        const draggedEmoji = crushEmojiBeingDragged.innerHTML;
+        const replacedEmoji = crushEmojiBeingReplaced.innerHTML;
+        crushEmojiBeingReplaced.innerHTML = draggedEmoji;
+        crushEmojiBeingDragged.innerHTML = replacedEmoji;
+
+        // Uyğunluqları yoxlayın
+        let isMatch = crushCheckRowForThree() || crushCheckColumnForThree();
+
+        // Əgər uyğunluq yoxdursa, dəyişikliyi geri qaytarın
+        if (!isMatch) {
+            crushEmojiBeingReplaced.innerHTML = replacedEmoji;
+            crushEmojiBeingDragged.innerHTML = draggedEmoji;
         }
-    });
+    }
 
-    pubnub.subscribe({
-        channels: [PUBNUB_CHANNEL],
-        withPresence: true 
-    });
+    crushEmojiBeingDragged = null;
+    crushEmojiBeingReplaced = null;
+}
+
+// Touch Hadisələri (Mobil)
+let crushStartTouchSquare = null;
+let crushEndTouchSquare = null;
+
+function crushTouchStart(e) {
+    e.preventDefault();
+    crushStartTouchSquare = this;
+    this.classList.add('drag-start');
+}
+
+function crushTouchMove(e) {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
     
-    // İlk yüklənmədə cari online sayını al
-    pubnub.hereNow({
-        channels: [PUBNUB_CHANNEL]
-    }, function(status, response) {
-        if (response && response.channels && response.channels[PUBNUB_CHANNEL]) {
-            onlineUsersDisplay.textContent = response.channels[PUBNUB_CHANNEL].occupancy;
+    if (targetElement && targetElement.classList.contains('crush-square')) {
+        if (crushEndTouchSquare && crushEndTouchSquare !== targetElement) {
+            crushEndTouchSquare.style.opacity = 1;
         }
-    });
+        crushEndTouchSquare = targetElement;
+        crushEndTouchSquare.style.opacity = 0.7;
+    }
 }
 
-
-// Gecikməsiz Səs Oynatma Funksiyası
-function playSound(audioElement) {
-    if (!audioElement) return;
-    const clone = audioElement.cloneNode();
-    clone.volume = 0.5;
-    clone.play();
-}
-
-// Oyunu Başlat
-function startGame() {
-    initGame();
-}
-
-// Oyunu sıfırla və başla
-function initGame() {
-    clearInterval(timerInterval);
-
-    // Səviyyəyə görə kart sayını təyin et
-    if (level === 1) totalPairs = 6; // 12 kart
-    else if (level === 2) totalPairs = 8; // 16 kart
-    else if (level >= MAX_LEVEL) totalPairs = 10; // 20 kart (Maksimum)
-    
-    // Sıfırlamalar
-    memoryBoard.innerHTML = '';
-    moves = 0;
-    matchedPairs = 0;
-    if (level === 1) score = 0; 
-    timeElapsed = 0;
-    lockBoard = false;
-    hasFlippedCard = false;
-    firstCard = null;
-    secondCard = null;
-
-    // DOM yeniləmələri
-    movesDisplay.textContent = moves;
-    scoreDisplay.textContent = score;
-    document.getElementById('total-pairs').textContent = totalPairs;
-    matchedDisplay.textContent = matchedPairs;
-    currentLevelDisplay.textContent = `(Səviyyə ${level})`;
-    timerDisplay.textContent = formatTime(timeElapsed);
-    timerDisplay.style.color = 'inherit'; 
-    
-    createCards();
-    startTimer();
-    adContainer.classList.remove('show');
-    adContainer.classList.add('hidden');
-}
-
-// Limitsiz Vaxt Sayğacı 
-function startTimer() {
-    timerInterval = setInterval(() => {
-        timeElapsed++;
-        timerDisplay.textContent = formatTime(timeElapsed);
-    }, 1000);
-}
-
-// Vaxtı Dəqiqə:Saniyə formatına çevirir
-function formatTime(totalSeconds) {
-    const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
-    const seconds = (totalSeconds % 60).toString().padStart(2, '0');
-    return `${minutes}:${seconds}`;
-}
-
-// Kartları yarat
-function createCards() {
-    // Kart qrafikini və ölçülərini səviyyəyə görə təyin et
-    memoryBoard.className = 'memory-board';
-    if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
-    else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
-    else if (totalPairs === 10) memoryBoard.classList.add('grid-4x5');
-    
-    // EMOJİ MƏNTİQİ: Hər səviyyədə təsadüfi yeni emojilər
-    const shuffledEmojis = shuffleArray([...ALL_EMOJIS]);
-    const selectedEmojis = shuffledEmojis.slice(0, totalPairs); 
-    const gameCards = selectedEmojis.flatMap(emoji => [emoji, emoji]);
-    shuffleArray(gameCards);
-    
-    // Kart elementlərini yarat
-    gameCards.forEach((emoji, index) => {
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.dataset.emoji = emoji;
-        card.dataset.index = index;
-        
-        card.innerHTML = `<div class="front"></div><div class="back">${emoji}</div>`;
-        card.addEventListener('click', flipCard);
-        memoryBoard.appendChild(card);
-        cards.push(card);
-    });
-}
-
-// Kart çevirmə əməliyyatı
-function flipCard() {
-    if (lockBoard) return;
-    if (this === firstCard) return;
-    if (this.classList.contains('flipped')) return;
-
-    playSound(flipSound);
-
-    this.classList.add('flipped');
-    
-    if (!hasFlippedCard) {
-        hasFlippedCard = true;
-        firstCard = this;
+function crushTouchEnd(e) {
+    if (!crushStartTouchSquare || !crushEndTouchSquare) {
+        if(crushStartTouchSquare) crushStartTouchSquare.classList.remove('drag-start');
+        crushStartTouchSquare = null;
+        crushEndTouchSquare = null;
         return;
     }
-    
-    secondCard = this;
-    moves++;
-    movesDisplay.textContent = moves;
-    
-    checkForMatch();
+
+    crushEndTouchSquare.style.opacity = 1;
+
+    crushEmojiBeingDragged = crushStartTouchSquare;
+    crushEmojiBeingReplaced = crushEndTouchSquare;
+    crushDragEnd(); // DragEnd məntiqini istifadə edir
+
+    crushStartTouchSquare = null;
+    crushEndTouchSquare = null;
 }
 
-// Eşləşməni yoxla
-function checkForMatch() {
-    const isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
-    
-    if (isMatch) {
-        score += SCORE_MATCH;
-        scoreDisplay.textContent = score;
 
-        playSound(matchSound);
-        disableCards();
-        matchedPairs++;
-        matchedDisplay.textContent = `${matchedPairs}/${totalPairs}`;
-        
-        if (matchedPairs === totalPairs) {
-            clearInterval(timerInterval);
-            handleGameOver(true);
-        }
-    } else {
-        score += SCORE_MISMATCH;
-        if (score < 0) score = 0; 
-        scoreDisplay.textContent = score;
+// 3. Uyğunluqları Yoxlamaq (Match Checking)
 
-        playSound(mismatchSound);
-        unflipCards();
-    }
+function crushAddScore(count) {
+    crushScore += count * 10;
+    crushScoreDisplay.innerHTML = crushScore;
 }
 
-// Eşləşən kartları qeyd et və açıq saxla (Animasiya ilə)
-function disableCards() {
-    firstCard.classList.add('matched');
-    secondCard.classList.add('matched');
-    
-    firstCard.removeEventListener('click', flipCard);
-    secondCard.removeEventListener('click', flipCard);
-    
-    resetBoard();
-}
+function crushCheckRowForThree() {
+    let matchFound = false;
+    for (let i = 0; i < crushSquareCount - 2; i++) {
+        const isEndOfRow = [crushWidth - 3, crushWidth - 2, crushWidth - 1].includes(i % crushWidth);
 
-// Eşləşməyən kartları geri çevir
-function unflipCards() {
-    lockBoard = true;
-    
-    setTimeout(() => {
-        firstCard.classList.remove('flipped');
-        secondCard.classList.remove('flipped');
-        resetBoard();
-    }, 1000);
-}
+        if (isEndOfRow) continue;
 
-// Oyun lövhəsini sıfırla
-function resetBoard() {
-    hasFlippedCard = false;
-    lockBoard = false;
-    firstCard = null;
-    secondCard = null;
-}
+        const firstEmoji = crushSquares[i].innerHTML;
+        const secondEmoji = crushSquares[i + 1].innerHTML;
+        const thirdEmoji = crushSquares[i + 2].innerHTML;
 
-// Oyun Bitdi Paneli
-function handleGameOver(isSuccess) {
-    lockBoard = true;
-
-    finalMovesDisplay.textContent = moves;
-    finalScoreDisplay.textContent = score;
-    
-    const adTitle = document.getElementById('ad-title');
-    const finalMessage = document.querySelector('.final-message');
-    const nextLevelBtn = document.getElementById('next-level');
-    const restartLevelBtn = document.getElementById('restart-level');
-    const adContent = document.getElementById('ad-content'); 
-
-    if (isSuccess) {
-        playSound(winSound);
-        
-        // MAKSİMUM SƏVİYYƏ MƏNTİQİ DƏYİŞDİRİLDİ
-        if (level < MAX_LEVEL) {
-            adTitle.textContent = 'Təbriklər! 🎉 Səviyyə Keçildi!';
-            finalMessage.textContent = `Növbəti səviyyədə ${totalPairs + 2} cütlük olacaq.`;
-
-            // Əsas düymə: Növbəti Səviyyə
-            nextLevelBtn.textContent = `Növbəti Səviyyə (${level + 1})`;
-            nextLevelBtn.onclick = null; 
-            nextLevelBtn.onclick = function() { 
-                adContainer.classList.remove('show'); 
-                adContainer.classList.add('hidden');
-                level++; 
-                initGame(); // Yeni səviyyə, yeni kart sayı
-            };
-            nextLevelBtn.style.display = 'block'; 
-            restartLevelBtn.style.display = 'block';
-
-        } else {
-            // MAX_LEVEL-də qalırıq, sadəcə emojiləri yeniləyirik
-            adTitle.textContent = ' 🏆  Yüksək Nəticə!';
-            finalMessage.textContent = `Bütün çətinlikləri ${score} xalla tamamladınız !`;
-            
-            // Əsas düymə: Təkrar Oyna (Eyni Səviyyə)
-            nextLevelBtn.textContent = 'Növbəti Oyun'; 
-            nextLevelBtn.onclick = null;
-            nextLevelBtn.onclick = function() { 
-                adContainer.classList.remove('show'); 
-                adContainer.classList.add('hidden');
-                // level dəyişmir (MAX_LEVEL-də qalır), sadəcə yeni emojilər yüklənir
-                initGame(); 
-            }; 
-
-            // İkinci düyməni də (Təkrar Oyna) həmin funksiyanı etsin, ya da gizlədək.
-            restartLevelBtn.style.display = 'none'; 
+        if (firstEmoji === secondEmoji && secondEmoji === thirdEmoji && !crushSquares[i].classList.contains('is-blank')) {
+            crushSquares[i].classList.add('is-blank');
+            crushSquares[i + 1].classList.add('is-blank');
+            crushSquares[i + 2].classList.add('is-blank');
+            crushAddScore(3);
+            matchFound = true;
         }
     }
+    return matchFound;
+}
+
+function crushCheckColumnForThree() {
+    let matchFound = false;
+    for (let i = 0; i < crushSquareCount - (crushWidth * 2); i++) {
+        const firstEmoji = crushSquares[i].innerHTML;
+        const secondEmoji = crushSquares[i + crushWidth].innerHTML;
+        const thirdEmoji = crushSquares[i + crushWidth * 2].innerHTML;
+
+        if (firstEmoji === secondEmoji && secondEmoji === thirdEmoji && !crushSquares[i].classList.contains('is-blank')) {
+            crushSquares[i].classList.add('is-blank');
+            crushSquares[i + crushWidth].classList.add('is-blank');
+            crushSquares[i + crushWidth * 2].classList.add('is-blank');
+            crushAddScore(3);
+            matchFound = true;
+        }
+    }
+    return matchFound;
+}
+
+// 4. Emojiləri Düşürmək və Yeni Emojiləri Yaratmaq
+
+function crushMoveDown() {
+    for (let i = 0; i < crushSquareCount - crushWidth; i++) {
+        if (crushSquares[i + crushWidth].classList.contains('is-blank')) {
+            crushSquares[i + crushWidth].innerHTML = crushSquares[i].innerHTML;
+            crushSquares[i + crushWidth].classList.remove('is-blank');
+            crushSquares[i].innerHTML = '';
+            crushSquares[i].classList.add('is-blank');
+        }
+    }
+
+    // Ən yuxarı sətirdəki boş yerləri yeni emojilərlə doldurun
+    for (let i = 0; i < crushWidth; i++) {
+        if (crushSquares[i].classList.contains('is-blank')) {
+            let randomEmoji = Math.floor(Math.random() * crushEmojis.length);
+            crushSquares[i].innerHTML = crushEmojis[randomEmoji];
+            crushSquares[i].classList.remove('is-blank');
+        }
+    }
+}
+
+// 5. Oyun Dövrü (Game Loop)
+
+function crushGameLoop() {
+    crushMoveDown(); 
     
-    // Təkrar Oyna düyməsinin hadisəsi
-    document.getElementById('restart-level').onclick = function() {
-        adContainer.classList.remove('show'); 
-        adContainer.classList.add('hidden');
-        initGame(); // Cari səviyyəni yenidən başlat
-    };
+    let hasNewMatches = crushCheckRowForThree() || crushCheckColumnForThree();
 
-    // ------------------------------------------------------------------
-    // ⭐ REKLAM KODU ƏLAVƏSİ VƏ MƏTN SİLİNDİ ⭐
-    // ------------------------------------------------------------------
-    adContent.innerHTML = `
-        <div class="ad-iframe-container">
-            <script type='text/javascript' src='//pl27810690.effectivegatecpm.com/3f/56/0c/3f560cd28640fec16294d033439790e5.js'></script>
-        </div>
-    `;
-
-    adContainer.classList.remove('hidden');
-    adContainer.classList.add('show');
-}
-
-// Dizi qarışdırma funksiyası
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
-// Gece/Gündüz Rejimi
-function toggleDarkMode() {
-    const isDark = document.body.classList.toggle('dark-mode');
-    if (isDark) {
-        localStorage.setItem('theme', 'dark');
-        themeIcon.textContent = '☀️';
-    } else {
-        localStorage.setItem('theme', 'light');
-        themeIcon.textContent = '🌙';
+    if (hasNewMatches) {
+        setTimeout(crushGameLoop, 100);
     }
 }
+
+// Emoji Crush-ı DOM yükləndikdən sonra avtomatik başlat
+window.addEventListener('load', () => {
+    crushCreateBoard();
+    setInterval(crushGameLoop, 100);
+});
