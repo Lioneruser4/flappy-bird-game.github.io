@@ -10,8 +10,6 @@ let level = 1;
 const MAX_LEVEL = 5; 
 let score = 0;
 let multiplier = 1; 
-let errorLimit = 4; // Başlangıç hata limiti
-let errorsMade = 0; 
 
 // Time Variables
 let timerInterval;
@@ -20,9 +18,8 @@ let timeElapsed = 0;
 // Score Variables
 const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
-const MAX_ERROR_LIMIT = 6; 
 
-// Emoji pool
+// Emoji pool (70 different emojis)
 const ALL_EMOJIS = [
     '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
     '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
@@ -36,7 +33,7 @@ const ALL_EMOJIS = [
 // DOM elements and Sounds
 let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon;
 let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
-let errorLimitDisplay, multiplierDisplay; 
+let multiplierDisplay; // errorLimitDisplay kaldırıldı
 
 document.addEventListener('DOMContentLoaded', function() {
     // Select DOM Elements
@@ -50,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
     finalScoreDisplay = document.getElementById('final-score');
     currentLevelDisplay = document.getElementById('current-level');
     themeIcon = document.getElementById('theme-icon');
-    errorLimitDisplay = document.getElementById('error-limit');
     multiplierDisplay = document.getElementById('multiplier');
 
     // Select sound elements
@@ -73,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
         themeIcon.textContent = '☀️';
     }
     
-    // PubNub başlatma KODU KALDIRILDI
     startGame();
 });
 
@@ -94,12 +89,12 @@ function startGame() {
 function initGame() {
     clearInterval(timerInterval);
 
-    // Dinamik Kart Sayısı ve Hata Limiti
-    if (level === 1) { totalPairs = 6; errorLimit = 4; } // 12 kart
-    else if (level === 2) { totalPairs = 8; errorLimit = 4; } // 16 kart
-    else if (level === 3) { totalPairs = 10; errorLimit = 5; } // 20 kart
-    else if (level === 4) { totalPairs = 12; errorLimit = 5; } // 24 kart 
-    else if (level >= MAX_LEVEL) { totalPairs = 12; errorLimit = 6; } // Max seviye
+    // Dinamik Kart Sayısı (Hata limiti olmadığı için daha basit)
+    if (level === 1) { totalPairs = 6; } // 12 kart
+    else if (level === 2) { totalPairs = 8; } // 16 kart
+    else if (level === 3) { totalPairs = 10; } // 20 kart
+    else if (level === 4) { totalPairs = 12; } // 24 kart 
+    else if (level >= MAX_LEVEL) { totalPairs = 12; } // Max seviye
 
     // Resets
     memoryBoard.innerHTML = '';
@@ -111,7 +106,6 @@ function initGame() {
     hasFlippedCard = false;
     firstCard = null;
     secondCard = null;
-    errorsMade = 0;
     multiplier = 1;
 
     // DOM updates
@@ -119,12 +113,11 @@ function initGame() {
     scoreDisplay.textContent = score;
     document.getElementById('total-pairs').textContent = totalPairs;
     matchedDisplay.textContent = matchedPairs;
-    currentLevelDisplay.textContent = `Level ${level}`; // Başlık güncellendi
+    currentLevelDisplay.textContent = `Level ${level}`; 
     timerDisplay.textContent = formatTime(timeElapsed);
-    // Yeni DOM güncellemeleri
-    errorLimitDisplay.textContent = errorLimit - errorsMade;
+    // DOM güncellemeleri
     multiplierDisplay.textContent = `x${multiplier}`;
-    multiplierDisplay.style.visibility = 'visible'; // Görünür yapıldı
+    multiplierDisplay.style.visibility = 'visible'; 
     
     createCards();
     startTimer();
@@ -161,7 +154,6 @@ function createCards() {
     // EMOJI LOGIC: Random new emojis for each level
     const shuffledEmojis = shuffleArray([...ALL_EMOJIS]);
     let selectedEmojis = shuffledEmojis.slice(0, totalPairs);
-    // Skill kartı iptal edildiği için direkt eşleşen çiftler oluşturulur.
     let gameCards = selectedEmojis.flatMap(emoji => [emoji, emoji]); 
 
     shuffleArray(gameCards);
@@ -175,7 +167,6 @@ function createCards() {
         card.dataset.emoji = emoji;
         card.dataset.index = index;
         
-        // Skill kartı mantığı KALDIRILDI
         let backContent = emoji; 
         
         card.innerHTML = `<div class="front"></div><div class="back">${backContent}</div>`;
@@ -208,12 +199,13 @@ function flipCard() {
     checkForMatch();
 }
 
+
 // Check for match
 function checkForMatch() {
     const isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
     
     if (isMatch) {
-        // Eşleşme durumunda skor çarpanı (Multiplier) etkinleştirilir
+        // Eşleşme durumunda skor çarpanı (Multiplier) artar
         score += SCORE_MATCH * multiplier;
         multiplier++;
         multiplierDisplay.textContent = `x${multiplier}`;
@@ -231,7 +223,7 @@ function checkForMatch() {
             handleGameOver(true);
         }
     } else {
-        // Yanlış eşleşme durumunda çarpan sıfırlanır ve hata sayacı artar
+        // Yanlış eşleşme durumunda çarpan sıfırlanır, oyun devam eder
         multiplier = 1;
         multiplierDisplay.textContent = `x${multiplier}`;
         multiplierDisplay.classList.remove('active');
@@ -240,20 +232,6 @@ function checkForMatch() {
         if (score < 0) score = 0; 
         scoreDisplay.textContent = score;
         
-        errorsMade++;
-        errorLimitDisplay.textContent = errorLimit - errorsMade;
-        
-        if (errorsMade >= errorLimit) {
-            // Hata limitine ulaşıldı - Oyun Durur ve Yeniden Başlamaz
-            lockBoard = true;
-            clearInterval(timerInterval);
-            unflipCards(); // Son 2 kartı da kapat
-            setTimeout(() => {
-                handleGameOver(false);
-            }, 1300); // Animasyon sonrası bitişi göster
-            return;
-        }
-
         playSound(mismatchSound);
         unflipCards();
     }
@@ -281,17 +259,10 @@ function unflipCards() {
     secondCard.classList.add('mismatch-fail');
     
     setTimeout(() => {
-        // Hata durumunda sadece kartları çeviriyoruz, kilitlenmeyi kaldırmıyoruz
         firstCard.classList.remove('flipped', 'mismatch-fail');
         secondCard.classList.remove('flipped', 'mismatch-fail');
         
-        if (errorsMade < errorLimit) {
-            resetBoard(); // Hata limiti aşılmadıysa tahtayı aç
-        } else {
-            // Hata limiti aşıldıysa tahtayı kilitli tut
-            firstCard = null;
-            secondCard = null;
-        }
+        resetBoard(); 
     }, 1200); 
 }
 
@@ -307,9 +278,10 @@ function resetBoard() {
     });
 }
 
-// Game Over Panel
+// Game Over Panel (Başarı veya yenilgi yok, sadece Level Bitişi)
 function handleGameOver(isSuccess) {
     lockBoard = true;
+    clearInterval(timerInterval);
 
     finalMovesDisplay.textContent = moves;
     finalScoreDisplay.textContent = score;
@@ -319,29 +291,23 @@ function handleGameOver(isSuccess) {
     const nextLevelBtn = document.getElementById('next-level');
     const restartLevelBtn = document.getElementById('restart-level');
     
-    if (isSuccess) {
-        playSound(winSound);
-        
-        if (level < MAX_LEVEL) {
-             adTitle.textContent = 'Congratulations! 🎉 Level Passed!';
-             finalMessage.textContent = `You unlocked Level ${level + 1}!`;
-             nextLevelBtn.textContent = `Next Level (${level + 1})`;
-             nextLevelBtn.onclick = function() { level++; initGame(); };
-        } else {
-             adTitle.textContent = ' 🏆 Grand Champion!';
-             finalMessage.textContent = `You completed all challenges with a score of ${score}!`;
-             nextLevelBtn.textContent = 'Play Again (Max Level)';
-             nextLevelBtn.onclick = function() { initGame(); };
-        }
+    // Sadece başarılı bitiş senaryosu kalır
+    playSound(winSound);
+    
+    if (level < MAX_LEVEL) {
+         adTitle.textContent = 'Congratulations! 🎉 Level Passed!';
+         finalMessage.textContent = `You unlocked Level ${level + 1}!`;
+         nextLevelBtn.textContent = `Next Level (${level + 1})`;
+         nextLevelBtn.onclick = function() { level++; initGame(); };
+         restartLevelBtn.textContent = 'Restart Current Level';
+         restartLevelBtn.onclick = function() { initGame(); };
+         restartLevelBtn.style.display = 'block';
     } else {
-        playSound(gameoverSound);
-        adTitle.textContent = 'Game Over! 😔';
-        // Kaybedince yeniden başlatılmasın, butonlar Start New Game'e yönlendirsin
-        finalMessage.textContent = `You ran out of moves! Final Score: ${score}.`;
-        nextLevelBtn.textContent = 'Start New Game';
-        nextLevelBtn.onclick = function() { level = 1; initGame(); };
-        restartLevelBtn.textContent = 'Restart Current Level';
-        restartLevelBtn.onclick = function() { initGame(); };
+         adTitle.textContent = ' 🏆 Grand Champion!';
+         finalMessage.textContent = `You completed all challenges with a score of ${score}!`;
+         nextLevelBtn.textContent = 'Play Again (Max Level)';
+         nextLevelBtn.onclick = function() { level=1; initGame(); };
+         restartLevelBtn.style.display = 'none'; // Max levelde Play Again yeterli
     }
     
     adContainer.classList.remove('hidden');
