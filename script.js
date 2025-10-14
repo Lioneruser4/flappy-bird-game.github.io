@@ -19,7 +19,7 @@ let timeElapsed = 0;
 const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
 
-// EMOJI HAVUZU (Yeni Tematik Setler)
+// EMOJI HAVUZU (Tematik Setler)
 const THEMED_EMOJIS = {
     FLAGS: [
         '🇦🇿', '🇹🇷', '🇺🇸', '🇬🇧', '🇫🇷', '🇩🇪', '🇮🇹', '🇪🇸', '🇨🇳', '🇯🇵', 
@@ -46,16 +46,15 @@ const THEMED_EMOJIS = {
     ]
 };
 
-// Tüm temaların anahtarları
 const THEME_KEYS = Object.keys(THEMED_EMOJIS);
 
-// DOM elements and Sounds (AYNI KALIR)
+// DOM elements and Sounds
 let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon;
 let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
 let multiplierDisplay; 
 
 document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements selection (AYNI KALIR)
+    // Select DOM Elements
     memoryBoard = document.getElementById('memory-board');
     movesDisplay = document.getElementById('moves');
     matchedDisplay = document.getElementById('matched');
@@ -68,21 +67,21 @@ document.addEventListener('DOMContentLoaded', function() {
     themeIcon = document.getElementById('theme-icon');
     multiplierDisplay = document.getElementById('multiplier');
 
-    // Sound elements selection (AYNI KALIR)
+    // Select sound elements
     flipSound = document.getElementById('flip-sound');
     matchSound = document.getElementById('match-sound');
     mismatchSound = document.getElementById('mismatch-sound');
     winSound = document.getElementById('win-sound');
     gameoverSound = document.getElementById('gameover-sound');
 
-    // Button Events (AYNI KALIR)
+    // Button Events
     document.getElementById('restart-button').addEventListener('click', function() {
         level = 1; 
         initGame();
     });
     document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
 
-    // Check Theme Mode (AYNI KALIR)
+    // Check Theme Mode
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
         themeIcon.textContent = '☀️';
@@ -92,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Lag-free Sound Playback Function (AYNI KALIR)
+// Lag-free Sound Playback Function
 function playSound(audioElement) {
     if (!audioElement) return;
     const clone = audioElement.cloneNode();
@@ -108,7 +107,7 @@ function startGame() {
 function initGame() {
     clearInterval(timerInterval);
 
-    // Dinamik Kart Sayısı ve Grid Ayarı (AYNI KALIR)
+    // Dinamik Kart Sayısı ve Grid Ayarı
     if (level === 1) { totalPairs = 6; } // 12 kart
     else if (level === 2) { totalPairs = 8; } // 16 kart
     else if (level === 3) { totalPairs = 10; } // 20 kart
@@ -116,7 +115,7 @@ function initGame() {
         totalPairs = 12; // Level 5 ve sonrası: Sabit 24 kart
     } 
 
-    // Resets ve DOM updates (AYNI KALIR)
+    // Resets
     memoryBoard.innerHTML = '';
     moves = 0;
     matchedPairs = 0;
@@ -128,6 +127,7 @@ function initGame() {
     secondCard = null;
     multiplier = 1;
 
+    // DOM updates
     movesDisplay.textContent = moves;
     scoreDisplay.textContent = score;
     document.getElementById('total-pairs').textContent = totalPairs;
@@ -143,7 +143,7 @@ function initGame() {
     adContainer.classList.add('hidden');
 }
 
-// Unlimited Time Counter and formatTime (AYNI KALIR)
+// Unlimited Time Counter
 function startTimer() {
     timerInterval = setInterval(() => {
         timeElapsed++;
@@ -151,6 +151,7 @@ function startTimer() {
     }, 1000);
 }
 
+// Converts time to Minute:Second format
 function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
     const seconds = (totalSeconds % 60).toString().padStart(2, '0');
@@ -160,7 +161,7 @@ function formatTime(totalSeconds) {
 
 // Yeni: Tematik Kart Oluşturma Fonksiyonu
 function createCards() {
-    // Grid düzenini ayarla (AYNI KALIR)
+    // Grid düzenini ayarla
     memoryBoard.className = 'memory-board';
     if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
     else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
@@ -181,9 +182,15 @@ function createCards() {
     
     // **Özel Kural:** Bayrak Teması varsa Azerbaycan ve Türkiye bayraklarını ekle
     if (currentThemeKey === 'FLAGS') {
-        // Havuzda olsalar bile ilk iki yeri garanti ediyoruz
-        currentEmojiPool.splice(0, 2); // Havuzdaki ilk 2 emojiyi sil
-        currentEmojiPool.unshift('🇹🇷', '🇦🇿'); // Türkiye ve Azerbaycan bayraklarını başa ekle
+        // Havuzdaki bayrakları kontrol et (Zaten en başta olmalılar, sadece garanti ediyoruz)
+        const azFlag = '🇦🇿';
+        const trFlag = '🇹🇷';
+        
+        // Bu iki bayrağı havuzda tuttuğumuzdan emin ol ve öne al
+        currentEmojiPool.splice(currentEmojiPool.indexOf(azFlag), 1);
+        currentEmojiPool.splice(currentEmojiPool.indexOf(trFlag), 1);
+        currentEmojiPool.unshift(trFlag); 
+        currentEmojiPool.unshift(azFlag); 
     }
     
     // Yeterli sayıda emoji seç
@@ -195,7 +202,7 @@ function createCards() {
     memoryBoard.innerHTML = '';
     cards = []; 
 
-    // Kart Elementlerini Oluştur (AYNI KALIR)
+    // Kart Elementlerini Oluştur
     gameCards.forEach((emoji, index) => {
         const card = document.createElement('div');
         card.classList.add('card');
@@ -208,10 +215,6 @@ function createCards() {
         cards.push(card);
     });
 }
-
-// Geri kalan fonksiyonlar (flipCard, checkForMatch, disableCards, unflipCards, resetBoard, handleGameOver) **AYNI KALIR**.
-
-// ... (Kalan fonksiyonları olduğu gibi koruyun) ...
 
 // Card flip operation
 function flipCard() {
