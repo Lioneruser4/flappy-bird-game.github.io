@@ -1,11 +1,11 @@
 /* Əsas Rəng Dəyişənləri */
 :root {
-    --primary-color: #3498db;
+    --primary-color: #3498db; 
     --secondary-color: #2980b9;
     --success-color: #2ecc71;
     --danger-color: #e74c3c;
     --text-color: #2c3e50;
-    --bg-color: #ecf0f1;
+    --bg-color: #ecf0f1; 
     --card-bg: white;
     --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -14,7 +14,7 @@
 .dark-mode {
     --bg-color: #1a1a1a;
     --text-color: #f0f0f0;
-    --primary-color: #bb86fc;
+    --primary-color: #bb86fc; 
     --secondary-color: #3700b3;
     --card-bg: #2c2c2c;
     --shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
@@ -22,7 +22,7 @@
 }
 .dark-mode #game-area { background-color: var(--card-bg); }
 .dark-mode .card .front { background: var(--primary-color); border: 3px solid var(--card-bg); }
-.dark-mode .card .back { background: none; color: var(--text-color); } 
+.dark-mode .card .back { background: var(--card-bg); color: var(--text-color); }
 .dark-mode .game-info { background-color: rgba(187, 134, 252, 0.1); }
 .dark-mode h1, .dark-mode h3 { color: var(--primary-color); }
 
@@ -50,7 +50,7 @@ html, body {
 
 .container {
     width: 100%;
-    max-width: 500px;
+    max-width: 500px; 
     margin: 0 auto;
     padding: 10px;
 }
@@ -88,7 +88,7 @@ html, body {
 /* Oyun Məlumatı (Grid 3x2) */
 .game-info {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); 
     gap: 8px 0;
     text-align: center;
     background-color: rgba(52, 152, 219, 0.08);
@@ -107,19 +107,18 @@ html, body {
 /* Seviyyəyə uyğun grid layoutları */
 .memory-board.grid-4x3 { grid-template-columns: repeat(4, 1fr); }
 .memory-board.grid-4x4 { grid-template-columns: repeat(4, 1fr); }
-.memory-board.grid-4x5 { grid-template-columns: repeat(4, 1fr); }
+.memory-board.grid-4x5 { grid-template-columns: repeat(4, 1fr); } 
 
 /* Kart Stilleri */
 .card {
     aspect-ratio: 1;
-    background-color: transparent;
+    background-color: transparent; 
     border-radius: 10px;
     cursor: pointer;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    overflow: hidden; 
 }
 
 .card.flipped {
@@ -129,17 +128,17 @@ html, body {
 /* Kart Eşləşmə Animasiyası */
 @keyframes match-pulse {
     0% { transform: scale(1) rotateY(180deg); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
-    50% {
-        transform: scale(1.05) rotateY(180deg);
-        box-shadow: 0 0 20px var(--success-color), 0 0 30px var(--success-color);
+    50% { 
+        transform: scale(1.05) rotateY(180deg); 
+        box-shadow: 0 0 20px var(--success-color), 0 0 30px var(--success-color); 
     }
     100% { transform: scale(1) rotateY(180deg); }
 }
 
 .card.matched {
     cursor: default;
-    transform: rotateY(180deg);
-    animation: match-pulse 0.5s ease-out;
+    transform: rotateY(180deg); 
+    animation: match-pulse 0.5s ease-out; 
     border: 3px solid var(--success-color);
 }
 
@@ -154,46 +153,26 @@ html, body {
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    /* Resim için font-size sıfır */
-    font-size: 0; 
+    font-size: 1.8rem;
     font-weight: bold;
     color: var(--text-color);
 }
 
 .card .front {
-    background: var(--primary-color);
+    background: var(--primary-color); 
     color: white;
     border: 3px solid var(--card-bg);
-    font-size: 1.8rem; 
 }
 
-/* Kartın Arka Üzü (Resim Alanı) */
 .card .back {
-    /* Arka planı tamamen kaldır ki, resim görünebilsin */
-    background: none !important; 
+    background: var(--card-bg); 
     transform: rotateY(180deg);
-    /* Boşlukları sıfırla */
-    padding: 0; 
 }
-
-/* 📸 Resim Boyutunu Ayarlama: Sabit 80x80 px */
-.card .back .card-image {
-    /* Resim boyutunu sabit 80px yapar */
-    width: 80px !important; 
-    height: 80px !important;
-    /* Resmin orantısını korur ve kırpmaz, kartın içinde ortalanır */
-    object-fit: contain; 
-    /* Ortalamayı garanti eder */
-    margin: auto; 
-    display: block; 
-    border-radius: inherit; 
-}
-
 
 /* 20 Kart üçün (Level 3) kiçik emoji ölçüsü */
 .memory-board.grid-4x5 .card .front,
 .memory-board.grid-4x5 .card .back {
-    font-size: 1.5rem;
+    font-size: 1.5rem; 
 }
 
 /* Düymələr */
@@ -236,17 +215,17 @@ html, body {
     text-align: center;
     max-width: 90%;
     box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
+    display: flex; 
+    flex-direction: column; 
 }
 
 /* Reklam Çərçivəsi üçün Düzəliş */
 #ad-content {
     margin: 15px 0;
-    padding: 0;
-    border: none;
-    background-color: transparent;
-    max-width: 300px;
+    padding: 0; /* Reklam mətni silindiyi üçün padding sıfırlandı */
+    border: none; /* Çərçivə sıfırlandı */
+    background-color: transparent; 
+    max-width: 300px; 
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -254,12 +233,12 @@ html, body {
 }
 
 .dark-mode #ad-content {
-    background-color: transparent;
+    background-color: transparent; 
     border-color: transparent;
 }
 
 .ad-iframe-container {
-    min-height: 100px;
+    min-height: 100px; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -268,16 +247,16 @@ html, body {
 }
 
 .button-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
     gap: 10px;
     justify-content: center;
     margin-top: 15px;
 }
 
 .button-group .primary-action {
-    max-width: 250px;
+    max-width: 250px; 
     margin: 0;
 }
 
@@ -287,7 +266,7 @@ html, body {
     border: 2px solid var(--primary-color);
     padding: 8px 20px;
     font-size: 0.9rem;
-    max-width: 180px;
+    max-width: 180px; 
     box-shadow: none;
 }
 
