@@ -167,7 +167,7 @@ html, body {
     font-size: 1.8rem; 
 }
 
-/* 📸 KRİTİK DÜZELTME: Kartın Arka Üzü (Resim Alanı) */
+/* Kartın Arka Üzü (Resim Alanı) */
 .card .back {
     /* Arka planı tamamen kaldır ki, resim görünebilsin */
     background: none !important; 
@@ -176,19 +176,18 @@ html, body {
     padding: 0; 
 }
 
-/* 📸 Resim Boyutunu Ayarlama: Kartın tam içine sığdırır */
+/* 📸 Resim Boyutunu Ayarlama: Sabit 80x80 px */
 .card .back .card-image {
-    /* Resmi kapsayıcının %95'i kadar küçült */
-    width: 95%; 
-    height: 95%;
-    /* Resmin orantısını korur ve kırpmaz, tam olarak sığmasını sağlar */
+    /* Resim boyutunu sabit 80px yapar */
+    width: 80px !important; 
+    height: 80px !important;
+    /* Resmin orantısını korur ve kırpmaz, kartın içinde ortalanır */
     object-fit: contain; 
     /* Ortalamayı garanti eder */
     margin: auto; 
     display: block; 
     border-radius: inherit; 
 }
-/* --- RESİM GÖRÜNÜRLÜĞÜ GARANTİ EDİLDİ --- */
 
 
 /* 20 Kart üçün (Level 3) kiçik emoji ölçüsü */
