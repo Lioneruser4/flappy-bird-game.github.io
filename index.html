@@ -1,63 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
-      crossorigin="anonymous"></script>
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌟 Find the Same Emoji 🌟 </title>
-    <link rel="stylesheet" href="style.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1779293358827927"
+      crossorigin="anonymous"></script>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>📸 Photo Match - Memory Game </title> 
+    <link rel="stylesheet" href="style.css">
 
-    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.5.0.min.js"></script>
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.5.0.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div id="game-area">
-            <div class="game-header">
-                <button id="theme-toggle-button" class="theme-toggle-button" title="Night/Day Mode">
-                    <span id="theme-icon">🌙</span>
-                </button>
-                
-                <h1>  Find the Same Emoji <span id="current-level">(Level 1)</span></h1>
-                
-                <div class="game-info">
-                    <div>Moves: <span id="moves">0</span></div>
-                    <div>Pairs: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
-                    <div>Time: <span id="timer">00:00</span></div>
-                    <div><span id="online-users">0</span></div> 
-                    <div>Score: <span id="score">0</span></div>
-                </div>
-            </div>
-            
-            <div id="memory-board" class="memory-board"></div>
-            
-            <button id="restart-button" class="game-button">Restart</button>
-        </div>
-        
-        <div id="ad-container" class="hidden">
-            <div id="game-completed-ad">
-                <h3 id="ad-title">Congratulations! 🎉</h3>
-                <p>Score: <span id="final-score">0</span> | Moves: <span id="final-moves">0</span></p>
-                <p class="final-message"></p>
-                
-                <div id="ad-content">
-                    </div>
-                
-                <div class="button-group">
-                    <button id="next-level" class="game-button primary-action">Next Level</button> 
-                    <button id="restart-level" class="game-button secondary-action">Play Again</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="container">
+        <div id="game-area">
+            <div class="game-header">
+                <button id="theme-toggle-button" class="theme-toggle-button" title="Night/Day Mode">
+                    <span id="theme-icon">🌙</span>
+                </button>
+                
+                <h1> Photo Match <span id="current-level">(Level 1)</span></h1>
+                
+                <div class="game-info">
+                    <div>Moves: <span id="moves">0</span></div>
+                    <div>Pairs: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
+                    <div>Time: <span id="timer">00:00</span></div>
+                    <div><span id="online-users">0</span></div>
+                    <div>Score: <span id="score">0</span></div>
+                </div>
+            </div>
+            
+            <div id="memory-board" class="memory-board"></div>
+            
+            <button id="restart-button" class="game-button">Restart</button>
+        </div>
+        
+        <div id="ad-container" class="hidden">
+            <div id="game-completed-ad">
+                <h3 id="ad-title">Congratulations! 🎉</h3>
+                <p>Score: <span id="final-score">0</span> | Moves: <span id="final-moves">0</span></p>
+                <p class="final-message"></p>
+                
+                <div id="ad-content">
+                    </div>
+                
+                <div class="button-group">
+                    <button id="next-level" class="game-button primary-action">Next Level</button>
+                    <button id="restart-level" class="game-button secondary-action">Play Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <audio id="flip-sound" src="sounds/flip.wav" preload="auto"></audio>
-    <audio id="match-sound" src="sounds/match.wav" preload="auto"></audio>
-    <audio id="mismatch-sound" src="sounds/mismatch.wav" preload="auto"></audio>
-    <audio id="win-sound" src="sounds/win.wav" preload="auto"></audio>
-    <audio id="gameover-sound" src="sounds/gameover.wav" preload="auto"></audio>
+    <audio id="flip-sound" src="sounds/flip.wav" preload="auto"></audio>
+    <audio id="match-sound" src="sounds/match.wav" preload="auto"></audio>
+    <audio id="mismatch-sound" src="sounds/mismatch.wav" preload="auto"></audio>
+    <audio id="win-sound" src="sounds/win.wav" preload="auto"></audio>
+    <audio id="gameover-sound" src="sounds/gameover.wav" preload="auto"></audio>
 
-    <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
