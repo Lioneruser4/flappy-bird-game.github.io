@@ -4,7 +4,6 @@
     --secondary-color: #2980b9;
     --success-color: #2ecc71;
     --danger-color: #e74c3c;
-    --warning-color: #f39c12; 
     --text-color: #2c3e50;
     --bg-color: #ecf0f1; 
     --card-bg: white;
@@ -23,7 +22,7 @@
 }
 .dark-mode #game-area { background-color: var(--card-bg); }
 .dark-mode .card .front { 
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important; /* Önemli: !important eklendi */
     border: 3px solid var(--card-bg); 
 }
 .dark-mode .card .back { background: var(--card-bg); color: var(--text-color); }
@@ -70,7 +69,7 @@ html, body {
     transition: background-color 0.3s;
 }
 
-/* Başlık ve Düymə */
+/* Başlık ve Düymə (AYNI) */
 .game-header { text-align: center; margin-bottom: 15px; position: relative; }
 .game-header h1 { 
     color: var(--primary-color); 
@@ -79,7 +78,7 @@ html, body {
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-/* Level Başlığı */
+/* Level Başlığı (AYNI) */
 .game-header h2 {
     font-size: 1.2rem;
     color: var(--text-color);
@@ -102,10 +101,9 @@ html, body {
     color: var(--text-color);
 }
 
-/* 🏆 Oyun Məlumatı - 4 Sütunlu Düzen */
+/* 🏆 Oyun Məlumatı - 3 Sütunlu Düzen */
 .game-info {
     display: grid;
-    /* Moves, Pairs, Time, Bonus, Score */
     grid-template-columns: repeat(3, 1fr); 
     gap: 5px 0;
     text-align: center;
@@ -132,7 +130,7 @@ html, body {
     }
 }
 
-/* Çarpan (Multiplier) Animasyonu */
+/* Çarpan (Multiplier) Animasyonu (AYNI) */
 #multiplier {
     font-size: 1.1rem;
     font-weight: 800;
@@ -152,14 +150,14 @@ html, body {
 }
 
 
-/* Hafıza Tahtası (Dynamic Grid) */
+/* Hafıza Tahtası (Dynamic Grid) (AYNI) */
 .memory-board {
     display: grid;
     gap: 8px;
     padding: 5px 0;
 }
 
-/* Seviyyəyə uyğun grid layoutları */
+/* Seviyyəyə uyğun grid layoutları (AYNI) */
 .memory-board.grid-4x3 { grid-template-columns: repeat(4, 1fr); }
 .memory-board.grid-4x4 { grid-template-columns: repeat(4, 1fr); }
 .memory-board.grid-4x5 { grid-template-columns: repeat(4, 1fr); }
@@ -173,7 +171,7 @@ html, body {
     border-radius: 10px;
     cursor: pointer;
     position: relative;
-    transform-style: preserve-3d;
+    transform-style: preserve-3d; /* 3D dönüşüm için kritik */
     transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
@@ -182,8 +180,7 @@ html, body {
     transform: rotateY(180deg);
 }
 
-/* 🌟 Animasyonlar 🌟 */
-
+/* 🌟 Animasyonlar 🌟 (AYNI) */
 @keyframes match-pulse {
     0% { transform: scale(1) rotateY(180deg); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); }
     50% { 
@@ -220,7 +217,7 @@ html, body {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    backface-visibility: hidden; /* Kart dönmediğinde arka yüzün görünmesini engeller */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -230,18 +227,23 @@ html, body {
     color: var(--text-color);
 }
 
+/* KARTIN ÖN YÜZÜ - BURASI KRİTİK */
 .card .front {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); /* Gradyan eklendi */
     color: white;
     border: 3px solid var(--card-bg);
+    transform: rotateY(0deg); /* Ön yüzün başlangıç pozisyonu */
+    z-index: 2; /* Öne alınmalı */
 }
 
+/* KARTIN ARKA YÜZÜ */
 .card .back {
     background: var(--card-bg); 
-    transform: rotateY(180deg);
+    transform: rotateY(180deg); /* Arka yüzün dönük pozisyonu */
+    z-index: 1;
 }
 
-/* Küçük Gridler İçin Font Boyutu */
+/* Küçük Gridler İçin Font Boyutu (AYNI) */
 .memory-board.grid-4x5 .card .front,
 .memory-board.grid-4x5 .card .back,
 .memory-board.grid-6x4 .card .front,
@@ -249,7 +251,7 @@ html, body {
     font-size: 1.3rem; 
 }
 
-/* Düymələr ve Animasyonları */
+/* Düymələr ve Animasyonları (AYNI) */
 @keyframes button-wobble {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.02); }
@@ -278,8 +280,7 @@ html, body {
     transform: scale(1.01);
 }
 
-
-/* Oyun Bitdi Paneli */
+/* Oyun Bitdi Paneli (AYNI) */
 #ad-container {
     position: fixed;
     top: 0;
@@ -331,7 +332,6 @@ html, body {
     margin: 0;
 }
 
-/* Secondary Buton Animasyonu */
 .button-group .secondary-action {
     background: none;
     color: var(--primary-color);
@@ -355,7 +355,7 @@ html, body {
 
 .hidden { display: none !important; }
 
-/* Pop-up Animasiyası */
+/* Pop-up Animasiyası (AYNI) */
 #ad-container.show {
     animation: fadeIn 0.3s ease-out;
 }
