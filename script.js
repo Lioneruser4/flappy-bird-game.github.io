@@ -7,7 +7,7 @@ let moves = 0;
 let matchedPairs = 0;
 let totalPairs = 6;
 let level = 1;
-const MAX_LEVEL = 5; 
+const MAX_LEVEL_CARDS = 5; // Kart sayısı artan son seviye
 let score = 0;
 let multiplier = 1; 
 
@@ -19,24 +19,43 @@ let timeElapsed = 0;
 const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
 
-// Emoji pool (70 different emojis)
-const ALL_EMOJIS = [
-    '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
-    '🦉', '🐸', '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', 
-    '🥝', '🍍', '🥥', '🥑', '🚗', '🚕', '🚌', '🚓', '🚑', '🚒', 
-    '🚚', '🚢', '🚀', '🚁', '🚂', '⌚', '📱', '💻', '🖥️', 
-    '🔑', '🔒', '🔓', '🎲', '🧩', '🎈', '🎁', '🎂', '👑', '💍',
-    '🌞', '🌛', '⭐', '🌈', '🔥', '💧', '🌿', '🍄', '🔔', '📚',
-    '🔬', '🔭', '💰', '💳', '📧', '💡', '📌', '📎', '💉', '💊' 
-];
+// EMOJI HAVUZU (Yeni Tematik Setler)
+const THEMED_EMOJIS = {
+    FLAGS: [
+        '🇦🇿', '🇹🇷', '🇺🇸', '🇬🇧', '🇫🇷', '🇩🇪', '🇮🇹', '🇪🇸', '🇨🇳', '🇯🇵', 
+        '🇰🇷', '🇷🇺', '🇧🇷', '🇮🇳', '🇨🇦', '🇲🇽', '🇦🇺', '🇪🇬', '🇿🇦', '🇸🇦', 
+        '🇦🇪', '🇨🇭', '🇳🇱', '🇧🇪', '🇦🇷', '🇵🇹', '🇬🇷', '🇸🇪', '🇳🇴', '🇫🇮'
+    ],
+    HEARTS: [
+        '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', 
+        '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💢', '🌟'
+    ],
+    FRUITS: [
+        '🍎', '🍊', '🍋', '🍇', '🍉', '🍓', '🍒', '🍑', '🥝', '🍍', 
+        '🥥', '🥑', '🍌', '🥭', '🍐', '🍏', '🫐', '🍈', '🌶️', '🥦'
+    ],
+    ANIMALS: [
+        '🐶', '🐱', '🦊', '🐻', '🦁', '🐯', '🦄', '🐮', '🐷', '🐵', 
+        '🦉', '🐸', '🐢', '🐍', '🐘', '🦒', '🦓', '🐠', '🐬', '🐳'
+    ],
+    MIXED: [
+        '🚗', '🚕', '🚌', '🚓', '🚑', '🚒', '🚚', '🚢', '🚀', '🚁', 
+        '⌚', '📱', '💻', '🖥️', '🔑', '🔒', '🔓', '🎲', '🧩', '🎈', 
+        '🎁', '🎂', '👑', '💍', '🌞', '🌛', '⭐', '🌈', '🔥', '💧',
+        '🌿', '🍄', '🔔', '📚', '🔬', '🔭', '💰', '💳', '📧', '💡'
+    ]
+};
 
-// DOM elements and Sounds
+// Tüm temaların anahtarları
+const THEME_KEYS = Object.keys(THEMED_EMOJIS);
+
+// DOM elements and Sounds (AYNI KALIR)
 let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon;
 let flipSound, matchSound, mismatchSound, winSound, gameoverSound;
-let multiplierDisplay; // errorLimitDisplay kaldırıldı
+let multiplierDisplay; 
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Select DOM Elements
+    // DOM Elements selection (AYNI KALIR)
     memoryBoard = document.getElementById('memory-board');
     movesDisplay = document.getElementById('moves');
     matchedDisplay = document.getElementById('matched');
@@ -49,21 +68,21 @@ document.addEventListener('DOMContentLoaded', function() {
     themeIcon = document.getElementById('theme-icon');
     multiplierDisplay = document.getElementById('multiplier');
 
-    // Select sound elements
+    // Sound elements selection (AYNI KALIR)
     flipSound = document.getElementById('flip-sound');
     matchSound = document.getElementById('match-sound');
     mismatchSound = document.getElementById('mismatch-sound');
     winSound = document.getElementById('win-sound');
     gameoverSound = document.getElementById('gameover-sound');
 
-    // Button Events
+    // Button Events (AYNI KALIR)
     document.getElementById('restart-button').addEventListener('click', function() {
         level = 1; 
         initGame();
     });
     document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
 
-    // Check Theme Mode
+    // Check Theme Mode (AYNI KALIR)
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark-mode');
         themeIcon.textContent = '☀️';
@@ -73,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Lag-free Sound Playback Function
+// Lag-free Sound Playback Function (AYNI KALIR)
 function playSound(audioElement) {
     if (!audioElement) return;
     const clone = audioElement.cloneNode();
@@ -89,14 +108,15 @@ function startGame() {
 function initGame() {
     clearInterval(timerInterval);
 
-    // Dinamik Kart Sayısı (Hata limiti olmadığı için daha basit)
+    // Dinamik Kart Sayısı ve Grid Ayarı (AYNI KALIR)
     if (level === 1) { totalPairs = 6; } // 12 kart
     else if (level === 2) { totalPairs = 8; } // 16 kart
     else if (level === 3) { totalPairs = 10; } // 20 kart
-    else if (level === 4) { totalPairs = 12; } // 24 kart 
-    else if (level >= MAX_LEVEL) { totalPairs = 12; } // Max seviye
+    else if (level >= MAX_LEVEL_CARDS) { 
+        totalPairs = 12; // Level 5 ve sonrası: Sabit 24 kart
+    } 
 
-    // Resets
+    // Resets ve DOM updates (AYNI KALIR)
     memoryBoard.innerHTML = '';
     moves = 0;
     matchedPairs = 0;
@@ -108,14 +128,12 @@ function initGame() {
     secondCard = null;
     multiplier = 1;
 
-    // DOM updates
     movesDisplay.textContent = moves;
     scoreDisplay.textContent = score;
     document.getElementById('total-pairs').textContent = totalPairs;
     matchedDisplay.textContent = matchedPairs;
-    currentLevelDisplay.textContent = `Level ${level}`; 
+    currentLevelDisplay.textContent = (level >= MAX_LEVEL_CARDS) ? `Level ${level} (Endless)` : `Level ${level}`; 
     timerDisplay.textContent = formatTime(timeElapsed);
-    // DOM güncellemeleri
     multiplierDisplay.textContent = `x${multiplier}`;
     multiplierDisplay.style.visibility = 'visible'; 
     
@@ -125,7 +143,7 @@ function initGame() {
     adContainer.classList.add('hidden');
 }
 
-// Unlimited Time Counter
+// Unlimited Time Counter and formatTime (AYNI KALIR)
 function startTimer() {
     timerInterval = setInterval(() => {
         timeElapsed++;
@@ -133,7 +151,6 @@ function startTimer() {
     }, 1000);
 }
 
-// Converts time to Minute:Second format
 function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
     const seconds = (totalSeconds % 60).toString().padStart(2, '0');
@@ -141,40 +158,60 @@ function formatTime(totalSeconds) {
 }
 
 
-// Create Cards
+// Yeni: Tematik Kart Oluşturma Fonksiyonu
 function createCards() {
-    // Define card layout and sizes according to level
+    // Grid düzenini ayarla (AYNI KALIR)
     memoryBoard.className = 'memory-board';
     if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
     else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
     else if (totalPairs === 10) memoryBoard.classList.add('grid-4x5');
     else if (totalPairs === 12) memoryBoard.classList.add('grid-6x4'); 
 
+    // Temayı Belirle: Random, ancak Level 1'de Bayraklar garantili.
+    let currentThemeKey;
+    if (level === 1) {
+        currentThemeKey = 'FLAGS'; // Level 1 her zaman Bayraklar ile başlar
+    } else {
+        // Level 2 ve sonrası için rastgele tema seç (Bayraklar dahil)
+        const randomKeyIndex = Math.floor(Math.random() * THEME_KEYS.length);
+        currentThemeKey = THEME_KEYS[randomKeyIndex];
+    }
+
+    const currentEmojiPool = [...THEMED_EMOJIS[currentThemeKey]];
     
-    // EMOJI LOGIC: Random new emojis for each level
-    const shuffledEmojis = shuffleArray([...ALL_EMOJIS]);
-    let selectedEmojis = shuffledEmojis.slice(0, totalPairs);
+    // **Özel Kural:** Bayrak Teması varsa Azerbaycan ve Türkiye bayraklarını ekle
+    if (currentThemeKey === 'FLAGS') {
+        // Havuzda olsalar bile ilk iki yeri garanti ediyoruz
+        currentEmojiPool.splice(0, 2); // Havuzdaki ilk 2 emojiyi sil
+        currentEmojiPool.unshift('🇹🇷', '🇦🇿'); // Türkiye ve Azerbaycan bayraklarını başa ekle
+    }
+    
+    // Yeterli sayıda emoji seç
+    const shuffledEmojis = shuffleArray(currentEmojiPool);
+    let selectedEmojis = shuffledEmojis.slice(0, totalPairs); 
     let gameCards = selectedEmojis.flatMap(emoji => [emoji, emoji]); 
 
     shuffleArray(gameCards);
     memoryBoard.innerHTML = '';
     cards = []; 
 
-    // Kart Elementlerini Oluştur
+    // Kart Elementlerini Oluştur (AYNI KALIR)
     gameCards.forEach((emoji, index) => {
         const card = document.createElement('div');
         card.classList.add('card');
         card.dataset.emoji = emoji;
         card.dataset.index = index;
         
-        let backContent = emoji; 
-        
-        card.innerHTML = `<div class="front"></div><div class="back">${backContent}</div>`;
+        card.innerHTML = `<div class="front"></div><div class="back">${emoji}</div>`;
         card.addEventListener('click', flipCard);
         memoryBoard.appendChild(card);
         cards.push(card);
     });
 }
+
+// Geri kalan fonksiyonlar (flipCard, checkForMatch, disableCards, unflipCards, resetBoard, handleGameOver) **AYNI KALIR**.
+
+// ... (Kalan fonksiyonları olduğu gibi koruyun) ...
 
 // Card flip operation
 function flipCard() {
@@ -205,7 +242,6 @@ function checkForMatch() {
     const isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
     
     if (isMatch) {
-        // Eşleşme durumunda skor çarpanı (Multiplier) artar
         score += SCORE_MATCH * multiplier;
         multiplier++;
         multiplierDisplay.textContent = `x${multiplier}`;
@@ -223,7 +259,6 @@ function checkForMatch() {
             handleGameOver(true);
         }
     } else {
-        // Yanlış eşleşme durumunda çarpan sıfırlanır, oyun devam eder
         multiplier = 1;
         multiplierDisplay.textContent = `x${multiplier}`;
         multiplierDisplay.classList.remove('active');
@@ -278,7 +313,7 @@ function resetBoard() {
     });
 }
 
-// Game Over Panel (Başarı veya yenilgi yok, sadece Level Bitişi)
+// Game Over Panel (Sonsuz Mod Mantığı)
 function handleGameOver(isSuccess) {
     lockBoard = true;
     clearInterval(timerInterval);
@@ -291,10 +326,10 @@ function handleGameOver(isSuccess) {
     const nextLevelBtn = document.getElementById('next-level');
     const restartLevelBtn = document.getElementById('restart-level');
     
-    // Sadece başarılı bitiş senaryosu kalır
     playSound(winSound);
     
-    if (level < MAX_LEVEL) {
+    // Level 5 öncesi: Kart sayısı artar
+    if (level < MAX_LEVEL_CARDS) {
          adTitle.textContent = 'Congratulations! 🎉 Level Passed!';
          finalMessage.textContent = `You unlocked Level ${level + 1}!`;
          nextLevelBtn.textContent = `Next Level (${level + 1})`;
@@ -302,12 +337,17 @@ function handleGameOver(isSuccess) {
          restartLevelBtn.textContent = 'Restart Current Level';
          restartLevelBtn.onclick = function() { initGame(); };
          restartLevelBtn.style.display = 'block';
-    } else {
-         adTitle.textContent = ' 🏆 Grand Champion!';
-         finalMessage.textContent = `You completed all challenges with a score of ${score}!`;
-         nextLevelBtn.textContent = 'Play Again (Max Level)';
-         nextLevelBtn.onclick = function() { level=1; initGame(); };
-         restartLevelBtn.style.display = 'none'; // Max levelde Play Again yeterli
+
+    // Level 5 ve sonrası: Sonsuz mod, kart sayısı sabit (24) kalır, emoji değişir.
+    } else { 
+         level++; // Sonsuz modda seviye numarası artmaya devam eder
+         adTitle.textContent = `Level ${level - 1} Completed! 🚀`;
+         finalMessage.textContent = `You are now in **Endless Mode** at Level ${level}. New theme, same challenge!`;
+         nextLevelBtn.textContent = `Continue to Level ${level}`;
+         nextLevelBtn.onclick = function() { initGame(); };
+         restartLevelBtn.textContent = 'Start New Game';
+         restartLevelBtn.onclick = function() { level = 1; initGame(); };
+         restartLevelBtn.style.display = 'block'; 
     }
     
     adContainer.classList.remove('hidden');
