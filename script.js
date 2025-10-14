@@ -19,12 +19,10 @@ const SCORE_MATCH = 100;
 const SCORE_MISMATCH = -20;
 
 // =================================================================
-// 📸 NEW PHOTO PATHS ARRAY
-// Changed from ALL_EMOJIS to PHOTO_PATHS to use your files
-// NOTE: Spaces in filenames are handled with encodeURIComponent
-// This array contains 8 unique paths (16 total images needed for 8 pairs)
+// 📸 KESİN FOTOĞRAF YOLLARI (SADECE .jpg KULLANILDIĞI VARSAYILIR)
+// Dosya adınız 'photo (1).jpg' olduğu için, boşluklar kodda temizlenir.
 const PHOTO_PATHS = [
-    'photos/photo (1).jpg',  // Assuming .jpg, change to .png if needed
+    'photos/photo (1).jpg',
     'photos/photo (2).jpg',
     'photos/photo (3).jpg',
     'photos/photo (4).jpg',
@@ -32,12 +30,8 @@ const PHOTO_PATHS = [
     'photos/photo (6).jpg',
     'photos/photo (7).jpg',
     'photos/photo (8).jpg',
-    // We only need 8 unique images for up to 8 pairs (Level 2)
-    // If you plan to use Level 3 (10 pairs), add two more unique photo paths here:
-    // 'photos/photo (9).jpg',
-    // 'photos/photo (10).jpg'
 ];
-// =================================================================
+// =KEZİNLİKLE BU KODDA ALL_EMOJIS DİZİSİ YOKTUR =
 
 // DOM elements and Sounds
 let memoryBoard, movesDisplay, matchedDisplay, timerDisplay, scoreDisplay, adContainer, finalMovesDisplay, finalScoreDisplay, currentLevelDisplay, themeIcon;
@@ -71,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Button Events
     document.getElementById('restart-button').addEventListener('click', function() {
-        level = 1; // Main button always starts from Level 1
+        level = 1; 
         initGame();
     });
     document.getElementById('theme-toggle-button').addEventListener('click', toggleDarkMode);
@@ -86,16 +80,14 @@ document.addEventListener('DOMContentLoaded', function() {
     startGame();
 });
 
-// PubNub Connection and Live Counter Logic
+// PubNub Connection and Live Counter Logic (Değişiklik yapılmadı)
 function initPubNub() {
-    // ENTER YOUR KEYS HERE (Keys obtained from your PubNub Account)
     pubnub = new PubNub({
-        publishKey: 'YOUR_PUB_KEY', // <-- Replace this with your own key
-        subscribeKey: 'YOUR_SUB_KEY', // <-- Replace this with your own key
-        userId: 'user-' + Math.random().toString(36).substring(2, 9) // Unique ID for each user
+        publishKey: 'YOUR_PUB_KEY',
+        subscribeKey: 'YOUR_SUB_KEY',
+        userId: 'user-' + Math.random().toString(36).substring(2, 9)
     });
 
-    // Listen for User (Presence) changes
     pubnub.addListener({
         presence: function(presenceEvent) {
             if (presenceEvent.channel === PUBNUB_CHANNEL) {
@@ -109,7 +101,6 @@ function initPubNub() {
         withPresence: true 
     });
     
-    // Get the current online count on initial load
     pubnub.hereNow({
         channels: [PUBNUB_CHANNEL]
     }, function(status, response) {
@@ -120,7 +111,7 @@ function initPubNub() {
 }
 
 
-// Lag-free Sound Playback Function
+// Lag-free Sound Playback Function (Değişiklik yapılmadı)
 function playSound(audioElement) {
     if (!audioElement) return;
     const clone = audioElement.cloneNode();
@@ -128,19 +119,19 @@ function playSound(audioElement) {
     clone.play();
 }
 
-// Start Game
+// Start Game (Değişiklik yapılmadı)
 function startGame() {
     initGame();
 }
 
-// Reset and start the game
+// Reset and start the game (Değişiklik yapılmadı)
 function initGame() {
     clearInterval(timerInterval);
 
     // Define card count based on level
     if (level === 1) totalPairs = 6; // 12 cards
     else if (level === 2) totalPairs = 8; // 16 cards
-    else if (level >= MAX_LEVEL) totalPairs = 8; // Max 8 pairs due to limited photo paths
+    else if (level >= MAX_LEVEL) totalPairs = 8;
     
     // Resets
     memoryBoard.innerHTML = '';
@@ -168,7 +159,7 @@ function initGame() {
     adContainer.classList.add('hidden');
 }
 
-// Unlimited Time Counter
+// Unlimited Time Counter (Değişiklik yapılmadı)
 function startTimer() {
     timerInterval = setInterval(() => {
         timeElapsed++;
@@ -176,22 +167,21 @@ function startTimer() {
     }, 1000);
 }
 
-// Converts time to Minute:Second format
+// Converts time to Minute:Second format (Değişiklik yapılmadı)
 function formatTime(totalSeconds) {
     const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
     const seconds = (totalSeconds % 60).toString().padStart(2, '0');
     return `${minutes}:${seconds}`;
 }
 
-// Create Cards
+// Create Cards (RESİM ENTEGRASYONU)
 function createCards() {
     // Define card layout and sizes according to level
     memoryBoard.className = 'memory-board';
     if (totalPairs === 6) memoryBoard.classList.add('grid-4x3');
     else if (totalPairs === 8) memoryBoard.classList.add('grid-4x4');
-    // REMOVED 4x5 grid logic since you only provided 8 unique photos.
     
-    // PHOTO LOGIC: Random new photo paths for each level
+    // PHOTO LOGIC: Shuffle and select the photo paths
     const shuffledPhotoPaths = shuffleArray([...PHOTO_PATHS]);
     const selectedPhotoPaths = shuffledPhotoPaths.slice(0, totalPairs); 
     const gameCards = selectedPhotoPaths.flatMap(path => [path, path]);
@@ -199,20 +189,21 @@ function createCards() {
     
     // Create card elements
     gameCards.forEach((path, index) => {
-        // We use encodeURIComponent to safely handle spaces in the filename like 'photo (1).jpg'
-        const safePath = encodeURIComponent(path);
+        // Boşlukları URL uyumlu hale getir (%20 kullanılır)
+        const safePath = path.replace(/ /g, '%20');
         
         const card = document.createElement('div');
         card.classList.add('card');
-        card.dataset.path = safePath; // Store the photo path in a data attribute
+        card.dataset.path = safePath; // Eşleşme kontrolü için path'i kaydet
         card.dataset.index = index;
         
-        // =================================================================
-        // 📸 MAJOR CHANGE: Use <img> tag instead of innerHTML for the back side
-        // The image uses object-fit: cover (defined in CSS, see notes below)
-        // to ensure it fills the card area without distortion.
-        card.innerHTML = `<div class="front"></div><div class="back"><img src="${safePath}" alt="Memory Game Card" class="card-image"></div>`;
-        // =================================================================
+        // Kartın arka yüzüne resim ekleme (<img>)
+        card.innerHTML = `
+            <div class="front"></div>
+            <div class="back">
+                <img src="${safePath}" alt="Memory Game Card" class="card-image">
+            </div>
+        `;
         
         card.addEventListener('click', flipCard);
         memoryBoard.appendChild(card);
@@ -220,7 +211,7 @@ function createCards() {
     });
 }
 
-// Card flip operation
+// Card flip operation (Değişiklik yapılmadı)
 function flipCard() {
     if (lockBoard) return;
     if (this === firstCard) return;
@@ -243,9 +234,8 @@ function flipCard() {
     checkForMatch();
 }
 
-// Check for match
+// Check for match (Değişiklik yapılmadı)
 function checkForMatch() {
-    // We check the photo path stored in the 'data-path' attribute
     const isMatch = firstCard.dataset.path === secondCard.dataset.path;
     
     if (isMatch) {
@@ -271,7 +261,7 @@ function checkForMatch() {
     }
 }
 
-// Mark matched cards and keep them open (with Animation)
+// Mark matched cards and keep them open (with Animation) (Değişiklik yapılmadı)
 function disableCards() {
     firstCard.classList.add('matched');
     secondCard.classList.add('matched');
@@ -282,7 +272,7 @@ function disableCards() {
     resetBoard();
 }
 
-// Flip back unmatched cards
+// Flip back unmatched cards (Değişiklik yapılmadı)
 function unflipCards() {
     lockBoard = true;
     
@@ -293,7 +283,7 @@ function unflipCards() {
     }, 1000);
 }
 
-// Reset the game board
+// Reset the game board (Değişiklik yapılmadı)
 function resetBoard() {
     hasFlippedCard = false;
     lockBoard = false;
@@ -301,7 +291,7 @@ function resetBoard() {
     secondCard = null;
 }
 
-// Game Over Panel
+// Game Over Panel (Değişiklik yapılmadı)
 function handleGameOver(isSuccess) {
     lockBoard = true;
 
@@ -317,54 +307,44 @@ function handleGameOver(isSuccess) {
     if (isSuccess) {
         playSound(winSound);
         
-        // MAXIMUM LEVEL LOGIC MODIFIED
-        if (level < 2) { // Allow progression from Level 1 (6 pairs) to Level 2 (8 pairs)
+        if (level < 2) { 
             adTitle.textContent = 'Congratulations! 🎉 Level Passed!';
             finalMessage.textContent = `The next level will have ${totalPairs + 2} pairs.`;
 
-            // Main button: Next Level
             nextLevelBtn.textContent = `Next Level (${level + 1})`;
             nextLevelBtn.onclick = null; 
             nextLevelBtn.onclick = function() { 
                 adContainer.classList.remove('show'); 
                 adContainer.classList.add('hidden');
                 level++; 
-                initGame(); // New level, new card count
+                initGame(); 
             };
             nextLevelBtn.style.display = 'block'; 
             restartLevelBtn.style.display = 'block';
 
         } else {
-            // Level is 2 or higher, maximum pairs reached with 8 photos.
             adTitle.textContent = ' 🏆 Maximum Pairs Reached!';
             finalMessage.textContent = `You've matched all available ${totalPairs} pairs with a score of ${score}!`;
             
-            // Main button: Play Again (Same Level)
             nextLevelBtn.textContent = 'Play Next Game'; 
             nextLevelBtn.onclick = null;
             nextLevelBtn.onclick = function() { 
                 adContainer.classList.remove('show'); 
                 adContainer.classList.add('hidden');
-                // level does not change, just new photo shuffle
                 initGame(); 
             }; 
 
-            // The second button (Play Again) should also do the same function.
             restartLevelBtn.textContent = 'Play Again (This Level)';
             restartLevelBtn.style.display = 'block'; 
         }
     }
     
-    // Restart Level button event
     document.getElementById('restart-level').onclick = function() {
         adContainer.classList.remove('show'); 
         adContainer.classList.add('hidden');
-        initGame(); // Restart the current level
+        initGame(); 
     };
 
-    // ------------------------------------------------------------------
-    // ⭐ AD CODE ADDITION - Kept as is ⭐
-    // ------------------------------------------------------------------
     adContent.innerHTML = `
         <div class="ad-iframe-container">
             <script type='text/javascript' src='//pl27810690.effectivegatecpm.com/3f/56/0c/3f560cd28640fec16294d033439790e5.js'></script>
@@ -375,7 +355,7 @@ function handleGameOver(isSuccess) {
     adContainer.classList.add('show');
 }
 
-// Array shuffle function
+// Array shuffle function (Değişiklik yapılmadı)
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -384,7 +364,7 @@ function shuffleArray(array) {
     return array;
 }
 
-// Night/Day Mode
+// Night/Day Mode (Değişiklik yapılmadı)
 function toggleDarkMode() {
     const isDark = document.body.classList.toggle('dark-mode');
     if (isDark) {
