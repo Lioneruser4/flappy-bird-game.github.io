@@ -5,10 +5,9 @@
       crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌟 PRO Memory Match 🌟</title>
+    <title>Memory Match - Fun Challenge</title>
     <link rel="stylesheet" href="style.css">
 
-    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.5.0.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -18,22 +17,22 @@
                     <span id="theme-icon">🌙</span>
                 </button>
                 
-                <h1>PRO Memory Match <span id="current-level">(Level 1)</span></h1>
+                <h1>Memory Match</h1>
+                <h2 id="current-level">Level 1</h2> 
                 
                 <div class="game-info">
                     <div>Moves: <span id="moves">0</span></div>
                     <div>Pairs: <span id="matched">0</span>/<span id="total-pairs">6</span></div>
                     <div>Time: <span id="timer">00:00</span></div>
                     <div>Bonus: <span id="multiplier">x1</span></div>
-                    <div>Errors: <span id="error-limit">4</span></div>
+                    <div>Errors Left: <span id="error-limit">4</span></div>
                     <div>Score: <span id="score">0</span></div>
-                    <div>Online: <span id="online-users">0</span></div> 
                 </div>
             </div>
             
             <div id="memory-board" class="memory-board"></div>
             
-            <button id="restart-button" class="game-button">Start New Game (Level 1)</button>
+            <button id="restart-button" class="game-button primary-action">New Game (Level 1)</button>
         </div>
         
         <div id="ad-container" class="hidden">
@@ -58,6 +57,6 @@
     <audio id="mismatch-sound" src="sounds/mismatch.wav" preload="auto"></audio>
     <audio id="win-sound" src="sounds/win.wav" preload="auto"></audio>
     <audio id="gameover-sound" src="sounds/gameover.wav" preload="auto"></audio>
-    <audio id="skill-sound" src="sounds/skill.wav" preload="auto"></audio> <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
