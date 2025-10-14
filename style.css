@@ -22,8 +22,7 @@
 }
 .dark-mode #game-area { background-color: var(--card-bg); }
 .dark-mode .card .front { background: var(--primary-color); border: 3px solid var(--card-bg); }
-/* KRİTİK DÜZELTME: Gece modunda kart arkasını resim için boşalt */
-.dark-mode .card .back { background: none; color: var(--text-color); } 
+.dark-mode .card .back { background: none; color: var(--text-color); } /* Resim için arka plan yok */
 .dark-mode .game-info { background-color: rgba(187, 134, 252, 0.1); }
 .dark-mode h1, .dark-mode h3 { color: var(--primary-color); }
 
@@ -120,7 +119,7 @@ html, body {
     transform-style: preserve-3d;
     transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    /* KRİTİK DÜZELTME: Kart dışına taşan içeriği kes */
+    /* Taşan resim içeriğini kartın içinde tutar */
     overflow: hidden; 
 }
 
@@ -166,34 +165,37 @@ html, body {
     background: var(--primary-color);
     color: white;
     border: 3px solid var(--card-bg);
-    /* Ön yüzde küçük bir sembol veya metin olması ihtimaline karşı */
+    /* Ön yüzde metin/sembol olması ihtimaline karşı */
     font-size: 1.8rem; 
 }
 
-/* KRİTİK DÜZELTME: Kartın Arxa Üzü (Resmin görüneceği yer) */
+/* Kartın Arxa Üzü (Resmin konulduğu yer) */
 .card .back {
-    /* Eski emoji arka plan rengini kaldır (Resmin altındaki gri/beyaz rengi engeller) */
+    /* Eski emoji arka plan rengini kaldır */
     background: none; 
     transform: rotateY(180deg);
+    /* Padding'i sıfırla */
     padding: 0; 
 }
 
-/* 📸 Resim Boyutunu Ayarlama: Resimleri kartın içine kilitleyen KRİTİK CSS */
+/* 📸 Resim Boyutunu Ayarlama: Kartın tam içine sığdırır */
 .card .back .card-image {
-    width: 100%;
-    height: 100%;
-    /* Resmin kart alanını tam doldurmasını sağlar, orantıyı korur ve gerekirse kırpar */
-    object-fit: cover; 
+    /* Resmi kapsayıcının %95'i kadar küçült */
+    width: 95%; 
+    height: 95%;
+    /* Resmin orantısını korur ve kırpmaz, tam olarak sığmasını sağlar */
+    object-fit: contain; 
+    /* Ortalamayı garanti eder */
+    margin: auto; 
     display: block; 
     border-radius: inherit; 
 }
-/* --- RESİM DÜZELTMELERİNİN SONU --- */
+/* --- RESİM UYARLAMA DÜZELTMESİ SONU --- */
 
 
 /* 20 Kart üçün (Level 3) kiçik emoji ölçüsü */
 .memory-board.grid-4x5 .card .front,
 .memory-board.grid-4x5 .card .back {
-    /* Resim kullanıldığı için font-size sadece ön yüz için anlamlıdır */
     font-size: 1.5rem;
 }
 
